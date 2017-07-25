@@ -5,6 +5,7 @@ const tokens = require('./tokens.json');
 
 const client = new Client();
 const sfxFilePath = path.join(__dirname, 'sfx');
+const allowedChannels = /bot|alttp-alerts/;
 
 let playOptions = {volume: 0.25, passes: tokens.passes};
 let playing = false;
@@ -72,7 +73,7 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-  if (!msg.content.startsWith(tokens.prefix)) return;
+  if (!allowedChannels.test(msg.channel.name) || !msg.content.startsWith(tokens.prefix)) return;
   let cmd = msg.content.toLowerCase().slice(tokens.prefix.length).split(' ')[0];
   if (commands.hasOwnProperty(cmd)) commands[cmd](msg);
 });
