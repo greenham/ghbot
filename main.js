@@ -1,8 +1,10 @@
 // Import modules
-const { Client } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
-const tokens = require('./tokens.json');
+const { Client } = require('discord.js'),
+  fs = require('fs'),
+  path = require('path'),
+  moment = require('moment'),
+  timers = require('./lib/timers.js'),
+  tokens = require('./tokens.json');
 
 // Set up Discord client
 const client = new Client();
@@ -47,12 +49,10 @@ const commands = {
     (function play(sfxFile) {
       const dispatcher = msg.guild.voiceConnection.playFile(sfxFile, playOptions);
       dispatcher.on('end', reason => {
-        //console.log('end: ' + reason)
         playing = false;
         msg.guild.voiceConnection.disconnect();
       })
       .on('error', error => {
-        //console.log('error: ' + error);
         playing = false;
         msg.guild.voiceConnection.disconnect();
       })
@@ -67,6 +67,16 @@ const commands = {
 // Wait for discord to be ready, handle messages
 client.on('ready', () => {
   console.log(`${tokens.botName} is connected and ready`);
+
+  let alertsChannel = client.channels.find('name', 'bot');
+
+  // Test timer
+  /*let timeToBlazeIt = moment().hour(16).minute(20).second(0).valueOf();
+  timers.onceAndRepeat(timeToBlazeIt, 86400, 'blazeit')
+    .on('blazeit', () => {
+      let emoji = client.guilds.first().emojis.find('name', 'BlazedHam');
+      alertsChannel.send(`You know what time it is. ${emoji}`);
+    });*/
 }).on('message', msg => {
   if (!msg.content.startsWith(tokens.prefix)) return;
   let cmd = msg.content.toLowerCase().slice(tokens.prefix.length).split(' ')[0];
