@@ -4,15 +4,15 @@ const { Client } = require('discord.js'),
   path = require('path'),
   moment = require('moment'),
   timers = require('./lib/timers.js'),
-  tokens = require('./tokens.json');
+  config = require('./config.json');
 
 // Set up Discord client
 const client = new Client();
 
 // Set up SFX
 const sfxFilePath = path.join(__dirname, 'sfx');
-const allowedSfxChannels = new RegExp(tokens.allowedSfxChannels);
-let playOptions = {volume: tokens.sfxVolume, passes: tokens.passes};
+const allowedSfxChannels = new RegExp(config.allowedSfxChannels);
+let playOptions = {volume: config.sfxVolume, passes: config.passes};
 let playing = false;
 
 // Read in sfx directory, filenames are the commands
@@ -60,15 +60,15 @@ const commands = {
     })(sfxPath);
   },
   'reboot': (msg) => {
-    if (msg.author.id == tokens.adminID) process.exit(); //Requires a node module like Forever to work.
+    if (msg.author.id == config.adminID) process.exit(); //Requires a node module like Forever to work.
   }
 };
 
 // Wait for discord to be ready, handle messages
 client.on('ready', () => {
-  console.log(`${tokens.botName} is connected and ready`);
+  console.log(`${config.botName} is connected and ready`);
 
-  let alertsChannel = client.channels.find('name', 'bot');
+  let botChannel = client.channels.find('name', config.botChannel);
 
   // Test timer
   /*let timeToBlazeIt = moment().hour(16).minute(20).second(0).valueOf();
@@ -78,11 +78,11 @@ client.on('ready', () => {
       alertsChannel.send(`You know what time it is. ${emoji}`);
     });*/
 }).on('message', msg => {
-  if (!msg.content.startsWith(tokens.prefix)) return;
-  let cmd = msg.content.toLowerCase().slice(tokens.prefix.length).split(' ')[0];
+  if (!msg.content.startsWith(config.prefix)) return;
+  let cmd = msg.content.toLowerCase().slice(config.prefix.length).split(' ')[0];
   if (commands.hasOwnProperty(cmd)) commands[cmd](msg);
 });
-client.login(tokens.d_token);
+client.login(config.d_token);
 
 function readSfxDirectory(path)
 {

@@ -1,0 +1,10 @@
+{
+  "botName": "greenhambot",
+  "d_token": "MjkyNzAxNjg2NjE3ODY2MjUx.DEfe6Q.ShdWRL77BYgfKlW_oFvUwaiAn5Q",
+  "adminID": "88301001169207296",
+  "prefix": "!",
+  "passes": 2,
+  "allowedSfxChannels": "bot|alttp-alerts",
+  "sfxVolume": 0.3,
+  "botChannel": "bot"
+}
