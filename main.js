@@ -24,6 +24,26 @@ fs.watch(sfxFilePath, (eventType, filename) => {
   }
 });
 
+// @todo DRY this shit up
+
+// Read in fun facts
+const funFactsFilePath = path.join(__dirname, 'conf', 'funfacts');
+let funFacts = parseLines(funFactsFilePath);
+fs.watchFile(funFactsFilePath, (curr, prev) => {
+  if (curr.mtime !== prev.mtime) {
+    funFacts = parseLines(funFactsFilePath);
+  }
+});
+
+// Read in ham facts
+const hamFactsFilePath = path.join(__dirname, 'conf', 'hamfacts');
+let hamFacts = parseLines(hamFactsFilePath);
+fs.watchFile(hamFactsFilePath, (curr, prev) => {
+  if (curr.mtime !== prev.mtime) {
+    hamFacts = parseLines(hamFactsFilePath);
+  }
+});
+
 // Set up the native commands to handle
 const commands = {
   'sfx': (msg) => {
@@ -58,6 +78,50 @@ const commands = {
       })
       .on('start', () => {});
     })(sfxPath);
+  },
+  'funfact': (msg) => {
+    if (funFacts.length > 0) {
+      // return random element from funFacts, unless one is specifically requested
+      let el;
+      let req = parseInt(msg.content.split(' ')[1]);
+      if (Number.isNaN(req) || typeof funFacts[req-1] === 'undefined') {
+        el = Math.floor(Math.random() * funFacts.length);
+      } else {
+        el = req - 1;
+      }
+
+      let displayNum = (el+1).toString();
+      let funFact = funFacts[el]
+      msg.channel.send({embed: {
+        "title": "FunFact #"+displayNum,
+        "color": 0xf30bff,
+        "description": funFact
+      }}).catch(console.error);
+    } else {
+      msg.channel.send("No fun facts found!");
+    }
+  },
+  'hamfact': (msg) => {
+    if (hamFacts.length > 0) {
+      // return random element from hamFacts, unless one is specifically requested
+      let el;
+      let req = parseInt(msg.content.split(' ')[1]);
+      if (Number.isNaN(req) || typeof hamFacts[req-1] === 'undefined') {
+        el = Math.floor(Math.random() * hamFacts.length);
+      } else {
+        el = req - 1;
+      }
+
+      let displayNum = (el+1).toString();
+      let hamFact = hamFacts[el]
+      msg.channel.send({embed: {
+        "title": "hamFact #"+displayNum,
+        "color": 0xf30bff,
+        "description": hamFact
+      }}).catch(console.error);
+    } else {
+      msg.channel.send("No ham facts found!");
+    }
   },
   'reboot': (msg) => {
     if (msg.author.id == config.adminID) process.exit(); //Requires a node module like Forever to work.
@@ -100,4 +164,19 @@ function joinVoiceChannel(msg)
     if (!voiceChannel || voiceChannel.type !== 'voice') return msg.reply('I couldn\'t connect to your voice channel...');
     voiceChannel.join().then(connection => resolve(connection)).catch(err => reject(err));
   });
+}
+
+// Read/parse text quotes from the "database"
+function parseQuotes(filePath)
+{
+  let commands = [];
+  let data = fs.readFileSync(filePath, 'utf-8');
+  let commandLines = data.toString().split('\n');
+  let commandParts;
+  commandLines.forEach(function(line) {
+    if (line.length > 0) {
+      commands.push(line);
+    }
+  });
+  return commands;
 }
