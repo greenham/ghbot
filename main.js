@@ -4,6 +4,9 @@ const { Client } = require('discord.js'),
   path = require('path'),
   moment = require('moment'),
   timers = require('./lib/timers.js'),
+  staticCommands = require('./lib/static-commands.js'),
+  cooldowns = require('./lib/cooldowns.js'),
+  ankhbotCommands = require('./lib/ankhbot-commands.js'),
   config = require('./config.json');
 
 // Set up Discord client
@@ -94,7 +97,7 @@ const commands = {
       let funFact = funFacts[el]
       msg.channel.send({embed: {
         "title": "FunFact #"+displayNum,
-        "color": 0xf30bff,
+        "color": 0x21c629,
         "description": funFact
       }}).catch(console.error);
     } else {
@@ -115,13 +118,16 @@ const commands = {
       let displayNum = (el+1).toString();
       let hamFact = hamFacts[el]
       msg.channel.send({embed: {
-        "title": "hamFact #"+displayNum,
-        "color": 0xf30bff,
+        "title": "HamFact #"+displayNum,
+        "color": 0x21c629,
         "description": hamFact
       }}).catch(console.error);
     } else {
       msg.channel.send("No ham facts found!");
     }
+  },
+  'dance': (msg) => {
+    msg.channel.send("*┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛*");
   },
   'reboot': (msg) => {
     if (msg.author.id == config.adminID) process.exit(); //Requires a node module like Forever to work.
@@ -131,20 +137,54 @@ const commands = {
 // Wait for discord to be ready, handle messages
 client.on('ready', () => {
   console.log(`${config.botName} is connected and ready`);
-
   let botChannel = client.channels.find('name', config.botChannel);
-
-  // Test timer
-  /*let timeToBlazeIt = moment().hour(16).minute(20).second(0).valueOf();
-  timers.onceAndRepeat(timeToBlazeIt, 86400, 'blazeit')
-    .on('blazeit', () => {
-      let emoji = client.guilds.first().emojis.find('name', 'BlazedHam');
-      alertsChannel.send(`You know what time it is. ${emoji}`);
-    });*/
+// Listen for commands for the bot to respond to across all channels
 }).on('message', msg => {
+  msg.originalContent = msg.content;
+  msg.content = msg.content.toLowerCase();
+
+  // Make sure it starts with the configured prefix
   if (!msg.content.startsWith(config.prefix)) return;
-  let cmd = msg.content.toLowerCase().slice(config.prefix.length).split(' ')[0];
-  if (commands.hasOwnProperty(cmd)) commands[cmd](msg);
+
+  // And that it's not on cooldown
+  let cooldownKey = msg.content + msg.channel.id;
+  cooldowns.get(cooldownKey, config.textCmdCooldown)
+    .then(onCooldown => {
+      if (onCooldown === false) {
+        // Not on CD, check for native or static command
+        let commandNoPrefix = msg.content.slice(config.prefix.length).split(' ')[0];
+        console.log(`'${commandNoPrefix}' received in #${msg.channel.name} from @${msg.author.username}`);
+
+        // check for native command first
+        if (commands.hasOwnProperty(commandNoPrefix)) {
+          commands[commandNoPrefix](msg);
+        // then a static command we've manually added
+        } else if (staticCommands.exists(commandNoPrefix)) {
+          let result = staticCommands.get(commandNoPrefix);
+          msg.channel.send({embed: {
+            "title": commandNoPrefix,
+            "color": 0x21c629,
+            "description": result
+          }}).then(sentMessage => cooldowns.set(cooldownKey, config.textCmdCooldown))
+          .catch(console.error);
+        // then a command exported from ankhbot
+        } else if (ankhbotCommands.exists(commandNoPrefix)) {
+          let result = ankhbotCommands.get(commandNoPrefix);
+          msg.channel.send({embed: {
+            "title": commandNoPrefix,
+            "color": 0x21c629,
+            "description": result
+          }}).then(sentMessage => cooldowns.set(cooldownKey, config.textCmdCooldown))
+          .catch(console.error);
+        } else {
+          // Not a command we recognize, ignore
+        }
+      } else {
+        // DM the user that it's on CD
+        dmUser(msg, `**${msg.content}** is currently on cooldown for another *${onCooldown} seconds!*`);
+      }
+    })
+    .catch(console.error);
 });
 client.login(config.d_token);
 
@@ -178,4 +218,18 @@ function parseLines(filePath)
     }
   });
   return lines;
+}
+
+function dmUser(originalMessage, newMessage)
+{
+  // check that this isn't already a DM before sending
+  if (originalMessage.channel.type === 'dm') {
+    originalMessage.channel.send(newMessage);
+  } else {
+    originalMessage.member.createDM()
+      .then(channel => {
+        channel.send(newMessage);
+      })
+      .catch(console.log);
+  }
 }
