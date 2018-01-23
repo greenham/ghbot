@@ -166,17 +166,16 @@ function joinVoiceChannel(msg)
   });
 }
 
-// Read/parse text quotes from the "database"
-function parseQuotes(filePath)
+// Read/parse text lines from a file
+function parseLines(filePath)
 {
-  let commands = [];
+  let lines = [];
   let data = fs.readFileSync(filePath, 'utf-8');
-  let commandLines = data.toString().split('\n');
-  let commandParts;
-  commandLines.forEach(function(line) {
+  let splitLines = data.toString().split('\n');
+  splitLines.forEach(function(line) {
     if (line.length > 0) {
-      commands.push(line);
+      lines.push(line);
     }
   });
-  return commands;
+  return lines;
 }
