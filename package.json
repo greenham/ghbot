@@ -9,7 +9,7 @@
     "md5": "^2.2.1",
     "memcache": "^0.3.0",
     "moment": "^2.18.1",
-    "node-opus": "^0.2.6",
+    "node-opus": "^0.2.7",
     "request": "^2.81.0"
   },
   "devDependencies": {},

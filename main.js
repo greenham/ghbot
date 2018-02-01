@@ -233,3 +233,6 @@ function dmUser(originalMessage, newMessage)
       .catch(console.log);
   }
 }
+
+// catch Promise errors
+process.on('unhandledRejection', console.error);
