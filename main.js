@@ -147,7 +147,7 @@ client.on('ready', () => {
   if (!msg.content.startsWith(config.prefix)) return;
 
   // And that it's not on cooldown
-  let cooldownKey = msg.content + msg.channel.id;
+  let cooldownKey = config.botName + msg.content + msg.channel.id;
   cooldowns.get(cooldownKey, config.textCmdCooldown)
     .then(onCooldown => {
       if (onCooldown === false) {
