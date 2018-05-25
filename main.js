@@ -49,7 +49,7 @@ fs.watchFile(hamFactsFilePath, (curr, prev) => {
 
 // Set up the native commands to handle
 const commands = {
-  'sfx': (msg) => {
+  'sfx': (msg, disconnectAfter) => {
     if (!allowedSfxChannels.test(msg.channel.name)) return;
     let sfx = msg.content.split(' ')[1];
     if (sfx == '' || sfx === undefined) return msg.channel.send('```'+sfxList.join(', ')+'```');
@@ -66,18 +66,20 @@ const commands = {
       return msg.reply('This sound effect does not exist!');
     }
 
-    if (!msg.guild.voiceConnection) return joinVoiceChannel(msg).then(() => commands.sfx(msg));
+    if (!msg.guild.voiceConnection) return joinVoiceChannel(msg).then(() => commands.sfx(msg, disconnectAfter));
+
+    disconnectAfter = (typeof disconnectAfter !== "undefined") ? disconnectAfter : true;
 
     playing = true;
     (function play(sfxFile) {
       const dispatcher = msg.guild.voiceConnection.playFile(sfxFile, playOptions);
       dispatcher.on('end', reason => {
         playing = false;
-        msg.guild.voiceConnection.disconnect();
+        if (disconnectAfter) msg.guild.voiceConnection.disconnect();
       })
       .on('error', error => {
         playing = false;
-        msg.guild.voiceConnection.disconnect();
+        if (disconnectAfter) msg.guild.voiceConnection.disconnect();
       })
       .on('start', () => {});
     })(sfxPath);
@@ -128,6 +130,50 @@ const commands = {
   },
   'dance': (msg) => {
     msg.channel.send("*┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛*");
+  },
+  'join': (msg) => {
+    if (!msg.guild.voiceConnection) { 
+      joinVoiceChannel(msg).then(() => {
+        //
+      }).catch(console.error);
+    } else {
+      return msg.reply(`I'm already in a voice channel!`);
+    }
+  },
+  'leave': (msg) => {
+    if (msg.guild.voiceConnection) { 
+      msg.content = '!sfx bye';
+      commands.sfx(msg);
+      //msg.guild.voiceConnection.disconnect();
+    } else {
+      return msg.reply(`If ya don't eat your meat, ya can't have any pudding!`);
+    }
+  },
+  'listen': (msg) => {
+    // listen for a particular member to speak and respond appropriately
+    if (msg.guild.voiceConnection) {
+      // get the guild member
+      //let guildMemberId = "88301001169207296"; // me
+      let guildMemberId = "153563292265086977"; // Screevo
+      let guildMember = msg.guild.members.get(guildMemberId);
+      if (guildMember) {
+        let listenInterval = 1000;
+        setInterval(() => {
+          if (guildMember.speaking === true) {
+            msg.content = '!sfx stfu';
+            commands.sfx(msg, false);
+          }
+        }, listenInterval);
+      } else {
+        console.error(`Could not find specified guild member: ${guildMemberId}!`);
+        msg.guild.voiceConnection.disconnect();
+      }
+    } else {
+      // join the voice channel then call this command again
+      joinVoiceChannel(msg).then(() => {
+        commands.listen(msg);
+      }).catch(console.error);
+    }
   },
   'reboot': (msg) => {
     if (msg.author.id == config.adminID) process.exit(); //Requires a node module like Forever to work.
@@ -185,8 +231,7 @@ client.on('ready', () => {
       }
     })
     .catch(console.error);
-});
-client.login(config.d_token);
+}).login(config.d_token);
 
 function readSfxDirectory(path)
 {
