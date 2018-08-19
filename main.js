@@ -5,7 +5,7 @@ const { Client } = require('discord.js'),
   moment = require('moment'),
   timers = require('./lib/timers.js'),
   staticCommands = require('./lib/static-commands.js'),
-  cooldowns = require('./lib/cooldowns.js'),
+  //cooldowns = require('./lib/cooldowns.js'),
   ankhbotCommands = require('./lib/ankhbot-commands.js'),
   config = require('./config.json');
 
@@ -82,7 +82,7 @@ const commands = {
         if (disconnectAfter) msg.guild.voiceConnection.disconnect();
       })
       .on('start', () => {});
-    })(sfxPath);
+    })(sfxPath.toString());
   },
   'funfact': (msg) => {
     if (funFacts.length > 0) {
@@ -193,10 +193,10 @@ client.on('ready', () => {
   if (!msg.content.startsWith(config.prefix)) return;
 
   // And that it's not on cooldown
-  let cooldownKey = config.botName + msg.content + msg.channel.id;
+  /*let cooldownKey = config.botName + msg.content + msg.channel.id;
   cooldowns.get(cooldownKey, config.textCmdCooldown)
     .then(onCooldown => {
-      if (onCooldown === false) {
+      if (onCooldown === false) {*/
         // Not on CD, check for native or static command
         let commandNoPrefix = msg.content.slice(config.prefix.length).split(' ')[0];
         console.log(`'${commandNoPrefix}' received in #${msg.channel.name} from @${msg.author.username}`);
@@ -211,7 +211,7 @@ client.on('ready', () => {
             "title": commandNoPrefix,
             "color": 0x21c629,
             "description": result
-          }}).then(sentMessage => cooldowns.set(cooldownKey, config.textCmdCooldown))
+          }}).then(sentMessage => {}/*cooldowns.set(cooldownKey, config.textCmdCooldown)*/)
           .catch(console.error);
         // then a command exported from ankhbot
         } else if (ankhbotCommands.exists(commandNoPrefix)) {
@@ -220,17 +220,17 @@ client.on('ready', () => {
             "title": commandNoPrefix,
             "color": 0x21c629,
             "description": result
-          }}).then(sentMessage => cooldowns.set(cooldownKey, config.textCmdCooldown))
+          }}).then(sentMessage => {}/*cooldowns.set(cooldownKey, config.textCmdCooldown)*/)
           .catch(console.error);
         } else {
           // Not a command we recognize, ignore
         }
-      } else {
+      /*} else {
         // DM the user that it's on CD
         dmUser(msg, `**${msg.content}** is currently on cooldown for another *${onCooldown} seconds!*`);
       }
     })
-    .catch(console.error);
+    .catch(console.error);*/
 }).login(config.d_token);
 
 function readSfxDirectory(path)
