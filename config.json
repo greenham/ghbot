@@ -7,5 +7,21 @@
   "allowedSfxChannels": "bot|alttp-alerts",
   "sfxVolume": 0.3,
   "botChannel": "bot",
-  "textCmdCooldown": 5
+  "textCmdCooldown": 5,
+  "twitch": {
+  	"ircServer" : "irc.chat.twitch.tv",
+    "username": "greenhambot",
+    "oauth": "oauth:90aunml4vwyt7zgulm7s5m7xt4hnpc",
+    "channels": ["#greenham"],
+    "cmdPrefix": "$",
+    "blacklistedUsers": [],
+    "admins": ["greenham","greenhambot"]
+  },
+  "obs": {
+    "websocket": {
+      "address": "192.168.0.111:4444",
+      "password": "goodnewseveryone"
+    }
+  },
+  "debug": false
 }

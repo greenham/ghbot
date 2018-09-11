@@ -6,10 +6,12 @@
   "dependencies": {
     "discord.js": "^11.4.2",
     "ffmpeg-binaries": "^3.2.2",
+    "irc": "^0.5.2",
     "md5": "^2.2.1",
     "memcache": "^0.3.0",
     "moment": "^2.22.2",
     "node-opus": "^0.2.9",
+    "obs-websocket-js": "^1.2.0",
     "request": "^2.88.0"
   },
   "devDependencies": {},
