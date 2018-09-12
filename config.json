@@ -15,7 +15,11 @@
     "channels": ["#greenham"],
     "cmdPrefix": "$",
     "blacklistedUsers": [],
-    "admins": ["greenham","greenhambot"]
+    "admins": ["greenham","greenhambot"],
+    "editorLogin": {
+      "username": "greenham",
+      "oauth": "oauth:gmi4sjl3k0we0d4gsppkrcqcjpdma6"
+    }
   },
   "obs": {
     "websocket": {
