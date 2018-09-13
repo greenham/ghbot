@@ -25,7 +25,30 @@
     "websocket": {
       "address": "192.168.0.111:4444",
       "password": "goodnewseveryone"
-    }
+    },
+    "availablePlaylists": [
+      {
+        "sceneItem": "ttas-segments",
+        "activity": "TTAS Segments !ttas",
+        "chatName": "TTAS Segments"
+      },
+      {
+        "sceneItem": "room-grind",
+        "activity": "TTAS Room Grind !ttas",
+        "chatName": "TTAS Room Grind"
+      },
+      {
+        "sceneItem": "gold-segments",
+        "activity": "Any% NMG Gold Segments",
+        "chatName": "NMG Golds"
+      },
+      {
+        "sceneItem": "personal-bests",
+        "activity": "Past Personal Bests",
+        "chatName": "Personal Bests"
+      }
+    ],
+    "defaultPlaylist": "room-grind"
   },
   "debug": false
 }
