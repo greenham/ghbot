@@ -6,7 +6,16 @@
 // @TODO: Make the bot aware of what video is current active
 // @TODO: Change video playlist source on an interval
 // @TODO: Rotating background images (leftside)
-
+// @TODO: Stream alerts for chat
+// @TODO: Instead of playlists being chosen, have a database of files that can be played
+// dynamically load this into a single media source that hides itself after playback ends
+// listen for the event of the video ending and switch the source to the next one in the queue
+// 
+// We can have the video queue work a lot like the songrequest queue.
+// Instead of a new playlist being chosen every 2 hours, votes will be held for which *individual* video should be added to the queue next.
+// A list of 10 or so will be chosen at random to be voted on. The top (x) will be added to the video queue. If nothing gets voted on, something random gets added.
+// This will actually be easier on OBS too -- instead of having multiple playlists I have to manage within there, I can use a single media source and dynamically load whatever video gets chosen into that.
+// I can also store whatever metadata about the video I want so I can update the labels automatically too. OpieOP
 
 // Import modules
 const irc = require('irc');
@@ -33,11 +42,12 @@ obs.connect({ address: config.obs.websocket.address, password: config.obs.websoc
   .catch(err => {
     console.log(err);
   });
-
+// Listen for errors from OBS
 obs.on('error', err => {
   console.error('OBS socket error:', err);
 });
 
+// Initialize Twitch chat hooks
 const twitchInit = (config, obs) => {
   return new Promise((resolve, reject) => {
     console.log('Connecting to Twitch...');
@@ -168,7 +178,7 @@ const twitchInit = (config, obs) => {
                   // hide owen
                   obs.setSceneItemProperties({"item": "owen", "scene-name": "commercial", "visible": false});
                   // unmute songrequest audio
-                  editorChat.say(to, '!volume 75');
+                  editorChat.say(to, '!volume 50');
                   // swap back to fgfm
                   obs.setCurrentScene({"scene-name": "fgfm"});
                 }, 248000);
@@ -238,6 +248,7 @@ const twitchInit = (config, obs) => {
   });
 }
 
+// Initialize Stream automation
 const streamInit = (config, obs, twitch) => {
   return new Promise((resolve, reject) => {
     console.log(`Initializing stream timers...`);
@@ -254,13 +265,10 @@ const streamInit = (config, obs, twitch) => {
     let playlistChoices = config.obs.availablePlaylists.map((e, i, a) => {
       return `[${i+1}] ${e.chatName}`;
     });
-    const sayVote = () => {twitch.botChat.say(twitchChannel, `Vote for which video playlist you'd like to see next using ${config.twitch.cmdPrefix}vote #: ${playlistChoices.join(' | ')}`)};
-    setTimeout(sayVote, 5000);
-    setInterval(sayVote, 900000);
 
-    // When: Every 2 Hours
+    // When: Every 2 Hours, on the hour
     // What: Change the video playlist
-    let changePlaylistJob = schedule.scheduleJob("* */2 * * *", () => {
+    let changePlaylistJob = schedule.scheduleJob("0 */2 * * *", () => {
       // Base the selection on user votes collected since the last invocation (unless there are 0 votes, then choose randomly)
       let newPlaylist;
       if (userVotes.length === 0) {
@@ -320,6 +328,11 @@ const streamInit = (config, obs, twitch) => {
       }
     });
     console.log(`Playlist will be changed at ${changePlaylistJob.nextInvocation()}`);
+
+    // @TODO: output scheduled time of next switch
+    const sayVote = () => {twitch.botChat.say(twitchChannel, `Vote for which video playlist you'd like to see next using ${config.twitch.cmdPrefix}vote #: ${playlistChoices.join(' | ')} (changing at ${changePlaylistJob.nextInvocation()})`)};
+    setTimeout(sayVote, 5000);
+    setInterval(sayVote, 900000);
 
     // Track user votes for playlist
     twitch.botChat.addListener('message', (from, to, message) => {
