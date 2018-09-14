@@ -17,7 +17,7 @@ const util = require('./lib/util');
 // Read internal configuration
 let config = require('./config.json');
 let currentPlaylist = config.obs.defaultPlaylist;
-let twitchChannel = '#' + config.twitch.channels[0].toLowerCase();
+let twitchChannel = config.twitch.channels[0].toLowerCase();
 
 // Connect to OBS Websocket
 const obs = new OBSWebSocket();
@@ -242,9 +242,9 @@ const streamInit = (config, obs, twitch) => {
   return new Promise((resolve, reject) => {
     console.log(`Initializing stream timers...`);
   
-    // When: Hourly at 55 past
+    // When: Every 4 hours at 55 past
     // What: AUW
-    let auwJob = schedule.scheduleJob({minute: 55}, (fireDate) => {
+    let auwJob = schedule.scheduleJob("55 */4 * * *", () => {
       // AUW
       twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}auw`);
     });
@@ -254,13 +254,14 @@ const streamInit = (config, obs, twitch) => {
     let playlistChoices = config.obs.availablePlaylists.map((e, i, a) => {
       return `[${i+1}] ${e.chatName}`;
     });
-    setTimeout(() => {
-      twitch.botChat.say(twitchChannel, `Vote for which video playlist you'd like to see next using ${config.twitch.cmdPrefix}vote #: ${playlistChoices.join(' | ')}`);
-    }, 5000);
+    const sayVote = () => {twitch.botChat.say(twitchChannel, `Vote for which video playlist you'd like to see next using ${config.twitch.cmdPrefix}vote #: ${playlistChoices.join(' | ')}`)};
+    /*setTimeout(sayVote, 5000);
+    setInterval(sayVote, 900000);*/
+
 
     // When: Every 2 Hours
     // What: Change the video playlist
-    let changePlaylistJob = schedule.scheduleJob("*/5 * * * *", () => {
+    let changePlaylistJob = schedule.scheduleJob("* */2 * * *", () => {
       // Base the selection on user votes collected since the last invocation (unless there are 0 votes, then choose randomly)
       let newPlaylist;
       if (userVotes.length === 0) {
@@ -270,16 +271,19 @@ const streamInit = (config, obs, twitch) => {
         choices.splice(currentChoice, 1);
         newPlaylist = util.randElement(choices);
         console.log(`PLAYLIST CHOSEN RANDOMLY: ${newPlaylist.chatName}`);
+        twitch.botChat.say(twitchChannel, `No Votes Logged -- Next Playlist Chosen at Random: ${newPlaylist.chatName}`);
       } else {
         // tally and sort votes
-        let tallied = userVotes.reduce((voteTallies, currentValue) => {
-          tallyIndex = voteTallies.find(e.id === currentValue.vote);
+        let voteTallies = [];
+        util.asyncForEach(userVotes, vote => {
+          tallyIndex = voteTallies.findIndex(e => e.id === vote.vote);
           if (tallyIndex !== -1) {
             voteTallies[tallyIndex].count++;
           } else {
-            voteTallies.push({id: currentValue.vote, count: 1});
+            voteTallies.push({id: vote.vote, count: 1});
           }
-        }).sort((a, b) => {
+        });
+        voteTallies.sort((a, b) => {
           if (a.count < b.count) {
             return -1;
           }
@@ -290,22 +294,31 @@ const streamInit = (config, obs, twitch) => {
           return 0;
         });
 
-        console.log(`[TEST] Voting Results: ${JSON.stringify(tallied)}`);
-        newPlaylist = config.obs.availablePlaylists[tallied[0].id-1];
+        console.log(`Voting Results: ${JSON.stringify(voteTallies)}`);
+        newPlaylist = config.obs.availablePlaylists[voteTallies[0].id-1];
         console.log(`WINNER OF THE VOTE: ${newPlaylist.chatName}`);
-        //twitch.botChat.say(twitchChannel, `[TEST] Voting Results: ${JSON.stringify(tallied)}`);
+        twitch.botChat.say(twitchChannel, `Winner of the Playlist Vote: ${newPlaylist.chatName}`);
 
         // clear user votes
         userVotes = [];
       }
 
-      /*twitch.botChat.say(twitchChannel, `[TEST] Changing playlist from ${currentPlaylist} to ${newPlaylist.chatName}`);
-      twitch.editorChat.say(twitchChannel, `[TEST] ${config.twitch.cmdPrefix}swap ${currentPlaylist} ${newPlaylist.sceneItem}`);
-      twitch.editorChat.say(twitchChannel, `[TEST] !setcurrent NOW SHOWING: ${newPlaylist.activity}`);*/
-      console.log(`Changing playlist from ${currentPlaylist} to ${newPlaylist.chatName}`);
-      console.log(`${config.twitch.cmdPrefix}swap ${currentPlaylist} ${newPlaylist.sceneItem}`);
-      console.log(`!setcurrent NOW SHOWING: ${newPlaylist.activity}`);
-      currentPlaylist = newPlaylist.sceneItem;
+      // only do this if the playlists are actually different
+      if (currentPlaylist === newPlaylist.sceneItem) {
+        twitch.botChat.say(twitchChannel, `We gucci. Stay comfy, nerds. DataComfy`);
+      } else {
+        console.log(`Changing playlist from ${currentPlaylist} to ${newPlaylist.sceneItem}`);
+        // @TODO: Don't use twitch chat for this
+        twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}swap ${currentPlaylist} ${newPlaylist.sceneItem}`);
+        twitch.editorChat.say(twitchChannel, `!setcurrent NOW SHOWING: ${newPlaylist.activity}`);
+        // if we're showing TTAS segments, hide the label, if it's anything else, show
+        if (newPlaylist.sceneItem === 'ttas-segments') {
+          twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}hide current-activity`);
+        } else {
+          twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}show current-activity`);
+        }
+        currentPlaylist = newPlaylist.sceneItem;
+      }
     });
     console.log(`Playlist will be changed at ${changePlaylistJob.nextInvocation()}`);
 
@@ -322,7 +335,7 @@ const streamInit = (config, obs, twitch) => {
           let userVote = commandParts[1] || false;
 
           if (userVote === false) {
-            return twitch.botChat.say(to, `Vote for which video playlist you'd like to see next using ${config.twitch.cmdPrefix}vote #: ${playlistChoices.join(' | ')}`);
+            return sayVote();
           }
 
           userVote = Number.parseInt(userVote);
@@ -343,7 +356,7 @@ const streamInit = (config, obs, twitch) => {
           } else {
             // log user vote
             userVotes.push({"from": from, "vote": userVote});
-            twitch.botChat.say(to, `@${from}, your vote has been registered!`);
+            twitch.botChat.say(to, `@${from}, your vote has been logged!`);
           }
         }
       }
