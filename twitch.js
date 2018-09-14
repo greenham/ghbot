@@ -251,90 +251,93 @@ const twitchInit = (config, obs) => {
 // Initialize Stream automation
 const streamInit = (config, obs, twitch) => {
   return new Promise((resolve, reject) => {
+    console.log(`Setting up initial video queue...`);
+    // @TODO: Choose X random vods to start
+    // Shuffle the vods and pick the first X
+    let videoQueue = config.vods.sort( function() { return 0.5 - Math.random() } ).slice(0, 3);
+    console.log(`Initial queue: ${JSON.stringify(videoQueue)}`);
+    // @TODO: Load the first vod into the source, show it, listen to event of it being done, load the next, etc.
+
     console.log(`Initializing stream timers...`);
   
     // When: Every 4 hours at 55 past
+    // @TODO: change to a random interval of time!
     // What: AUW
     let auwJob = schedule.scheduleJob("55 */4 * * *", () => {
       // AUW
-      twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}auw`);
+      //twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}auw`);
     });
-    console.log(`AUW is scheduled to be shown at ${auwJob.nextInvocation()}`);
+    //console.log(`AUW is scheduled to be shown at ${auwJob.nextInvocation()}`);
 
     let userVotes = [];
-    let playlistChoices = config.obs.availablePlaylists.map((e, i, a) => {
-      return `[${i+1}] ${e.chatName}`;
-    });
-
-    // When: Every 2 Hours, on the hour
-    // What: Change the video playlist
-    let changePlaylistJob = schedule.scheduleJob("0 */2 * * *", () => {
-      // Base the selection on user votes collected since the last invocation (unless there are 0 votes, then choose randomly)
-      let newPlaylist;
-      if (userVotes.length === 0) {
-        // choose a random item other than currentPlaylist from config.obs.availablePlaylists
-        let choices = config.obs.availablePlaylists.slice(0);
-        currentChoice = choices.indexOf(e => e.sceneItem === currentPlaylist);
-        choices.splice(currentChoice, 1);
-        newPlaylist = util.randElement(choices);
-        console.log(`PLAYLIST CHOSEN RANDOMLY: ${newPlaylist.chatName}`);
-        twitch.botChat.say(twitchChannel, `No Votes Logged -- Next Playlist Chosen at Random: ${newPlaylist.chatName}`);
-      } else {
-        // tally and sort votes
-        let voteTallies = [];
-        util.asyncForEach(userVotes, vote => {
-          tallyIndex = voteTallies.findIndex(e => e.id === vote.vote);
-          if (tallyIndex !== -1) {
-            voteTallies[tallyIndex].count++;
-          } else {
-            voteTallies.push({id: vote.vote, count: 1});
-          }
-        });
-        voteTallies.sort((a, b) => {
-          if (a.count < b.count) {
-            return -1;
-          }
-          if (a.count > b.count) {
-            return 1;
-          }
-          // a must be equal to b
-          return 0;
-        });
-
-        console.log(`Voting Results: ${JSON.stringify(voteTallies)}`);
-        newPlaylist = config.obs.availablePlaylists[voteTallies[0].id-1];
-        console.log(`WINNER OF THE VOTE: ${newPlaylist.chatName}`);
-        twitch.botChat.say(twitchChannel, `Winner of the Playlist Vote: ${newPlaylist.chatName}`);
-
-        // clear user votes
-        userVotes = [];
-      }
-
-      // only do this if the playlists are actually different
-      if (currentPlaylist === newPlaylist.sceneItem) {
-        twitch.botChat.say(twitchChannel, `We gucci. Stay comfy, nerds. DataComfy`);
-      } else {
-        console.log(`Changing playlist from ${currentPlaylist} to ${newPlaylist.sceneItem}`);
-        // @TODO: Don't use twitch chat for this
-        twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}swap ${currentPlaylist} ${newPlaylist.sceneItem}`);
-        twitch.editorChat.say(twitchChannel, `!setcurrent NOW SHOWING: ${newPlaylist.activity}`);
-        // if we're showing TTAS segments, hide the label, if it's anything else, show
-        if (newPlaylist.sceneItem === 'ttas-segments') {
-          twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}hide current-activity`);
+    let currentChoices = [];
+    let rockTheVote;
+    
+    let videoVoteJob = schedule.scheduleJob("*/1 * * * *", () => {
+      // Tally votes from previous election (if there was one), add the winner to the queue
+      let winner;
+      if (currentChoices.length > 0)
+      {
+        if (userVotes.length === 0)
+        {
+          // choose a random element from currentChoices
+          winner = util.randElement(currentChoices);
+          console.log(`VIDEO CHOSEN RANDOMLY: ${winner.chatName}`);
+          //twitch.botChat.say(twitchChannel, `No Votes Logged -- Next Playlist Chosen at Random: ${winner.chatName}`);
         } else {
-          twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}show current-activity`);
+          // tally and sort votes
+          let voteTallies = [];
+          util.asyncForEach(userVotes, vote => {
+            tallyIndex = voteTallies.findIndex(e => e.id === vote.vote);
+            if (tallyIndex !== -1) {
+              voteTallies[tallyIndex].count++;
+            } else {
+              voteTallies.push({id: vote.vote, count: 1});
+            }
+          });
+          voteTallies.sort((a, b) => {
+            if (a.count < b.count) {
+              return -1;
+            }
+            if (a.count > b.count) {
+              return 1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+
+          console.log(`Voting Results: ${JSON.stringify(voteTallies)}`);
+          winner = currentChoices[voteTallies[0].id-1];
+          console.log(`WINNER OF THE VOTE: ${winner.chatName}`);
+          //twitch.botChat.say(twitchChannel, `Winner of the Video Vote: ${winner.chatName}`);
+
+          // clear user votes
+          userVotes = [];
         }
-        currentPlaylist = newPlaylist.sceneItem;
+
+        videoQueue.push[winner];
       }
+      
+      // choose 10 more random videos from config.vods (that aren't already in the queue)
+      let vodsNotInQueue = config.vods.filter(e => {
+        return (videoQueue.findIndex(q => q.id === e.id) === -1);
+      });
+      currentChoices = vodsNotInQueue.sort( function() { return 0.5 - Math.random() } ).slice(0, 10);
+
+      // post choices to chat + set reminders to post every 5 minutes
+      let chatChoices = currentChoices.map((c, i) => {
+        return `[${i+1}] ${c.chatName}`;
+      });
+
+      rockTheVote = () => {
+        console.log(`Vote for which video you'd like to add to the queue using ${config.twitch.cmdPrefix}vote #: ${chatChoices.join(' | ')}`);
+        //twitch.botChat.say(twitchChannel, `Vote for which video you'd like to see next using ${config.twitch.cmdPrefix}vote #: ${chatChoices.join(' | ')}`)
+      };
+      //setInterval(rockTheVote, 300000);
+      rockTheVote();
     });
-    console.log(`Playlist will be changed at ${changePlaylistJob.nextInvocation()}`);
 
-    // @TODO: output scheduled time of next switch
-    const sayVote = () => {twitch.botChat.say(twitchChannel, `Vote for which video playlist you'd like to see next using ${config.twitch.cmdPrefix}vote #: ${playlistChoices.join(' | ')} (changing at ${changePlaylistJob.nextInvocation()})`)};
-    setTimeout(sayVote, 5000);
-    setInterval(sayVote, 900000);
-
-    // Track user votes for playlist
+    // Track user votes for video queue
     twitch.botChat.addListener('message', (from, to, message) => {
        // Ignore everything from blacklisted users
       if (config.twitch.blacklistedUsers.includes(from)) return;
@@ -347,13 +350,13 @@ const streamInit = (config, obs, twitch) => {
           let userVote = commandParts[1] || false;
 
           if (userVote === false) {
-            return sayVote();
+            return rockTheVote();
           }
 
           userVote = Number.parseInt(userVote);
 
-          if (!Number.isInteger(userVote) || userVote < 1 || userVote > playlistChoices.length) {
-            return twitch.botChat.say(to, `@${from}, please choose an option from 1 - ${playlistChoices.length}!`);
+          if (!Number.isInteger(userVote) || userVote < 1 || userVote > currentChoices.length) {
+            return twitch.botChat.say(to, `@${from}, please choose an option from 1 - ${currentChoices.length}!`);
           }
 
           // Check for uniqueness of vote
@@ -373,6 +376,8 @@ const streamInit = (config, obs, twitch) => {
         }
       }
     });
+
+    resolve(videoQueue);
   });
 }
 
