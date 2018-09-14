@@ -50,5 +50,262 @@
     ],
     "defaultPlaylist": "room-grind"
   },
+  "vods": [
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Escape (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\01-escape.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Eastern (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\02-eastern.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Desert (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\03-desert.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Hera (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\04-hera.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "ATower (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\05-atower.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "PoD (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\06-pod.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Thieves (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\07-thieves.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Skull (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\08-skull.mp4"
+    },{
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Ice (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\09-ice.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Swamp (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\10-swamp.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Mire (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\11-mire.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "TRock (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\12-trock.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "GTower (OTTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\13-gtower.mp4"
+    },
+    {
+      "category": "Optimal TTAS Segment",
+      "label": false,
+      "chatName": "Ganon (TTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\Risky\final-versions-timed\14-ganon.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Escape (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\01-escape.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Eastern (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\02-eastern.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Desert (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\03-desert.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Hera (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\04-hera.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Agah Tower (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\05-atower.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "PoD (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\06-pod.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Thieves (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\07-thieves.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Skull (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\08-skull.mp4"
+    },{
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Ice (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\09-ice.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Swamp (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\10-swamp.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "Mire (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\11-mire.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "TRock (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\12-trock.mp4"
+    },
+    {
+      "category": "Safe TTAS Segment",
+      "label": false,
+      "chatName": "GTower (STTAS Seg)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\ttas\RTA\final-versions-timed\13-gtower.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Escape (5:53.2) [2018-02-24]",
+      "chatName": "Escape (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\01-[553.2]-2018-02-24-escape.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Eastern (5:00.12) [2018-06-25]",
+      "chatName": "Eastern (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\02-[500.12]-2018-06-25-eastern.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Desert (6:10.32) [2018-06-02]",
+      "chatName": "Desert (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\03-[610.32]-2018-06-02-desert.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Hera (5:28.83) [2018-06-01]",
+      "chatName": "Hera (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\04-[528.83]-2018-06-01-hera.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Agah Tower (5:13.45) [2018-09-07]",
+      "chatName": "Agah Tower (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\05a-[513.45]-2018-09-07-atower.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Palace of Darkness (6:11.15) [2018-05-27]",
+      "chatName": "PoD (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\06-[611.15]-2018-05-27-pod.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Thieves Town (7:08.37) [2018-07-01]",
+      "chatName": "Thieves (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\07-[708.37]-2018-07-01-thieves.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Skull Woods (5:24.28) [2018-06-02]",
+      "chatName": "Skull (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\08-[524.28]-2018-06-02-skull.mp4"
+    },{
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Ice Palace (6:18.13) [2018-09-08]",
+      "chatName": "Ice (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\09-[618.13]-2018-09-08-ice.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Swamp Palace (6:51.87) [2018-06-10]",
+      "chatName": "Swamp (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\10-[651.87]-2018-06-10-swamp.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Misery Mire (7:07.17) [2018-06-10]",
+      "chatName": "Mire (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\11-[707.17]-2018-06-10-mire.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Turtle Rock (7:07.34) [2018-06-25]",
+      "chatName": "TRock (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\12-[707.34]-2018-06-25-trock.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Ganon's Tower (7:09.85) [2018-08-19]",
+      "chatName": "GTower (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\13-[709.85]-2018-08-19-gtower.mp4"
+    },
+    {
+      "category": "Any% NMG Gold Segment",
+      "label": "Any% NMG Gold Segment: Ganon (1:43.06) [2018-05-30]",
+      "chatName": "Ganon (NMG Gold)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\gold-segments\any%-nmg-nsq\720p\timed\14-[143.06]-2018-05-30-ganon.mp4"
+    },
+    {
+      "category": "Personal Best",
+      "label": "Personal Best: 100% NMG (1:49:30) [2017-01-31]",
+      "chatName": "100% NMG (PB)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\personal-bests\100%\2017-01-31-hundo-14930.mp4"
+    },
+    {
+      "category": "Personal Best",
+      "label": "Personal Best: 100% All Heart Pieces (1:19:12) [2017-12-22]",
+      "chatName": "100% MG AHP (PB)",
+      "filePath": "Y:\media\videos\ALttP\my-vids\personal-bests\100%-mg-ahp\2017-12-22-100mg-11912.mp4"
+    }
+  ],
   "debug": false
 }
