@@ -255,9 +255,8 @@ const streamInit = (config, obs, twitch) => {
       return `[${i+1}] ${e.chatName}`;
     });
     const sayVote = () => {twitch.botChat.say(twitchChannel, `Vote for which video playlist you'd like to see next using ${config.twitch.cmdPrefix}vote #: ${playlistChoices.join(' | ')}`)};
-    /*setTimeout(sayVote, 5000);
-    setInterval(sayVote, 900000);*/
-
+    setTimeout(sayVote, 5000);
+    setInterval(sayVote, 900000);
 
     // When: Every 2 Hours
     // What: Change the video playlist
