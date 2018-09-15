@@ -56,329 +56,609 @@
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Escape (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\01-escape.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\01-escape.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-eastern",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Eastern (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\02-eastern.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\02-eastern.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-desert",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Desert (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\03-desert.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\03-desert.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-hera",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Hera (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\04-hera.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\04-hera.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-atower",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "ATower (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\05-atower.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\05-atower.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-pod",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "PoD (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\06-pod.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\06-pod.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-thieves",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Thieves (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\07-thieves.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\07-thieves.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-skull",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Skull (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\08-skull.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\08-skull.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-ice",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Ice (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\09-ice.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\09-ice.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-swamp",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Swamp (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\10-swamp.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\10-swamp.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-mire",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Mire (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\11-mire.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\11-mire.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-trock",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "TRock (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\12-trock.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\12-trock.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ottas-seg-gtower",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "GTower (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\13-gtower.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\13-gtower.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "ttas-seg-ganon",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Ganon (TTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\14-ganon.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\14-ganon.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-escape",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Escape (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\01-escape.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\01-escape.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-eastern",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Eastern (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\02-eastern.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\02-eastern.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-desert",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Desert (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\03-desert.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\03-desert.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-hera",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Hera (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\04-hera.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\04-hera.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-atower",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Agah Tower (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\05-atower.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\05-atower.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-pod",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "PoD (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\06-pod.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\06-pod.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-thieves",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Thieves (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\07-thieves.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\07-thieves.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-skull",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Skull (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\08-skull.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\08-skull.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-ice",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Ice (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\09-ice.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\09-ice.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-swamp",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Swamp (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\10-swamp.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\10-swamp.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-mire",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Mire (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\11-mire.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\11-mire.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-trock",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "TRock (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\12-trock.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\12-trock.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "sttas-seg-gtower",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "GTower (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\13-gtower.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\13-gtower.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-escape",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Escape (5:53.2) [2018-02-24]",
       "chatName": "Escape (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\01-[553.2]-2018-02-24-escape.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\01-[553.2]-2018-02-24-escape.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-eastern",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Eastern (5:00.12) [2018-06-25]",
       "chatName": "Eastern (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\02-[500.12]-2018-06-25-eastern.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\02-[500.12]-2018-06-25-eastern.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-desert",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Desert (6:10.32) [2018-06-02]",
       "chatName": "Desert (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\03-[610.32]-2018-06-02-desert.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\03-[610.32]-2018-06-02-desert.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-hera",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Hera (5:28.83) [2018-06-01]",
       "chatName": "Hera (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\04-[528.83]-2018-06-01-hera.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\04-[528.83]-2018-06-01-hera.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-atower",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Agah Tower (5:13.45) [2018-09-07]",
       "chatName": "Agah Tower (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\05a-[513.45]-2018-09-07-atower.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\05a-[513.45]-2018-09-07-atower.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-pod",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Palace of Darkness (6:11.15) [2018-05-27]",
       "chatName": "PoD (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\06-[611.15]-2018-05-27-pod.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\06-[611.15]-2018-05-27-pod.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-thieves",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Thieves Town (7:08.37) [2018-07-01]",
       "chatName": "Thieves (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\07-[708.37]-2018-07-01-thieves.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\07-[708.37]-2018-07-01-thieves.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-skull",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Skull Woods (5:24.28) [2018-06-02]",
       "chatName": "Skull (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\08-[524.28]-2018-06-02-skull.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\08-[524.28]-2018-06-02-skull.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-ice",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Ice Palace (6:18.13) [2018-09-08]",
       "chatName": "Ice (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\09-[618.13]-2018-09-08-ice.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\09-[618.13]-2018-09-08-ice.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-swamp",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Swamp Palace (6:51.87) [2018-06-10]",
       "chatName": "Swamp (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\10-[651.87]-2018-06-10-swamp.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\10-[651.87]-2018-06-10-swamp.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-mire",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Misery Mire (7:07.17) [2018-06-10]",
       "chatName": "Mire (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\11-[707.17]-2018-06-10-mire.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\11-[707.17]-2018-06-10-mire.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-trock",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Turtle Rock (7:07.34) [2018-06-25]",
       "chatName": "TRock (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\12-[707.34]-2018-06-25-trock.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\12-[707.34]-2018-06-25-trock.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-gtower",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Ganon's Tower (7:09.85) [2018-08-19]",
       "chatName": "GTower (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\13-[709.85]-2018-08-19-gtower.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\13-[709.85]-2018-08-19-gtower.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "nmg-gold-ganon",
       "category": "Any% NMG Gold Segment",
       "label": "Any% NMG Gold Segment: Ganon (1:43.06) [2018-05-30]",
       "chatName": "Ganon (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\14-[143.06]-2018-05-30-ganon.mp4"
-    },
-    {
-      "id": "pb-100-nmg",
-      "category": "Personal Best",
-      "label": "Personal Best: 100% NMG (1:49:30) [2017-01-31]",
-      "chatName": "100% NMG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%\\2017-01-31-hundo-14930.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\14-[143.06]-2018-05-30-ganon.mp4",
+      "sceneItemProperties": {
+        "crop.left": 0,
+        "position.x": 320,
+        "scale.x": 960
+      }
     },
     {
       "id": "pb-100-ahp",
       "category": "Personal Best",
       "label": "Personal Best: 100% All Heart Pieces (1:19:12) [2017-12-22]",
       "chatName": "100% MG AHP (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%-mg-ahp\\2017-12-22-100mg-11912.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%-mg-ahp\\2017-12-22-100mg-11912.mp4",
+      "sceneItemProperties": {
+        "crop.left": 320,
+        "position.x": 320,
+        "scale.x": 1280
+      }
     },
     {
       "id": "pb-ab",
       "category": "Personal Best",
       "label": "Personal Best: All Bosses No EG (1:09:23) [2017-11-20]",
       "chatName": "All Bosses (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\all-bosses\\2017-11-20-ab-10923.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\all-bosses\\2017-11-20-ab-10923.mp4",
+      "sceneItemProperties": {
+        "crop.left": 320,
+        "position.x": 320,
+        "scale.x": 1280
+      }
     },
     {
       "id": "pb-ad",
       "category": "Personal Best",
       "label": "Personal Best: All Dungeons No EG/DW/WW (1:14:59) [2017-11-19]",
       "chatName": "All Dungeons (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\all-dungeons\\2017-11-19-ad-11459.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\all-dungeons\\2017-11-19-ad-11459.mp4",
+      "sceneItemProperties": {
+        "crop.left": 320,
+        "position.x": 320,
+        "scale.x": 1280
+      }
     },
     {
       "id": "pb-any-nmg",
       "category": "Personal Best",
       "label": "Personal Best: Any% NMG No S+Q (1:26:24) [2018-05-27]",
       "chatName": "Any% NMG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\any%-nmg-nsq\\2018-05-27-nmg-12624.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\any%-nmg-nsq\\2018-05-27-nmg-12624.mp4",
+      "sceneItemProperties": {
+        "crop.left": 320,
+        "position.x": 320,
+        "scale.x": 1280
+      }
     },
     {
       "id": "pb-any-no-eg",
       "category": "Personal Best",
       "label": "Personal Best: Any% No EG (30:28) [2018-09-09]",
       "chatName": "Any% No EG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\any%-no-eg\\2018-09-09-no-eg-3028.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\any%-no-eg\\2018-09-09-no-eg-3028.mp4",
+      "sceneItemProperties": {
+        "crop.left": 320,
+        "position.x": 320,
+        "scale.x": 1280
+      }
+    },
+    {
+      "id": "pb-master-sword",
+      "category": "Personal Best",
+      "label": "Personal Best: Master Sword NMG (22:23) [2018-08-23]",
+      "chatName": "Master Sword (PB)",
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\master-sword\\2018-08-23-master-sword-2223.mp4",
+      "sceneItemProperties": {
+        "crop.left": 320,
+        "position.x": 320,
+        "scale.x": 1280
+      }
+    },
+    {
+      "id": "pb-ms",
+      "category": "Personal Best",
+      "label": "Personal Best: Mirror Shield NMG (50:32) [2017-06-20]",
+      "chatName": "Mirror Shield (PB)",
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\mirror-shield\\2017-06-20-mirror-shield-5032.mp4",
+      "sceneItemProperties": {
+        "crop.left": 320,
+        "position.x": 320,
+        "scale.x": 1280
+      }
+    },
+    {
+      "id": "pb-ms-no-eg",
+      "category": "Personal Best",
+      "label": "Personal Best: Mirror Shield No EG (11:38) [2017-07-02]",
+      "chatName": "Mirror Shield No EG (PB)",
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\mirror-shield-no-eg\\2017-07-02-mirror-shield-no-eg-1138.mp4",
+      "sceneItemProperties": {
+        "crop.left": 320,
+        "position.x": 320,
+        "scale.x": 1280
+      }
+    },
+    {
+      "id": "pb-rbo",
+      "category": "Personal Best",
+      "label": "Personal Best: Reverse Boss Order (1:18:13) [2017-12-01]",
+      "chatName": "Reverse Boss Order (PB)",
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\rbo\\2017-12-01-rbo-11813.mp4",
+      "sceneItemProperties": {
+        "crop.left": 320,
+        "position.x": 320,
+        "scale.x": 1280
+      }
+    }
+  ],
+  "vodsToCrop": [
+    {
+      "id": "pb-100-nmg",
+      "category": "Personal Best",
+      "label": "Personal Best: 100% NMG (1:49:30) [2017-01-31]",
+      "chatName": "100% NMG (PB)",
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%\\2017-01-31-hundo-14930.mp4"
     },
     {
       "id": "pb-dg",
@@ -393,34 +673,6 @@
       "label": "Personal Best: Low% NMG (1:32:48) [2017-05-11]",
       "chatName": "Low% NMG (PB)",
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\low%-nmg-nsq\\2017-05-11 17-01-52-low%-13248.mkv"
-    },
-    {
-      "id": "pb-master-sword",
-      "category": "Personal Best",
-      "label": "Personal Best: Master Sword NMG (22:23) [2018-08-23]",
-      "chatName": "Master Sword (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\master-sword\\2018-08-23-master-sword-2223.mp4"
-    },
-    {
-      "id": "pb-ms",
-      "category": "Personal Best",
-      "label": "Personal Best: Mirror Shield NMG (50:32) [2017-06-20]",
-      "chatName": "Mirror Shield (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\mirror-shield\\2017-06-20-mirror-shield-5032.mp4"
-    },
-    {
-      "id": "pb-ms-no-eg",
-      "category": "Personal Best",
-      "label": "Personal Best: Mirror Shield No EG (11:38) [2017-07-02]",
-      "chatName": "Mirror Shield No EG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\mirror-shield-no-eg\\2017-07-02-mirror-shield-no-eg-1138.mp4"
-    },
-    {
-      "id": "pb-rbo",
-      "category": "Personal Best",
-      "label": "Personal Best: Reverse Boss Order (1:18:13) [2017-12-01]",
-      "chatName": "Reverse Boss Order (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\rbo\\2017-12-01-rbo-11813.mp4"
     }
   ],
   "debug": false

@@ -27,6 +27,7 @@ const util = require('./lib/util');
 let config = require('./config.json');
 let currentPlaylist = config.obs.defaultPlaylist;
 let twitchChannel = config.twitch.channels[0].toLowerCase();
+const snesGames = require('./conf/snesgames.json');
 
 // Connect to OBS Websocket
 const obs = new OBSWebSocket();
@@ -210,6 +211,11 @@ const twitchInit = (config, obs) => {
             process.exit(0);
           }
         }
+
+        // Listen for commands from everyone else
+        if (commandNoPrefix === 'rngames') {
+          twitchChat.say(to, snesGames.sort( function() { return 0.5 - Math.random() } ).slice(0, 10).join(' | '));
+        }
       }
     });
 
@@ -254,9 +260,68 @@ const streamInit = (config, obs, twitch) => {
     console.log(`Setting up initial video queue...`);
     // @TODO: Choose X random vods to start
     // Shuffle the vods and pick the first X
-    let videoQueue = config.vods.sort( function() { return 0.5 - Math.random() } ).slice(0, 3);
-    console.log(`Initial queue: ${JSON.stringify(videoQueue)}`);
+    let videoQueue = config.vods.sort( function() { return 0.5 - Math.random() } ).slice(0, 5);
+    console.log(`Initial queue: ${videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);
+
     // @TODO: Load the first vod into the source, show it, listen to event of it being done, load the next, etc.
+    // @TODO: Switch to fg.fm scene unless it's already active
+    // @TODO: change the item properties (file path, transformation) then show it
+    let defaultSceneItemProperties = {
+      "position.x": 0,
+      "position.y": 0,
+      "position.alignment": 0,
+      "rotation": 0.0,
+      "crop.top": 0,
+      "crop.bottom": 0,
+      "crop.left": 0,
+      "crop.right": 0,
+      "scale.x": 1280,
+      "scale.y": 720
+    };
+    let currentVideo = videoQueue.shift();
+
+    console.log(`First video up: ${currentVideo.chatName}`);
+    console.log(Object.assign({"item": "placeholder", "visible": true}, defaultSceneItemProperties, currentVideo.sceneItemProperties));
+
+
+    obs.setSourceSettings({"sourceName": "placeholder", "sourceSettings": {"local_file": currentVideo.filePath}})
+      .then(data => {
+        let props = Object.assign({"item": "placeholder", "visible": true}, defaultSceneItemProperties, currentVideo.sceneItemProperties);
+        console.log(props);
+        obs.setSceneItemProperties(props)
+          .then(res => {
+            // Update activity label
+            setTimeout(() => {
+              if (currentVideo.label !== false) {
+                twitch.editorChat.say(twitchChannel, `!setactivity ${currentVideo.label}`);
+                twitch.editorChat.say(twitchChannel, `$show current-activity`);
+              } else {
+                twitch.editorChat.say(twitchChannel, `$hide current-activity`);
+              }
+            }, 5000);
+          })
+      })
+      .catch(console.error);
+
+    obs.onSceneItemVisibilityChanged(data => {
+      if (data['item-name'] === 'placeholder' && data['item-visible'] === false) {
+        currentVideo = videoQueue.shift();
+        obs.setSourceSettings({"sourceName": "placeholder", "sourceSettings": {"local_file": currentVideo.filePath}})
+          .then(data => {
+            let props = Object.assign({"item": "placeholder", "visible": true}, defaultSceneItemProperties, currentVideo.sceneItemProperties);
+            console.log(props);
+            obs.setSceneItemProperties(props);
+            // Update activity label
+            if (currentVideo.label !== false) {
+              twitch.editorChat.say(twitchChannel, `!setactivity ${currentVideo.label}`);
+              twitch.editorChat.say(twitchChannel, `$show current-activity`);
+            } else {
+              twitch.editorChat.say(twitchChannel, `$hide current-activity`);
+            }
+          })
+          .catch(console.error); 
+      }
+    });
 
     console.log(`Initializing stream timers...`);
   
@@ -269,11 +334,11 @@ const streamInit = (config, obs, twitch) => {
     });
     //console.log(`AUW is scheduled to be shown at ${auwJob.nextInvocation()}`);
 
-    let userVotes = [];
-    let currentChoices = [];
-    let rockTheVote;
+    let userVotes = currentChoices = [];
+    let rockTheVote = () => {};
+    let rtvInterval = false;
     
-    let videoVoteJob = schedule.scheduleJob("*/1 * * * *", () => {
+    let videoVoteJob = schedule.scheduleJob("*/15 * * * *", () => {
       // Tally votes from previous election (if there was one), add the winner to the queue
       let winner;
       if (currentChoices.length > 0)
@@ -283,7 +348,7 @@ const streamInit = (config, obs, twitch) => {
           // choose a random element from currentChoices
           winner = util.randElement(currentChoices);
           console.log(`VIDEO CHOSEN RANDOMLY: ${winner.chatName}`);
-          //twitch.botChat.say(twitchChannel, `No Votes Logged -- Next Playlist Chosen at Random: ${winner.chatName}`);
+          twitch.botChat.say(twitchChannel, `No Votes Logged -- Next Video Chosen at Random: ${winner.chatName}`);
         } else {
           // tally and sort votes
           let voteTallies = [];
@@ -309,20 +374,22 @@ const streamInit = (config, obs, twitch) => {
           console.log(`Voting Results: ${JSON.stringify(voteTallies)}`);
           winner = currentChoices[voteTallies[0].id-1];
           console.log(`WINNER OF THE VOTE: ${winner.chatName}`);
-          //twitch.botChat.say(twitchChannel, `Winner of the Video Vote: ${winner.chatName}`);
+          twitch.botChat.say(twitchChannel, `Winner of the Video Vote: ${winner.chatName}`);
 
           // clear user votes
           userVotes = [];
         }
 
-        videoQueue.push[winner];
+        videoQueue.push(winner);
       }
       
-      // choose 10 more random videos from config.vods (that aren't already in the queue)
+      // choose more random videos from config.vods (that aren't already in the queue)
       let vodsNotInQueue = config.vods.filter(e => {
-        return (videoQueue.findIndex(q => q.id === e.id) === -1);
+        let inQueue = videoQueue.findIndex(q => q.id === e.id) !== -1;
+        console.log(`search results for ${e.id} in queue:`, inQueue);
+        return !inQueue;
       });
-      currentChoices = vodsNotInQueue.sort( function() { return 0.5 - Math.random() } ).slice(0, 10);
+      currentChoices = vodsNotInQueue.sort( function() { return 0.5 - Math.random() } ).slice(0, 5);
 
       // post choices to chat + set reminders to post every 5 minutes
       let chatChoices = currentChoices.map((c, i) => {
@@ -331,11 +398,14 @@ const streamInit = (config, obs, twitch) => {
 
       rockTheVote = () => {
         console.log(`Vote for which video you'd like to add to the queue using ${config.twitch.cmdPrefix}vote #: ${chatChoices.join(' | ')}`);
-        //twitch.botChat.say(twitchChannel, `Vote for which video you'd like to see next using ${config.twitch.cmdPrefix}vote #: ${chatChoices.join(' | ')}`)
+        twitch.botChat.say(twitchChannel, `Vote for which video you'd like to add to the queue using ${config.twitch.cmdPrefix}vote #: ${chatChoices.join(' | ')}`)
       };
-      //setInterval(rockTheVote, 300000);
-      rockTheVote();
+      //rockTheVote();
     });
+
+    if (!rtvInterval) {
+      rtvInterval = setInterval(rockTheVote, 300000);
+    }
 
     // Track user votes for video queue
     twitch.botChat.addListener('message', (from, to, message) => {
@@ -350,7 +420,8 @@ const streamInit = (config, obs, twitch) => {
           let userVote = commandParts[1] || false;
 
           if (userVote === false) {
-            return rockTheVote();
+            rockTheVote();
+            return;
           }
 
           userVote = Number.parseInt(userVote);
@@ -373,6 +444,13 @@ const streamInit = (config, obs, twitch) => {
             userVotes.push({"from": from, "vote": userVote});
             twitch.botChat.say(to, `@${from}, your vote has been logged!`);
           }
+        } else if (commandNoPrefix === 'queue') {
+          let chatQueue = videoQueue.map((c, i) => {
+            return `[${i+1}] ${c.chatName}`;
+          });
+          twitch.botChat.say(to, chatQueue.join(' | '));
+        } else if (commandNoPrefix === 'current') {
+          twitch.botChat.say(to, `Now Playing: ${currentVideo.chatName}`);
         }
       }
     });
