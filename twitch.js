@@ -258,93 +258,53 @@ const twitchInit = (config, obs) => {
 const streamInit = (config, obs, twitch) => {
   return new Promise((resolve, reject) => {
     console.log(`Setting up initial video queue...`);
-    // @TODO: Choose X random vods to start
-    // Shuffle the vods and pick the first X
-    let videoQueue = config.vods.sort( function() { return 0.5 - Math.random() } ).slice(0, 5);
-    console.log(`Initial queue: ${videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);
-
-    // @TODO: Load the first vod into the source, show it, listen to event of it being done, load the next, etc.
-    // @TODO: Switch to fg.fm scene unless it's already active
-    // @TODO: change the item properties (file path, transformation) then show it
-    let defaultSceneItemProperties = {
-      "position.x": 0,
-      "position.y": 0,
-      "position.alignment": 0,
-      "rotation": 0.0,
-      "crop.top": 0,
-      "crop.bottom": 0,
-      "crop.left": 0,
-      "crop.right": 0,
-      "scale.x": 1280,
-      "scale.y": 720
-    };
+    let videoQueue = config.vods.sort( function() { return 0.5 - Math.random() } ).slice(0, config.initialQueueSize);
+    console.log(`Initial queue: ${videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);   
     let currentVideo = videoQueue.shift();
+    let videoTimer;
 
-    console.log(`First video up: ${currentVideo.chatName}`);
-    console.log(Object.assign({"item": "placeholder", "visible": true}, defaultSceneItemProperties, currentVideo.sceneItemProperties));
+    const showVideo = video => {
+      // set the file path
+      obs.setSourceSettings({"sourceName": video.sceneItem, "sourceSettings": {"local_file": video.filePath}})
+        .then(data => {
+          // show the video
+          return obs.setSceneItemProperties({"item": video.sceneItem, "scene-name": config.videoSceneName, "visible": true});
+        })
+        .then(data => {
+          // update activity label and show/hide appropriately
+          if (video.label !== false) {
+            return obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "render": true, "text": video.label});
+          } else {
+            return obs.setSceneItemProperties({"item": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "visible": false});
+          }
+        })
+        .then(data => {
+          // Set a timeout for hiding this at the end of the video and play the next video
+          videoTimer = setTimeout(() => {
+            obs.setSceneItemProperties({"item": video.sceneItem, "scene-name": config.videoSceneName, "visible": false})
+              .then(data => {
+                currentVideo = videoQueue.shift();
+                showVideo(currentVideo);
+              });
+          }, video.length*1000)
+        })       
+        .catch(console.error);
+    };
 
-
-    obs.setSourceSettings({"sourceName": "placeholder", "sourceSettings": {"local_file": currentVideo.filePath}})
-      .then(data => {
-        let props = Object.assign({"item": "placeholder", "visible": true}, defaultSceneItemProperties, currentVideo.sceneItemProperties);
-        console.log(props);
-        obs.setSceneItemProperties(props)
-          .then(res => {
-            // Update activity label
-            setTimeout(() => {
-              if (currentVideo.label !== false) {
-                twitch.editorChat.say(twitchChannel, `!setactivity ${currentVideo.label}`);
-                twitch.editorChat.say(twitchChannel, `$show current-activity`);
-              } else {
-                twitch.editorChat.say(twitchChannel, `$hide current-activity`);
-              }
-            }, 5000);
-          })
-      })
-      .catch(console.error);
-
-    obs.onSceneItemVisibilityChanged(data => {
-      if (data['item-name'] === 'placeholder' && data['item-visible'] === false) {
-        currentVideo = videoQueue.shift();
-        obs.setSourceSettings({"sourceName": "placeholder", "sourceSettings": {"local_file": currentVideo.filePath}})
-          .then(data => {
-            let props = Object.assign({"item": "placeholder", "visible": true}, defaultSceneItemProperties, currentVideo.sceneItemProperties);
-            console.log(props);
-            obs.setSceneItemProperties(props);
-            // Update activity label
-            if (currentVideo.label !== false) {
-              twitch.editorChat.say(twitchChannel, `!setactivity ${currentVideo.label}`);
-              twitch.editorChat.say(twitchChannel, `$show current-activity`);
-            } else {
-              twitch.editorChat.say(twitchChannel, `$hide current-activity`);
-            }
-          })
-          .catch(console.error); 
-      }
-    });
+    console.log(`Showing first video: ${currentVideo.chatName}`);
+    showVideo(currentVideo);
 
     console.log(`Initializing stream timers...`);
   
-    // When: Every 4 hours at 55 past
-    // @TODO: change to a random interval of time!
-    // What: AUW
-    let auwJob = schedule.scheduleJob("55 */4 * * *", () => {
-      // AUW
-      //twitch.editorChat.say(twitchChannel, `${config.twitch.cmdPrefix}auw`);
-    });
-    //console.log(`AUW is scheduled to be shown at ${auwJob.nextInvocation()}`);
-
     let userVotes = currentChoices = [];
     let rockTheVote = () => {};
-    let rtvInterval = false;
+    let rtvInterval = setInterval(() => {rockTheVote()}, 300000);
     
     let videoVoteJob = schedule.scheduleJob("*/15 * * * *", () => {
       // Tally votes from previous election (if there was one), add the winner to the queue
       let winner;
-      if (currentChoices.length > 0)
-      {
-        if (userVotes.length === 0)
-        {
+      if (currentChoices.length > 0) {
+        if (userVotes.length === 0) {
           // choose a random element from currentChoices
           winner = util.randElement(currentChoices);
           console.log(`VIDEO CHOSEN RANDOMLY: ${winner.chatName}`);
@@ -386,26 +346,22 @@ const streamInit = (config, obs, twitch) => {
       // choose more random videos from config.vods (that aren't already in the queue)
       let vodsNotInQueue = config.vods.filter(e => {
         let inQueue = videoQueue.findIndex(q => q.id === e.id) !== -1;
-        console.log(`search results for ${e.id} in queue:`, inQueue);
         return !inQueue;
       });
-      currentChoices = vodsNotInQueue.sort( function() { return 0.5 - Math.random() } ).slice(0, 5);
+      currentChoices = vodsNotInQueue.sort( function() { return 0.5 - Math.random() } ).slice(0, config.videoPollSize);
 
-      // post choices to chat + set reminders to post every 5 minutes
+      // Poll the chat
       let chatChoices = currentChoices.map((c, i) => {
         return `[${i+1}] ${c.chatName}`;
       });
 
       rockTheVote = () => {
-        console.log(`Vote for which video you'd like to add to the queue using ${config.twitch.cmdPrefix}vote #: ${chatChoices.join(' | ')}`);
         twitch.botChat.say(twitchChannel, `Vote for which video you'd like to add to the queue using ${config.twitch.cmdPrefix}vote #: ${chatChoices.join(' | ')}`)
       };
-      //rockTheVote();
+      clearInterval(rtvInterval);
+      rockTheVote();
+      rtvInterval = setInterval(() => {rockTheVote()}, 300000);
     });
-
-    if (!rtvInterval) {
-      rtvInterval = setInterval(rockTheVote, 300000);
-    }
 
     // Track user votes for video queue
     twitch.botChat.addListener('message', (from, to, message) => {
@@ -416,6 +372,18 @@ const streamInit = (config, obs, twitch) => {
       if (message.startsWith(config.twitch.cmdPrefix)) {
         let commandParts = message.slice(config.twitch.cmdPrefix.length).split(' ');
         let commandNoPrefix = commandParts[0] || '';
+
+        if (config.twitch.admins.includes(from) || from === config.twitch.username.toLowerCase()) {
+          if (commandNoPrefix === 'skip') {
+            clearTimeout(videoTimer);
+            obs.setSceneItemProperties({"item": currentVideo.sceneItem, "scene-name": config.videoSceneName, "visible": false})
+              .then(res => {
+                currentVideo = videoQueue.shift();
+                showVideo(currentVideo);
+              });
+          }
+        }
+
         if (commandNoPrefix === 'vote') {
           let userVote = commandParts[1] || false;
 
@@ -445,10 +413,14 @@ const streamInit = (config, obs, twitch) => {
             twitch.botChat.say(to, `@${from}, your vote has been logged!`);
           }
         } else if (commandNoPrefix === 'queue') {
-          let chatQueue = videoQueue.map((c, i) => {
-            return `[${i+1}] ${c.chatName}`;
-          });
-          twitch.botChat.say(to, chatQueue.join(' | '));
+          if (videoQueue.length > 0) {
+            let chatQueue = videoQueue.map((c, i) => {
+              return `[${i+1}] ${c.chatName}`;
+            });
+            twitch.botChat.say(to, chatQueue.join(' | '));
+          } else {
+            twitch.botChat.say(to, `No videos currently in queue!`);
+          }
         } else if (commandNoPrefix === 'current') {
           twitch.botChat.say(to, `Now Playing: ${currentVideo.chatName}`);
         }

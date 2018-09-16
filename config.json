@@ -50,6 +50,10 @@
     ],
     "defaultPlaylist": "room-grind"
   },
+  "initialQueueSize": 10,
+  "videoSceneName": "fgfm",
+  "videoPollSize": 5,
+  "currentActivitySceneItemName": "now-showing-txt",
   "vods": [
     {
       "id": "ottas-seg-escape",
@@ -61,7 +65,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 352
     },
     {
       "id": "ottas-seg-eastern",
@@ -73,7 +79,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 277
     },
     {
       "id": "ottas-seg-desert",
@@ -85,7 +93,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 345
     },
     {
       "id": "ottas-seg-hera",
@@ -97,7 +107,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 299
     },
     {
       "id": "ottas-seg-atower",
@@ -109,7 +121,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 352
     },
     {
       "id": "ottas-seg-pod",
@@ -121,7 +135,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 309
     },
     {
       "id": "ottas-seg-thieves",
@@ -133,7 +149,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 377
     },
     {
       "id": "ottas-seg-skull",
@@ -145,7 +163,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 267
     },
     {
       "id": "ottas-seg-ice",
@@ -157,7 +177,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 318
     },
     {
       "id": "ottas-seg-swamp",
@@ -169,7 +191,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 345
     },
     {
       "id": "ottas-seg-mire",
@@ -181,7 +205,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 365
     },
     {
       "id": "ottas-seg-trock",
@@ -193,7 +219,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 361
     },
     {
       "id": "ottas-seg-gtower",
@@ -205,7 +233,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 396
     },
     {
       "id": "ttas-seg-ganon",
@@ -217,7 +247,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 108
     },
     {
       "id": "sttas-seg-escape",
@@ -229,7 +261,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 354
     },
     {
       "id": "sttas-seg-eastern",
@@ -241,7 +275,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 281
     },
     {
       "id": "sttas-seg-desert",
@@ -253,7 +289,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 347
     },
     {
       "id": "sttas-seg-hera",
@@ -265,7 +303,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 303
     },
     {
       "id": "sttas-seg-atower",
@@ -277,7 +317,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 354
     },
     {
       "id": "sttas-seg-pod",
@@ -289,7 +331,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 310
     },
     {
       "id": "sttas-seg-thieves",
@@ -301,7 +345,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 379
     },
     {
       "id": "sttas-seg-skull",
@@ -313,7 +359,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 270
     },
     {
       "id": "sttas-seg-ice",
@@ -325,7 +373,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 321
     },
     {
       "id": "sttas-seg-swamp",
@@ -337,7 +387,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 351
     },
     {
       "id": "sttas-seg-mire",
@@ -349,7 +401,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 370
     },
     {
       "id": "sttas-seg-trock",
@@ -361,7 +415,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 364
     },
     {
       "id": "sttas-seg-gtower",
@@ -373,7 +429,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 408
     },
     {
       "id": "nmg-gold-escape",
@@ -385,7 +443,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 358
     },
     {
       "id": "nmg-gold-eastern",
@@ -397,7 +457,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 302
     },
     {
       "id": "nmg-gold-desert",
@@ -409,7 +471,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 374
     },
     {
       "id": "nmg-gold-hera",
@@ -421,7 +485,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 332
     },
     {
       "id": "nmg-gold-atower",
@@ -433,7 +499,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 315
     },
     {
       "id": "nmg-gold-pod",
@@ -445,7 +513,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 376
     },
     {
       "id": "nmg-gold-thieves",
@@ -457,7 +527,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 432
     },
     {
       "id": "nmg-gold-skull",
@@ -469,7 +541,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 328
     },
     {
       "id": "nmg-gold-ice",
@@ -481,7 +555,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 382
     },
     {
       "id": "nmg-gold-swamp",
@@ -493,7 +569,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 418
     },
     {
       "id": "nmg-gold-mire",
@@ -505,7 +583,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 432
     },
     {
       "id": "nmg-gold-trock",
@@ -517,7 +597,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 434
     },
     {
       "id": "nmg-gold-gtower",
@@ -529,7 +611,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 433
     },
     {
       "id": "nmg-gold-ganon",
@@ -541,7 +625,9 @@
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
-      }
+      },
+      "sceneItem": "4x3ph",
+      "length": 117
     },
     {
       "id": "pb-100-ahp",
@@ -553,7 +639,9 @@
         "crop.left": 320,
         "position.x": 320,
         "scale.x": 1280
-      }
+      },
+      "sceneItem": "16x9ph",
+      "length": 5322
     },
     {
       "id": "pb-ab",
@@ -565,7 +653,9 @@
         "crop.left": 320,
         "position.x": 320,
         "scale.x": 1280
-      }
+      },
+      "sceneItem": "16x9ph",
+      "length": 4730
     },
     {
       "id": "pb-ad",
@@ -577,7 +667,9 @@
         "crop.left": 320,
         "position.x": 320,
         "scale.x": 1280
-      }
+      },
+      "sceneItem": "16x9ph",
+      "length": 5084
     },
     {
       "id": "pb-any-nmg",
@@ -589,7 +681,9 @@
         "crop.left": 320,
         "position.x": 320,
         "scale.x": 1280
-      }
+      },
+      "sceneItem": "16x9ph",
+      "length": 5715
     },
     {
       "id": "pb-any-no-eg",
@@ -601,7 +695,9 @@
         "crop.left": 320,
         "position.x": 320,
         "scale.x": 1280
-      }
+      },
+      "sceneItem": "16x9ph",
+      "length": 2352
     },
     {
       "id": "pb-master-sword",
@@ -613,7 +709,9 @@
         "crop.left": 320,
         "position.x": 320,
         "scale.x": 1280
-      }
+      },
+      "sceneItem": "16x9ph",
+      "length": 1349
     },
     {
       "id": "pb-ms",
@@ -625,7 +723,9 @@
         "crop.left": 320,
         "position.x": 320,
         "scale.x": 1280
-      }
+      },
+      "sceneItem": "16x9ph",
+      "length": 3068
     },
     {
       "id": "pb-ms-no-eg",
@@ -637,7 +737,9 @@
         "crop.left": 320,
         "position.x": 320,
         "scale.x": 1280
-      }
+      },
+      "sceneItem": "16x9ph",
+      "length": 738
     },
     {
       "id": "pb-rbo",
@@ -649,7 +751,9 @@
         "crop.left": 320,
         "position.x": 320,
         "scale.x": 1280
-      }
+      },
+      "sceneItem": "16x9ph",
+      "length": 5250
     }
   ],
   "vodsToCrop": [
