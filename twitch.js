@@ -3,19 +3,17 @@
  */
 
 // @TODO: modularize OBS and Twitch code
-// @TODO: Make the bot aware of what video is current active
-// @TODO: Change video playlist source on an interval
 // @TODO: Rotating background images (leftside)
 // @TODO: Stream alerts for chat
-// @TODO: Instead of playlists being chosen, have a database of files that can be played
-// dynamically load this into a single media source that hides itself after playback ends
-// listen for the event of the video ending and switch the source to the next one in the queue
-// 
-// We can have the video queue work a lot like the songrequest queue.
-// Instead of a new playlist being chosen every 2 hours, votes will be held for which *individual* video should be added to the queue next.
-// A list of 10 or so will be chosen at random to be voted on. The top (x) will be added to the video queue. If nothing gets voted on, something random gets added.
-// This will actually be easier on OBS too -- instead of having multiple playlists I have to manage within there, I can use a single media source and dynamically load whatever video gets chosen into that.
-// I can also store whatever metadata about the video I want so I can update the labels automatically too. OpieOP
+// @TODO: Room vid requests / import
+// @TODO: Add random chance for room grind playlist to show for certain amount of time
+// ☐ add memes to commercial scene
+// ☐ show commercials after a video length cap is hit -- show at conclusion of video
+// ☐ add $setcurrent support (to update text label through obs websocket instead of chat)
+// ☐ update PB vod lengths to cut off before credits
+// ☐ support for $pause
+// ☐ remove currently playing video from vote choices
+
 
 // Import modules
 const irc = require('irc');
@@ -43,6 +41,7 @@ obs.connect({ address: config.obs.websocket.address, password: config.obs.websoc
   .catch(err => {
     console.log(err);
   });
+
 // Listen for errors from OBS
 obs.on('error', err => {
   console.error('OBS socket error:', err);
@@ -214,7 +213,7 @@ const twitchInit = (config, obs) => {
 
         // Listen for commands from everyone else
         if (commandNoPrefix === 'rngames') {
-          twitchChat.say(to, snesGames.sort( function() { return 0.5 - Math.random() } ).slice(0, 10).join(' | '));
+          twitchChat.say(to, snesGames.sort( () => { return 0.5 - Math.random() } ).slice(0, 10).join(' | '));
         }
       }
     });
@@ -258,19 +257,34 @@ const twitchInit = (config, obs) => {
 const streamInit = (config, obs, twitch) => {
   return new Promise((resolve, reject) => {
     console.log(`Setting up initial video queue...`);
-    let videoQueue = config.vods.sort( function() { return 0.5 - Math.random() } ).slice(0, config.initialQueueSize);
+    let videoQueue = config.vods.sort( () => { return 0.5 - Math.random() } ).slice(0, config.initialQueueSize);
     console.log(`Initial queue: ${videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);   
     let currentVideo = videoQueue.shift();
     let videoTimer;
 
+    const nextVideo = () => {
+      // play the next video in the queue, or pick one at random if the queue is empty
+      if (videoQueue.length > 0) {
+        currentVideo = videoQueue.shift();
+        //console.log(`Playing next video in queue: ${JSON.stringify(currentVideo)}`);
+      } else {
+        currentVideo = config.vods.sort( () => { return 0.5 - Math.random() } ).slice(0, 1).shift();
+        //console.log(`Queue is empty, vod chosen at random for shuffle: ${JSON.stringify(currentVideo)}`);
+      }
+      showVideo(currentVideo);
+    };
+
     const showVideo = video => {
+      //console.log(`Showing video: ${JSON.stringify(video)}`);
       // set the file path
       obs.setSourceSettings({"sourceName": video.sceneItem, "sourceSettings": {"local_file": video.filePath}})
         .then(data => {
           // show the video
+          //console.log('local_file updated');
           return obs.setSceneItemProperties({"item": video.sceneItem, "scene-name": config.videoSceneName, "visible": true});
         })
         .then(data => {
+          //console.log('scene item shown');
           // update activity label and show/hide appropriately
           if (video.label !== false) {
             return obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "render": true, "text": video.label});
@@ -279,12 +293,12 @@ const streamInit = (config, obs, twitch) => {
           }
         })
         .then(data => {
+          //console.log('activity label updated');
           // Set a timeout for hiding this at the end of the video and play the next video
           videoTimer = setTimeout(() => {
             obs.setSceneItemProperties({"item": video.sceneItem, "scene-name": config.videoSceneName, "visible": false})
               .then(data => {
-                currentVideo = videoQueue.shift();
-                showVideo(currentVideo);
+                nextVideo();
               });
           }, video.length*1000)
         })       
@@ -300,7 +314,7 @@ const streamInit = (config, obs, twitch) => {
     let rockTheVote = () => {};
     let rtvInterval = setInterval(() => {rockTheVote()}, 300000);
     
-    let videoVoteJob = schedule.scheduleJob("*/15 * * * *", () => {
+    let videoVoteJob = new schedule.Job(() => {
       // Tally votes from previous election (if there was one), add the winner to the queue
       let winner;
       if (currentChoices.length > 0) {
@@ -348,7 +362,7 @@ const streamInit = (config, obs, twitch) => {
         let inQueue = videoQueue.findIndex(q => q.id === e.id) !== -1;
         return !inQueue;
       });
-      currentChoices = vodsNotInQueue.sort( function() { return 0.5 - Math.random() } ).slice(0, config.videoPollSize);
+      currentChoices = vodsNotInQueue.sort( () => { return 0.5 - Math.random() } ).slice(0, config.videoPollSize);
 
       // Poll the chat
       let chatChoices = currentChoices.map((c, i) => {
@@ -363,7 +377,6 @@ const streamInit = (config, obs, twitch) => {
       rtvInterval = setInterval(() => {rockTheVote()}, 300000);
     });
 
-    // Track user votes for video queue
     twitch.botChat.addListener('message', (from, to, message) => {
        // Ignore everything from blacklisted users
       if (config.twitch.blacklistedUsers.includes(from)) return;
@@ -373,17 +386,55 @@ const streamInit = (config, obs, twitch) => {
         let commandParts = message.slice(config.twitch.cmdPrefix.length).split(' ');
         let commandNoPrefix = commandParts[0] || '';
 
+        // ADMIN COMMANDS
         if (config.twitch.admins.includes(from) || from === config.twitch.username.toLowerCase()) {
+          // SKIP
           if (commandNoPrefix === 'skip') {
+            //console.log(`admin is skipping video: ${JSON.stringify(currentVideo)}`);
             clearTimeout(videoTimer);
             obs.setSceneItemProperties({"item": currentVideo.sceneItem, "scene-name": config.videoSceneName, "visible": false})
               .then(res => {
-                currentVideo = videoQueue.shift();
-                showVideo(currentVideo);
+                nextVideo();
               });
+          // ADD
+          } else if (commandNoPrefix === 'add') {
+            let requestedVideoId = commandParts[1] || false;
+            if (requestedVideoId === false) {
+              twitch.botChat.say(to, `Missing video ID`);
+              return;
+            }
+
+            // make sure request vid isn't in the queue already
+            if (videoQueue.findIndex(e => e.id === requestedVideoId) !== -1) {
+              twitch.botChat.say(to, `That video is in the queue already!`);
+              return;
+            }
+
+            // search for req'd vid by id in config.vods
+            let vodIndex = config.vods.findIndex(e => e.id === requestedVideoId);
+            if (vodIndex === -1) {
+              twitch.botChat.say(to, `A video with that ID does not exist!`);
+              return;
+            }
+
+            // add to queue if it exists
+            videoQueue.push(config.vods[vodIndex]);
+            twitch.botChat.say(to, `${config.vods[vodIndex].chatName} has been added to the queue [${videoQueue.length}]`);
+            return;
+          // START VOTE
+          } else if (commandNoPrefix === 'startvote') {
+            videoVoteJob.reschedule("*/15 * * * *");
+            twitch.botChat.say(to, `Voting has been started. Next run: ${videoVoteJob.nextInvocation()}`);
+          // PAUSE VOTE
+          } else if (commandNoPrefix === 'pausevote') {
+            clearInterval(rtvInterval);
+            videoVoteJob.cancel();
+            twitch.botChat.say(to, `Voting has been paused.`);
           }
         }
 
+        // ALL USER COMMANDS
+        // VOTE FOR VIDEO
         if (commandNoPrefix === 'vote') {
           let userVote = commandParts[1] || false;
 
@@ -412,6 +463,7 @@ const streamInit = (config, obs, twitch) => {
             userVotes.push({"from": from, "vote": userVote});
             twitch.botChat.say(to, `@${from}, your vote has been logged!`);
           }
+        // QUEUE STATUS
         } else if (commandNoPrefix === 'queue') {
           if (videoQueue.length > 0) {
             let chatQueue = videoQueue.map((c, i) => {
@@ -421,8 +473,41 @@ const streamInit = (config, obs, twitch) => {
           } else {
             twitch.botChat.say(to, `No videos currently in queue!`);
           }
+        // CURRENT VIDEO
         } else if (commandNoPrefix === 'current') {
           twitch.botChat.say(to, `Now Playing: ${currentVideo.chatName}`);
+        // NEXT VIDEO
+        } else if (commandNoPrefix === 'next') {
+          if (videoQueue.length > 0) {
+            twitch.botChat.say(to, `Next Video: ${videoQueue[0].chatName}`);
+          } else {
+            twitch.botChat.say(to, `No videos currently in queue!`);
+          }
+        // VIDEO REQUEST
+        } else if (commandNoPrefix === 'vr') {
+          let requestedVideoId = commandParts[1] || false;
+          if (requestedVideoId === false) {
+            twitch.botChat.say(to, `Useage: ${config.twitch.cmdPrefix}vr <video-id> | Videos: https://pastebin.com/qv0wDkvB`);
+            return;
+          }
+
+          // make sure request vid isn't in the queue already
+          if (videoQueue.findIndex(e => e.id === requestedVideoId) !== -1) {
+            twitch.botChat.say(to, `That video is in the queue already!`);
+            return;
+          }
+
+          // search for req'd vid by id in config.vods
+          let vodIndex = config.vods.findIndex(e => e.id === requestedVideoId);
+          if (vodIndex === -1) {
+            twitch.botChat.say(to, `A video with that ID does not exist!`);
+            return;
+          }
+
+          // add to queue if it exists
+          videoQueue.push(config.vods[vodIndex]);
+          twitch.botChat.say(to, `${config.vods[vodIndex].chatName} has been added to the queue [${videoQueue.length}]`);
+          return;
         }
       }
     });

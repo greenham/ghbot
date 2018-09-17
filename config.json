@@ -50,13 +50,13 @@
     ],
     "defaultPlaylist": "room-grind"
   },
-  "initialQueueSize": 10,
+  "initialQueueSize": 3,
   "videoSceneName": "fgfm",
   "videoPollSize": 5,
   "currentActivitySceneItemName": "now-showing-txt",
   "vods": [
     {
-      "id": "ottas-seg-escape",
+      "id": "ot-seg-escape",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Escape (OTTAS Seg)",
@@ -70,7 +70,7 @@
       "length": 352
     },
     {
-      "id": "ottas-seg-eastern",
+      "id": "ot-seg-eastern",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Eastern (OTTAS Seg)",
@@ -84,7 +84,7 @@
       "length": 277
     },
     {
-      "id": "ottas-seg-desert",
+      "id": "ot-seg-desert",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Desert (OTTAS Seg)",
@@ -98,7 +98,7 @@
       "length": 345
     },
     {
-      "id": "ottas-seg-hera",
+      "id": "ot-seg-hera",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Hera (OTTAS Seg)",
@@ -112,7 +112,7 @@
       "length": 299
     },
     {
-      "id": "ottas-seg-atower",
+      "id": "ot-seg-atower",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "ATower (OTTAS Seg)",
@@ -126,7 +126,7 @@
       "length": 352
     },
     {
-      "id": "ottas-seg-pod",
+      "id": "ot-seg-pod",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "PoD (OTTAS Seg)",
@@ -140,7 +140,7 @@
       "length": 309
     },
     {
-      "id": "ottas-seg-thieves",
+      "id": "ot-seg-thieves",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Thieves (OTTAS Seg)",
@@ -154,7 +154,7 @@
       "length": 377
     },
     {
-      "id": "ottas-seg-skull",
+      "id": "ot-seg-skull",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Skull (OTTAS Seg)",
@@ -168,7 +168,7 @@
       "length": 267
     },
     {
-      "id": "ottas-seg-ice",
+      "id": "ot-seg-ice",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Ice (OTTAS Seg)",
@@ -182,7 +182,7 @@
       "length": 318
     },
     {
-      "id": "ottas-seg-swamp",
+      "id": "ot-seg-swamp",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Swamp (OTTAS Seg)",
@@ -196,7 +196,7 @@
       "length": 345
     },
     {
-      "id": "ottas-seg-mire",
+      "id": "ot-seg-mire",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Mire (OTTAS Seg)",
@@ -210,7 +210,7 @@
       "length": 365
     },
     {
-      "id": "ottas-seg-trock",
+      "id": "ot-seg-trock",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "TRock (OTTAS Seg)",
@@ -224,7 +224,7 @@
       "length": 361
     },
     {
-      "id": "ottas-seg-gtower",
+      "id": "ot-seg-gtower",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "GTower (OTTAS Seg)",
@@ -238,7 +238,7 @@
       "length": 396
     },
     {
-      "id": "ttas-seg-ganon",
+      "id": "ot-seg-ganon",
       "category": "Optimal TTAS Segment",
       "label": false,
       "chatName": "Ganon (TTAS Seg)",
@@ -252,7 +252,7 @@
       "length": 108
     },
     {
-      "id": "sttas-seg-escape",
+      "id": "st-seg-escape",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Escape (STTAS Seg)",
@@ -266,7 +266,7 @@
       "length": 354
     },
     {
-      "id": "sttas-seg-eastern",
+      "id": "st-seg-eastern",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Eastern (STTAS Seg)",
@@ -280,7 +280,7 @@
       "length": 281
     },
     {
-      "id": "sttas-seg-desert",
+      "id": "st-seg-desert",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Desert (STTAS Seg)",
@@ -294,7 +294,7 @@
       "length": 347
     },
     {
-      "id": "sttas-seg-hera",
+      "id": "st-seg-hera",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Hera (STTAS Seg)",
@@ -308,7 +308,7 @@
       "length": 303
     },
     {
-      "id": "sttas-seg-atower",
+      "id": "st-seg-atower",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Agah Tower (STTAS Seg)",
@@ -322,7 +322,7 @@
       "length": 354
     },
     {
-      "id": "sttas-seg-pod",
+      "id": "st-seg-pod",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "PoD (STTAS Seg)",
@@ -336,7 +336,7 @@
       "length": 310
     },
     {
-      "id": "sttas-seg-thieves",
+      "id": "st-seg-thieves",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Thieves (STTAS Seg)",
@@ -350,7 +350,7 @@
       "length": 379
     },
     {
-      "id": "sttas-seg-skull",
+      "id": "st-seg-skull",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Skull (STTAS Seg)",
@@ -364,7 +364,7 @@
       "length": 270
     },
     {
-      "id": "sttas-seg-ice",
+      "id": "st-seg-ice",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Ice (STTAS Seg)",
@@ -378,7 +378,7 @@
       "length": 321
     },
     {
-      "id": "sttas-seg-swamp",
+      "id": "st-seg-swamp",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Swamp (STTAS Seg)",
@@ -392,7 +392,7 @@
       "length": 351
     },
     {
-      "id": "sttas-seg-mire",
+      "id": "st-seg-mire",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "Mire (STTAS Seg)",
@@ -406,7 +406,7 @@
       "length": 370
     },
     {
-      "id": "sttas-seg-trock",
+      "id": "st-seg-trock",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "TRock (STTAS Seg)",
@@ -420,7 +420,7 @@
       "length": 364
     },
     {
-      "id": "sttas-seg-gtower",
+      "id": "st-seg-gtower",
       "category": "Safe TTAS Segment",
       "label": false,
       "chatName": "GTower (STTAS Seg)",
@@ -711,7 +711,7 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 1349
+      "length": 1409
     },
     {
       "id": "pb-ms",
