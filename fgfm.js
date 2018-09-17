@@ -1,19 +1,20 @@
 /**
- * GHBot4Twitch
+ * FG.fm Automation
  */
 
+// @TODO: Room vid requests / import
 // @TODO: modularize OBS and Twitch code
 // @TODO: Rotating background images (leftside)
 // @TODO: Stream alerts for chat
-// @TODO: Room vid requests / import
 // @TODO: Add random chance for room grind playlist to show for certain amount of time
-// ☐ add memes to commercial scene
-// ☐ show commercials after a video length cap is hit -- show at conclusion of video
-// ☐ add $setcurrent support (to update text label through obs websocket instead of chat)
-// ☐ update PB vod lengths to cut off before credits
-// ☐ support for $pause
-// ☐ remove currently playing video from vote choices
-
+// @TODO: add memes to commercial scene
+// @TODO: show commercials after a video length cap is hit -- show at conclusion of video
+// @TODO: add $setcurrent support (to update text label through obs websocket instead of chat)
+// @TODO: update PB vod lengths to cut off before credits
+// @TODO: support for $pause
+// @TODO: remove currently playing video from vote choices
+// @TODO: restrict # of requests a user can have in the queue at once
+// @TODO: add cooldowns
 
 // Import modules
 const irc = require('irc');
