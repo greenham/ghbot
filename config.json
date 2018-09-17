@@ -641,7 +641,7 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 5322
+      "length": 4786
     },
     {
       "id": "pb-ab",
@@ -655,7 +655,7 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 4730
+      "length": 4200
     },
     {
       "id": "pb-ad",
@@ -669,7 +669,7 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 5084
+      "length": 4555
     },
     {
       "id": "pb-any-nmg",
@@ -683,7 +683,7 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 5715
+      "length": 5190
     },
     {
       "id": "pb-any-no-eg",
@@ -697,7 +697,7 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 2352
+      "length": 1833
     },
     {
       "id": "pb-master-sword",
@@ -753,30 +753,25 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 5250
-    }
-  ],
-  "vodsToCrop": [
+      "length": 4725
+    },
     {
       "id": "pb-100-nmg",
       "category": "Personal Best",
       "label": "Personal Best: 100% NMG (1:49:30) [2017-01-31]",
       "chatName": "100% NMG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%\\2017-01-31-hundo-14930.mp4"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%\\2017-01-31-hundo-14930.mp4",
+      "sceneItem": "legacyph",
+      "length": 6598
     },
     {
       "id": "pb-dg",
       "category": "Personal Best",
       "label": "Personal Best: Defeat Ganon (13:41) [2017-02-20]",
       "chatName": "Defeat Ganon (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\defeat-ganon\\2017-02-20_12-55-40-defeat-ganon-1341.mp4"
-    },
-    {
-      "id": "pb-low-nmg",
-      "category": "Personal Best",
-      "label": "Personal Best: Low% NMG (1:32:48) [2017-05-11]",
-      "chatName": "Low% NMG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\low%-nmg-nsq\\2017-05-11 17-01-52-low%-13248.mkv"
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\defeat-ganon\\2017-02-20_12-55-40-defeat-ganon-1341.mp4",
+      "sceneItem": "legacyph",
+      "length": 868
     }
   ],
   "debug": false
