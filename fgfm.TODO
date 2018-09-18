@@ -6,7 +6,7 @@ TODO:
   ☐ Stream alerts for chat
   ☐ add memes to commercial scene
   ☐ show commercials after a video length cap is hit -- show at conclusion of video
-  ☐ add $setcurrent support (to update text label through obs websocket instead of chat)
+  ✔ add $setcurrent support (to update text label through obs websocket instead of chat) @done (18-09-17 18:06)
   ☐ support for $pause
   ☐ remove currently playing video from vote choices
   ☐ restrict # of requests a user can have in the queue at once
