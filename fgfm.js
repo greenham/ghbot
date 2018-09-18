@@ -17,7 +17,7 @@ const randSort = () => { return 0.5 - Math.random() };
 let videoQueue = recentlyPlayed = [];
 let currentVideo;
 let videoTimer;
-let lastCommercialShown;
+let lastCommercialShownAt;
 
 // Connect to OBS Websocket
 const obs = new OBSWebSocket();
@@ -126,54 +126,54 @@ const streamInit = (config, obs, twitch) => {
 
       let handleVideoFinish = () => {
         obs.setSceneItemProperties({"item": video.sceneItem, "scene-name": config.videoSceneName, "visible": false})
-          .then(data => {nextVideo()});
+          .then(data => {nextVideo()})
           .catch(console.error);
       };
 
-      obs.setCurrentScene({"scene": config.videoSceneName})
-      .then(res => {
-        playVideoInScene(video, config.videoSceneName, handleVideoFinish)
-        .then(timer => {
-          // track timer so we can cancel callback later on if necessary
-          videoTimer = timer;
+      obs.setCurrentScene({"scene-name": config.videoSceneName})
+        .then(res => {
+          playVideoInScene(video, config.videoSceneName, handleVideoFinish)
+          .then(timer => {
+            // track timer so we can cancel callback later on if necessary
+            videoTimer = timer;
 
-          // update activity label and show/hide appropriately
-          if (video.hasOwnProperty('label') && video.label !== false) {
-            obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "render": true, "text": video.label});
-          } else {
-            obs.setSceneItemProperties({"item": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "visible": false});
-          }
-        });
-      })
-      .catch(console.error);
+            // update activity label and show/hide appropriately
+            if (video.hasOwnProperty('label') && video.label !== false) {
+              obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "render": true, "text": video.label});
+            } else {
+              obs.setSceneItemProperties({"item": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "visible": false});
+            }
+          });
+        })
+        .catch(console.error);
     };
 
     // Picks the next video in the queue (shuffles if empty)
     // Also handles "commercial breaks"
     const nextVideo = () => {
       // Show a "commercial break" if it's been long enough since the last one
-      let secondsSinceLastCommercial = (Date.now() - lastCommercialShown) / 1000;
+      let secondsSinceLastCommercial = (Date.now() - lastCommercialShownAt) / 1000;
       console.log(`It has been ${secondsSinceLastCommercial} seconds since the last commercial`);
      /* if (secondsSinceLastCommercial >= config.commercialInterval) {
         console.log(`Showing commercial now...`);
         // @TODO: Add a random chance here for it to be "everybody wow"
         let commercial = config.memes.sort(randSort)[0];
-        obs.setCurrentScene({"scene": config.commercialSceneName})
+        obs.setCurrentScene({"scene-name": config.commercialSceneName})
         .then(res => {
           return playVideoInScene(commercial, config.commercialSceneName, () => {
             // hide video
             obs.setSceneItemProperties({"item": commercial.sceneItem, "scene-name": config.commercialSceneName, "visible": false})
             // unmute songrequest audio
-            editorChat.say(to, '!volume 50');
+            twitch.editorChat.say(to, '!volume 50');
             // show next video in queue
-            lastCommercialShown = Date.now();
+            lastCommercialShownAt = Date.now();
             nextVideo();
           })
         })
         .then(res => {
           // mute songrequest audio
-          editorChat.say(to, '!volume 0');
-        });;
+          twitch.editorChat.say(to, '!volume 0');
+        })
         .catch(console.error);
       }*/
 
@@ -198,7 +198,7 @@ const streamInit = (config, obs, twitch) => {
       showVideo(currentVideo);
     };
 
-    lastCommercialShown = Date.now();
+    lastCommercialShownAt = Date.now();
 
     // grab the first video in the queue and show it
     currentVideo = videoQueue.shift();
@@ -301,7 +301,7 @@ const streamInit = (config, obs, twitch) => {
               .catch(console.error);
           
 
-          // Black Box "Everybody Wow" config.commercialSceneName
+          // Black Box "Everybody Wow"
           } else if (commandNoPrefix === 'auw') {
             obs.setCurrentScene({"scene-name": config.commercialSceneName})
               .then(res => {
@@ -310,7 +310,7 @@ const streamInit = (config, obs, twitch) => {
               })
               .then(res => {
                 // mute songrequest audio
-                editorChat.say(to, '!volume 0');
+                twitch.editorChat.say(to, '!volume 0');
                 // show owen
                 obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": true});              
                 // tell chat what's up
@@ -322,39 +322,29 @@ const streamInit = (config, obs, twitch) => {
                   // hide owen
                   obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": false});
                   // unmute songrequest audio
-                  editorChat.say(to, '!volume 50');
+                  twitch.editorChat.say(to, '!volume 50');
                   // swap back to fgfm
-                  obs.setCurrentScene({"scene-name": "fgfm"});
-                }, 246000);
+                  obs.setCurrentScene({"scene-name": config.videoSceneName});
+                }, 246500);
               })
               .catch(console.error);
-          
-
           // memes on-demand
           } else if (commandNoPrefix === 'meme') {
+            let commercial = config.memes.sort(randSort)[0];
             obs.setCurrentScene({"scene-name": config.commercialSceneName})
-              /*.then(res => {
-                // show the video
-                return obs.setSceneItemProperties({"item": "everybody-wow", "scene-name": config.commercialSceneName, "visible": true});
+              .then(res => {
+                return playVideoInScene(commercial, config.commercialSceneName, () => {
+                  // video is done playing, hide it
+                  obs.setSceneItemProperties({"item": commercial.sceneItem, "scene-name": config.commercialSceneName, "visible": false})
+                  // unmute songrequest audio
+                  twitch.editorChat.say(to, '!volume 50');
+                  // swap back to fgfm
+                  obs.setCurrentScene({"scene-name": config.videoSceneName});
+                });
               })
               .then(res => {
-                // mute songrequest audio
-                editorChat.say(to, '!volume 0');
-                // show owen
-                obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": true});              
-                // tell chat what's up
-                twitch.botChat.say(to, 'Everybody OwenWow');
-                // swap back to fgfm scene after the video ends
-                setTimeout(() => {
-                  // hide video
-                  obs.setSceneItemProperties({"item": "everybody-wow", "scene-name": config.commercialSceneName, "visible": false})
-                  // hide owen
-                  obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": false});
-                  // unmute songrequest audio
-                  editorChat.say(to, '!volume 50');
-                  // swap back to fgfm
-                  obs.setCurrentScene({"scene-name": "fgfm"});
-                }, 246000);*/
+                // mute songrequest audio once video starts playing
+                twitch.editorChat.say(to, '!volume 0');
               })
               .catch(console.error);
           
@@ -554,7 +544,7 @@ const streamInit = (config, obs, twitch) => {
     let rockTheVote = () => {};
     let rtvInterval = setInterval(() => {rockTheVote()}, 300000);
     
-    let videoVoteJob = new schedule.Job(() => {
+    let videoVoteJob = new schedule.Job(async () => {
       // Tally votes from previous election (if there was one), add the winner to the queue
       let winner;
       if (currentChoices.length > 0) {
