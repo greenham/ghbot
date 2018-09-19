@@ -4,18 +4,18 @@ TODO:
   ☐ modularize OBS and Twitch code
   ☐ Rotating background images (leftside)
   ☐ Stream alerts for chat
-  ☐ add memes to commercial scene
-  ☐ show commercials after a video length cap is hit -- show at conclusion of video
-  ✔ add $setcurrent support (to update text label through obs websocket instead of chat) @done (18-09-17 18:06)
   ☐ support for $pause
   ☐ remove currently playing video from vote choices
   ☐ restrict # of requests a user can have in the queue at once
   ☐ Add cooldowns
-  ✔ remember the last X vids played, remove these from shuffle choices @done (18-09-17 14:34)
   ☐ Start/stop stream automation
   ☐ Move vods to their own config
   ☐ Tool to output list of video ID's / descriptions
   ☐ Support viewer skip voting
 
-  960x540
-  896x504
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ show commercials after a video length cap is hit -- show at conclusion of video @done (18-09-19 11:11) @project(TODO)
+ ✔ add memes to commercial scene @done (18-09-19 11:11) @project(TODO)
+ ✔ add $setcurrent support (to update text label through obs websocket instead of chat) @done (18-09-17 18:06) @project(TODO)
+ ✔ remember the last X vids played, remove these from shuffle choices @done (18-09-17 14:34) @project(TODO)

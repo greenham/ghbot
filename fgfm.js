@@ -18,6 +18,7 @@ let videoQueue = recentlyPlayed = [];
 let currentVideo;
 let videoTimer;
 let lastCommercialShownAt;
+let commercialPlaying = false;
 
 // Connect to OBS Websocket
 const obs = new OBSWebSocket();
@@ -125,23 +126,23 @@ const streamInit = (config, obs, twitch) => {
       console.log(`Showing video: ${video.chatName}`);
 
       let handleVideoFinish = () => {
-        obs.setSceneItemProperties({"item": video.sceneItem, "scene-name": config.videoSceneName, "visible": false})
+        obs.setSceneItemProperties({"item": video.sceneItem, "scene-name": config.defaultSceneName, "visible": false})
           .then(data => {nextVideo()})
           .catch(console.error);
       };
 
-      obs.setCurrentScene({"scene-name": config.videoSceneName})
+      obs.setCurrentScene({"scene-name": config.defaultSceneName})
         .then(res => {
-          playVideoInScene(video, config.videoSceneName, handleVideoFinish)
+          playVideoInScene(video, config.defaultSceneName, handleVideoFinish)
           .then(timer => {
             // track timer so we can cancel callback later on if necessary
             videoTimer = timer;
 
             // update activity label and show/hide appropriately
             if (video.hasOwnProperty('label') && video.label !== false) {
-              obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "render": true, "text": video.label});
+              obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "render": true, "text": video.label});
             } else {
-              obs.setSceneItemProperties({"item": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "visible": false});
+              obs.setSceneItemProperties({"item": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "visible": false});
             }
           });
         })
@@ -153,52 +154,85 @@ const streamInit = (config, obs, twitch) => {
     const nextVideo = () => {
       // Show a "commercial break" if it's been long enough since the last one
       let secondsSinceLastCommercial = (Date.now() - lastCommercialShownAt) / 1000;
-      console.log(`It has been ${secondsSinceLastCommercial} seconds since the last commercial`);
       if (secondsSinceLastCommercial >= config.commercialInterval) {
-        console.log(`Showing commercial now...`);
-        // @TODO: Add a random chance here for it to be "everybody wow"
-        let commercial = config.memes.sort(randSort)[0];
-        obs.setCurrentScene({"scene-name": config.commercialSceneName})
-          .then(res => {
-            return playVideoInScene(commercial, config.commercialSceneName, () => {
-              // hide video
-              obs.setSceneItemProperties({"item": commercial.sceneItem, "scene-name": config.commercialSceneName, "visible": false})
-              // unmute songrequest audio
-              twitch.editorChat.say(twitchChannel, '!volume 50');
-              // show next video in queue
-              lastCommercialShownAt = Date.now();
-              nextVideo();
+        commercialPlaying = true;
+
+        console.log(`It has been ${secondsSinceLastCommercial} seconds since the last commercial break!`);
+        // Random chance for it to be "everybody wow"
+        if ((Math.floor(Math.random() * 100) + 1) <= config.auwChance) {
+          console.log(`Showing AUW!`);
+          auw(() => {
+            // show next video in queue
+            lastCommercialShownAt = Date.now();
+            commercialPlaying = false;
+            nextVideo();
+          });
+        } else {
+          let commercial = config.memes.sort(randSort)[0];
+          console.log(`Showing random meme: ${commercial.name}`);
+
+          obs.setCurrentScene({"scene-name": config.commercialSceneName})
+            .then(res => {
+              return playVideoInScene(commercial, config.commercialSceneName, () => {
+                // hide video
+                obs.setSceneItemProperties({"item": commercial.sceneItem, "scene-name": config.commercialSceneName, "visible": false})
+                // unmute songrequest audio
+                twitch.editorChat.say(twitchChannel, `!volume ${config.defaultSRVolume}`);
+                // show next video in queue
+                lastCommercialShownAt = Date.now();
+                commercialPlaying = false;
+                nextVideo();
+              })
             })
-          })
-          .then(res => {
-            // mute songrequest audio
-            twitch.editorChat.say(twitchChannel, '!volume 0');
-          })
-          .catch(console.error);
+            .then(res => {
+              // mute songrequest audio
+              twitch.editorChat.say(twitchChannel, '!volume 0');
+            })
+            .catch(console.error);
+        }
           
         return;
       }
 
       // Keep track of recently played videos
-      if (recentlyPlayed.length === 5) {
+      if (recentlyPlayed.length === config.recentlyPlayedMemory) {
         recentlyPlayed.shift();
       }
       recentlyPlayed.push(currentVideo.id);
 
-      // @TODO: Add a random chance here for room grind to be played for an amount of time
+      // if a commercial/meme is playing (manually triggered), wait until it's done and calls this function again
+      if (commercialPlaying === true) {
+        return;
+      }
 
       // play the next video in the queue, or pick one at random if the queue is empty
       if (videoQueue.length > 0) {
         currentVideo = videoQueue.shift();
       } else {
+        // Random chance for room grind to be played for an amount of time instead of another video be shuffled to
+        if ((Math.floor(Math.random() * 100) + 1) <= config.roomGrindChance) {
+          console.log(`Room grind selected!`);
+          // show room-grind source
+          obs.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": true})
+            .then(res => {
+              obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "render": true, "text": "NOW SHOWING: TTAS Room Grind !ttas"});
+              setTimeout(() => {
+                // after timeout, hide room-grind and call nextVideo()
+                obs.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": false});
+                nextVideo();
+              }, config.roomGrindPlaytime*1000)
+            });
+            
+          return;
+        }
+
         // filter recently played from shuffle
         let freshVods = config.vods.filter(e => {
           return !recentlyPlayed.includes(e.id);
         });
         currentVideo = freshVods.sort(randSort).slice(0, 1).shift();
       }
-
-      // @TODO: if a commercial/meme is playing (manually triggered), wait until it's done
+      
       showVideo(currentVideo);
     };
 
@@ -208,9 +242,44 @@ const streamInit = (config, obs, twitch) => {
     currentVideo = videoQueue.shift();
     showVideo(currentVideo);
 
+    const auw = (callback) => {
+      let currentScene;
+      obs.getCurrentScene()
+        .then(res => {
+          currentScene = res.name;
+          // switch to commercial scene
+          return obs.setCurrentScene({"scene-name": config.commercialSceneName});
+        })
+        .then(res => {
+          // show the video
+          return obs.setSceneItemProperties({"item": "everybody-wow", "scene-name": config.commercialSceneName, "visible": true});
+        })
+        .then(res => {
+          // mute songrequest audio
+          twitch.editorChat.say(twitchChannel, '!volume 0');
+          // show owen
+          obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": true});              
+          // tell chat what's up
+          twitch.botChat.say(twitchChannel, 'Everybody OwenWow');
+          // swap back to the original scene after the video ends
+          setTimeout(() => {
+            // hide video
+            obs.setSceneItemProperties({"item": "everybody-wow", "scene-name": config.commercialSceneName, "visible": false})
+            // hide owen
+            obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": false});
+            // unmute songrequest audio
+            twitch.editorChat.say(twitchChannel, `!volume ${config.defaultSRVolume}`);
+            // swap back to fgfm
+            obs.setCurrentScene({"scene-name": currentScene});
+            // trigger user callback
+            if (callback) callback();
+          }, 246500);
+        })
+        .catch(console.error);
+    };
+
     // Twitch Chat Commands
     twitch.botChat.addListener('message', (from, to, message) => {
-
        // Ignore everything from blacklisted users
       if (config.twitch.blacklistedUsers.includes(from)) return;
 
@@ -307,33 +376,13 @@ const streamInit = (config, obs, twitch) => {
 
           // Black Box "Everybody Wow"
           } else if (commandNoPrefix === 'auw') {
-            obs.setCurrentScene({"scene-name": config.commercialSceneName})
-              .then(res => {
-                // show the video
-                return obs.setSceneItemProperties({"item": "everybody-wow", "scene-name": config.commercialSceneName, "visible": true});
-              })
-              .then(res => {
-                // mute songrequest audio
-                twitch.editorChat.say(to, '!volume 0');
-                // show owen
-                obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": true});              
-                // tell chat what's up
-                twitch.botChat.say(to, 'Everybody OwenWow');
-                // swap back to fgfm scene after the video ends
-                setTimeout(() => {
-                  // hide video
-                  obs.setSceneItemProperties({"item": "everybody-wow", "scene-name": config.commercialSceneName, "visible": false})
-                  // hide owen
-                  obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": false});
-                  // unmute songrequest audio
-                  twitch.editorChat.say(to, '!volume 50');
-                  // swap back to fgfm
-                  obs.setCurrentScene({"scene-name": config.videoSceneName});
-                }, 246500);
-              })
-              .catch(console.error);
+            commercialPlaying = true;
+            auw(() => {
+              commercialPlaying = false;
+            });
           // memes on-demand
           } else if (commandNoPrefix === 'meme') {
+            commercialPlaying = true;
             let commercial = config.memes.sort(randSort)[0];
             obs.setCurrentScene({"scene-name": config.commercialSceneName})
               .then(res => {
@@ -341,9 +390,10 @@ const streamInit = (config, obs, twitch) => {
                   // video is done playing, hide it
                   obs.setSceneItemProperties({"item": commercial.sceneItem, "scene-name": config.commercialSceneName, "visible": false})
                   // unmute songrequest audio
-                  twitch.editorChat.say(to, '!volume 50');
+                  twitch.editorChat.say(to, `!volume ${config.defaultSRVolume}`);
                   // swap back to fgfm
-                  obs.setCurrentScene({"scene-name": config.videoSceneName});
+                  obs.setCurrentScene({"scene-name": config.defaultSceneName});
+                  commercialPlaying = false;
                 });
               })
               .then(res => {
@@ -383,7 +433,7 @@ const streamInit = (config, obs, twitch) => {
               return;
             }
 
-            obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.videoSceneName, "render": true, "text": target})
+            obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "render": true, "text": target})
               .then(res => {
                 twitch.botChat.say(to, `Activity updated!`);
                 return;
@@ -401,7 +451,7 @@ const streamInit = (config, obs, twitch) => {
           // SKIP
           } else if (commandNoPrefix === 'skip') {
             clearTimeout(videoTimer);
-            obs.setSceneItemProperties({"item": currentVideo.sceneItem, "scene-name": config.videoSceneName, "visible": false})
+            obs.setSceneItemProperties({"item": currentVideo.sceneItem, "scene-name": config.defaultSceneName, "visible": false})
               .then(res => {
                 nextVideo();
               });

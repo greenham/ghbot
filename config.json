@@ -55,11 +55,16 @@
     "defaultPlaylist": "room-grind"
   },
   "initialQueueSize": 3,
-  "videoSceneName": "fgfm",
+  "defaultSceneName": "fgfm",
   "commercialSceneName": "commercial",
   "videoPollSize": 5,
   "currentActivitySceneItemName": "now-showing-txt",
   "commercialInterval": 3600,
+  "auwChance": 50,
+  "recentlyPlayedMemory": 5,
+  "roomGrindChance": 50,
+  "roomGrindPlaytime": 3600,
+  "defaultSRVolume": 50,
   "vods": [
     {
       "id": "ot-seg-escape",
@@ -930,13 +935,6 @@
       "filePath": "Y:\\media\\videos\\ALttP\\trock-indoor-quake.mp4",
       "sceneItem": "meme1",
       "length": 17
-    },
-    {
-      "id": "imout",
-      "name": "imout",
-      "filePath": "Y:\\media\\videos\\ALttP\\water-tektite-imout.mp4",
-      "sceneItem": "meme1",
-      "length": 7
     }
   ],
   "debug": false
