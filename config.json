@@ -59,7 +59,7 @@
   "commercialSceneName": "commercial",
   "videoPollSize": 5,
   "currentActivitySceneItemName": "now-showing-txt",
-  "commercialInterval": 60,
+  "commercialInterval": 3600,
   "vods": [
     {
       "id": "ot-seg-escape",

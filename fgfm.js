@@ -154,31 +154,33 @@ const streamInit = (config, obs, twitch) => {
       // Show a "commercial break" if it's been long enough since the last one
       let secondsSinceLastCommercial = (Date.now() - lastCommercialShownAt) / 1000;
       console.log(`It has been ${secondsSinceLastCommercial} seconds since the last commercial`);
-     /* if (secondsSinceLastCommercial >= config.commercialInterval) {
+      if (secondsSinceLastCommercial >= config.commercialInterval) {
         console.log(`Showing commercial now...`);
         // @TODO: Add a random chance here for it to be "everybody wow"
         let commercial = config.memes.sort(randSort)[0];
         obs.setCurrentScene({"scene-name": config.commercialSceneName})
-        .then(res => {
-          return playVideoInScene(commercial, config.commercialSceneName, () => {
-            // hide video
-            obs.setSceneItemProperties({"item": commercial.sceneItem, "scene-name": config.commercialSceneName, "visible": false})
-            // unmute songrequest audio
-            twitch.editorChat.say(to, '!volume 50');
-            // show next video in queue
-            lastCommercialShownAt = Date.now();
-            nextVideo();
+          .then(res => {
+            return playVideoInScene(commercial, config.commercialSceneName, () => {
+              // hide video
+              obs.setSceneItemProperties({"item": commercial.sceneItem, "scene-name": config.commercialSceneName, "visible": false})
+              // unmute songrequest audio
+              twitch.editorChat.say(twitchChannel, '!volume 50');
+              // show next video in queue
+              lastCommercialShownAt = Date.now();
+              nextVideo();
+            })
           })
-        })
-        .then(res => {
-          // mute songrequest audio
-          twitch.editorChat.say(to, '!volume 0');
-        })
-        .catch(console.error);
-      }*/
+          .then(res => {
+            // mute songrequest audio
+            twitch.editorChat.say(twitchChannel, '!volume 0');
+          })
+          .catch(console.error);
+          
+        return;
+      }
 
       // Keep track of recently played videos
-      if (recentlyPlayed.length === 3) {
+      if (recentlyPlayed.length === 5) {
         recentlyPlayed.shift();
       }
       recentlyPlayed.push(currentVideo.id);
@@ -195,6 +197,8 @@ const streamInit = (config, obs, twitch) => {
         });
         currentVideo = freshVods.sort(randSort).slice(0, 1).shift();
       }
+
+      // @TODO: if a commercial/meme is playing (manually triggered), wait until it's done
       showVideo(currentVideo);
     };
 
