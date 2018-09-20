@@ -216,7 +216,7 @@ const streamInit = (config, obs, twitch) => {
           obs.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": true})
             .then(res => {
               obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "render": true, "text": "NOW SHOWING: TTAS Room Grind !ttas"});
-              setTimeout(() => {
+              videoTimer = setTimeout(() => {
                 // after timeout, hide room-grind and call nextVideo()
                 obs.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": false});
                 nextVideo();
@@ -487,14 +487,14 @@ const streamInit = (config, obs, twitch) => {
           // START VOTE
           } else if (commandNoPrefix === 'startvote') {
             videoVoteJob.reschedule("*/15 * * * *");
-            twitch.botChat.say(to, `Voting has been started. Next run: ${videoVoteJob.nextInvocation()}`);
+            twitch.botChat.say(to, `Video Queue Voting will start in 15 minutes!`);
           
 
           // PAUSE VOTE
           } else if (commandNoPrefix === 'pausevote') {
             clearInterval(rtvInterval);
             videoVoteJob.cancel();
-            twitch.botChat.say(to, `Voting has been paused.`);
+            twitch.botChat.say(to, `Video Queue Voting has been paused.`);
           }
         }
         ////////////////

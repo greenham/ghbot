@@ -63,7 +63,7 @@
   "auwChance": 50,
   "recentlyPlayedMemory": 5,
   "roomGrindChance": 50,
-  "roomGrindPlaytime": 3600,
+  "roomGrindPlaytime": 1800,
   "defaultSRVolume": 50,
   "vods": [
     {
