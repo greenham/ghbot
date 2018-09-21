@@ -524,6 +524,8 @@ const streamInit = (config, obs, twitch) => {
               // update vote and inform the user
               userVotes[prevVote].vote = userVote;
               twitch.botChat.say(to, `@${from}, your vote has been updated!`);
+            } else {
+              twitch.botChat.say(to, `@${from}, your vote is already in!`);
             }
           } else {
             // log user vote

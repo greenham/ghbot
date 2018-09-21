@@ -60,9 +60,9 @@
   "videoPollSize": 5,
   "currentActivitySceneItemName": "now-showing-txt",
   "commercialInterval": 3600,
-  "auwChance": 50,
+  "auwChance": 25,
   "recentlyPlayedMemory": 5,
-  "roomGrindChance": 50,
+  "roomGrindChance": 25,
   "roomGrindPlaytime": 1800,
   "defaultSRVolume": 50,
   "vods": [
@@ -474,17 +474,17 @@
     {
       "id": "nmg-gold-escape",
       "category": "Any% NMG Gold Segment",
-      "label": "Any% NMG Gold Segment: Escape (5:53.2) [2018-02-24]",
+      "label": "Any% NMG Gold Segment: Escape (5:52.43) [2018-09-19]",
       "name": "Escape (NMG Gold)",
       "chatName": "Escape (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\01-[553.2]-2018-02-24-escape.mp4",
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\01-[552.43]-2018-09-19-escape.mp4",
       "sceneItemProperties": {
         "crop.left": 0,
         "position.x": 320,
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 358
+      "length": 360
     },
     {
       "id": "nmg-gold-eastern",
