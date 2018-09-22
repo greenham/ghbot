@@ -154,7 +154,7 @@ const streamInit = (config, obs, twitch) => {
     const nextVideo = () => {
       // Show a "commercial break" if it's been long enough since the last one
       let secondsSinceLastCommercial = (Date.now() - lastCommercialShownAt) / 1000;
-      if (secondsSinceLastCommercial >= config.commercialInterval) {
+      if (config.commercialsEnabled === true && secondsSinceLastCommercial >= config.commercialInterval) {
         commercialPlaying = true;
 
         console.log(`It has been ${secondsSinceLastCommercial} seconds since the last commercial break!`);

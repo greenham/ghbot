@@ -64,7 +64,8 @@
   "recentlyPlayedMemory": 5,
   "roomGrindChance": 25,
   "roomGrindPlaytime": 1800,
-  "defaultSRVolume": 50,
+  "defaultSRVolume": 75,
+  "commercialsEnabled": false,
   "vods": [
     {
       "id": "ot-seg-escape",

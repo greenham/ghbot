@@ -1,6 +1,6 @@
 TODO:
   ☐ Room vid requests / import
-  ☐ Add random chance for room grind playlist to show for certain amount of time
+  ✔ Add random chance for room grind playlist to show for certain amount of time @done (18-09-21 12:28)
   ☐ modularize OBS and Twitch code
   ☐ Rotating background images (leftside)
   ☐ Stream alerts for chat
@@ -12,6 +12,9 @@ TODO:
   ☐ Move vods to their own config
   ☐ Tool to output list of video ID's / descriptions
   ☐ Support viewer skip voting
+  ☐ Command to add sets of videos to the queue at once (like the entire ttas or all gold segments)
+  ☐ Command to stop video rotation / timers (shutdown)
+  ☐ Ability to include/exclude vods from shuffle in config
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
