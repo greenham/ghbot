@@ -54,18 +54,19 @@
     ],
     "defaultPlaylist": "room-grind"
   },
-  "initialQueueSize": 3,
   "defaultSceneName": "fgfm",
   "commercialSceneName": "commercial",
-  "videoPollSize": 5,
   "currentActivitySceneItemName": "now-showing-txt",
-  "commercialInterval": 3600,
-  "auwChance": 25,
+  "initialQueueSize": 3,
   "recentlyPlayedMemory": 5,
   "roomGrindChance": 25,
   "roomGrindPlaytime": 1800,
-  "defaultSRVolume": 75,
+  "videoPollSize": 5,
+  "videoPollIntervalMinutes": 15,
   "commercialsEnabled": false,
+  "commercialInterval": 3600,
+  "auwChance": 25,
+  "defaultSRVolume": 75,
   "vods": [
     {
       "id": "ot-seg-escape",
@@ -80,7 +81,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 352
+      "length": 352,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-eastern",
@@ -95,7 +97,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 277
+      "length": 277,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-desert",
@@ -110,7 +113,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 345
+      "length": 345,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-hera",
@@ -125,7 +129,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 299
+      "length": 299,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-atower",
@@ -140,7 +145,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 352
+      "length": 352,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-pod",
@@ -155,7 +161,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 309
+      "length": 309,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-thieves",
@@ -170,7 +177,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 377
+      "length": 377,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-skull",
@@ -185,7 +193,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 267
+      "length": 267,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-ice",
@@ -200,7 +209,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 318
+      "length": 318,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-swamp",
@@ -215,7 +225,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 345
+      "length": 345,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-mire",
@@ -230,7 +241,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 365
+      "length": 365,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-trock",
@@ -245,7 +257,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 361
+      "length": 361,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-gtower",
@@ -260,7 +273,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 396
+      "length": 396,
+      "includeInShuffle": true
     },
     {
       "id": "ot-seg-ganon",
@@ -275,7 +289,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 108
+      "length": 108,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-escape",
@@ -290,7 +305,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 354
+      "length": 354,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-eastern",
@@ -305,7 +321,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 281
+      "length": 281,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-desert",
@@ -320,7 +337,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 347
+      "length": 347,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-hera",
@@ -335,7 +353,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 303
+      "length": 303,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-atower",
@@ -350,7 +369,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 354
+      "length": 354,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-pod",
@@ -365,7 +385,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 310
+      "length": 310,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-thieves",
@@ -380,7 +401,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 379
+      "length": 379,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-skull",
@@ -395,7 +417,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 270
+      "length": 270,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-ice",
@@ -410,7 +433,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 321
+      "length": 321,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-swamp",
@@ -425,7 +449,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 351
+      "length": 351,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-mire",
@@ -440,7 +465,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 370
+      "length": 370,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-trock",
@@ -455,7 +481,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 364
+      "length": 364,
+      "includeInShuffle": true
     },
     {
       "id": "st-seg-gtower",
@@ -470,7 +497,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 408
+      "length": 408,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-escape",
@@ -485,7 +513,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 360
+      "length": 360,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-eastern",
@@ -500,7 +529,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 302
+      "length": 302,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-desert",
@@ -515,7 +545,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 374
+      "length": 374,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-hera",
@@ -530,7 +561,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 332
+      "length": 332,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-atower",
@@ -545,7 +577,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 314
+      "length": 314,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-pod",
@@ -560,7 +593,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 376
+      "length": 376,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-thieves",
@@ -575,7 +609,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 432
+      "length": 432,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-skull",
@@ -590,7 +625,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 328
+      "length": 328,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-ice",
@@ -605,7 +641,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 379
+      "length": 379,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-swamp",
@@ -620,7 +657,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 418
+      "length": 418,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-mire",
@@ -635,7 +673,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 432
+      "length": 432,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-trock",
@@ -650,7 +689,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 434
+      "length": 434,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-gtower",
@@ -665,7 +705,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 433
+      "length": 433,
+      "includeInShuffle": true
     },
     {
       "id": "nmg-gold-ganon",
@@ -680,7 +721,8 @@
         "scale.x": 960
       },
       "sceneItem": "4x3ph",
-      "length": 117
+      "length": 117,
+      "includeInShuffle": true
     },
     {
       "id": "pb-100-ahp",
@@ -695,7 +737,8 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 4786
+      "length": 4786,
+      "includeInShuffle": true
     },
     {
       "id": "pb-ab",
@@ -710,7 +753,8 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 4200
+      "length": 4200,
+      "includeInShuffle": false
     },
     {
       "id": "pb-ad",
@@ -725,7 +769,8 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 4555
+      "length": 4555,
+      "includeInShuffle": true
     },
     {
       "id": "pb-any-nmg",
@@ -740,7 +785,8 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 5190
+      "length": 5190,
+      "includeInShuffle": true
     },
     {
       "id": "pb-any-no-eg",
@@ -755,7 +801,8 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 1833
+      "length": 1833,
+      "includeInShuffle": true
     },
     {
       "id": "pb-master-sword",
@@ -770,7 +817,8 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 1409
+      "length": 1409,
+      "includeInShuffle": true
     },
     {
       "id": "pb-ms",
@@ -785,7 +833,8 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 3068
+      "length": 3068,
+      "includeInShuffle": true
     },
     {
       "id": "pb-ms-no-eg",
@@ -800,7 +849,8 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 738
+      "length": 738,
+      "includeInShuffle": true
     },
     {
       "id": "pb-rbo",
@@ -815,7 +865,8 @@
         "scale.x": 1280
       },
       "sceneItem": "16x9ph",
-      "length": 4725
+      "length": 4725,
+      "includeInShuffle": true
     },
     {
       "id": "pb-100-nmg",
@@ -825,7 +876,8 @@
       "chatName": "100% NMG (PB)",
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%\\2017-01-31-hundo-14930.mp4",
       "sceneItem": "legacyph",
-      "length": 6598
+      "length": 6598,
+      "includeInShuffle": false
     },
     {
       "id": "pb-dg",
@@ -835,7 +887,8 @@
       "chatName": "Defeat Ganon (PB)",
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\defeat-ganon\\2017-02-20_12-55-40-defeat-ganon-1341.mp4",
       "sceneItem": "legacyph",
-      "length": 868
+      "length": 868,
+      "includeInShuffle": true
     }
   ],
   "memes": [
@@ -844,98 +897,112 @@
       "name": "archery",
       "filePath": "Y:\\media\\videos\\ALttP\\memes\\archery-contest.mp4",
       "sceneItem": "meme1",
-      "length": 27
+      "length": 27,
+      "includeInShuffle": true
     },
     {
       "id": "69blazeit",
       "name": "69blazeit",
       "filePath": "Y:\\media\\videos\\ALttP\\memes\\69BlazeIt.mp4",
       "sceneItem": "meme1",
-      "length": 92
+      "length": 92,
+      "includeInShuffle": true
     },
     {
       "id": "rpgfarm",
       "name": "rpgfarm",
       "filePath": "Y:\\media\\videos\\ALttP\\memes\\2016-07-24-1424-06-rpg-race-sniped.mp4",
       "sceneItem": "meme1",
-      "length": 144
+      "length": 144,
+      "includeInShuffle": true
     },
     {
       "id": "emmapeg",
       "name": "emmapeg",
       "filePath": "Y:\\media\\videos\\ALttP\\memes\\emma-pegging.mp4",
       "sceneItem": "meme1",
-      "length": 8
+      "length": 8,
+      "includeInShuffle": true
     },
     {
       "id": "handy",
       "name": "handy",
       "filePath": "Y:\\media\\videos\\ALttP\\memes\\handy-in-the-mothhole.mp4",
       "sceneItem": "meme1",
-      "length": 39
+      "length": 39,
+      "includeInShuffle": true
     },
     {
       "id": "bodyguard",
       "name": "bodyguard",
       "filePath": "Y:\\media\\videos\\ALttP\\memes\\heroic-popo.mp4",
       "sceneItem": "meme1",
-      "length": 14
+      "length": 14,
+      "includeInShuffle": true
     },
     {
       "id": "whowillitbe",
       "name": "whowillitbe",
       "filePath": "Y:\\media\\videos\\ALttP\\memes\\its-gonna-be-may.mp4",
       "sceneItem": "meme1",
-      "length": 30
+      "length": 30,
+      "includeInShuffle": true
     },
     {
       "id": "mindblown",
       "name": "mindblown",
       "filePath": "Y:\\media\\videos\\ALttP\\memes\\mindblowing-and-lifechanging.mp4",
       "sceneItem": "meme1",
-      "length": 55
+      "length": 55,
+      "includeInShuffle": true
     },
     {
       "id": "nerd-nookie",
       "name": "nerd-nookie",
       "filePath": "Y:\\media\\videos\\ALttP\\memes\\nerd-bizkit.mp4",
       "sceneItem": "meme1",
-      "length": 27
+      "length": 27,
+      "includeInShuffle": true
     },
     {
       "id": "curling",
       "name": "curling",
       "filePath": "Y:\\media\\videos\\ALttP\\curling-bored-janitors.mp4",
       "sceneItem": "meme1",
-      "length": 16
+      "length": 16,
+      "includeInShuffle": true
     },
     {
       "id": "airplane",
       "name": "airplane",
       "filePath": "Y:\\media\\videos\\ALttP\\emetaPlane.mp4",
       "sceneItem": "meme1",
-      "length": 5
+      "length": 5,
+      "includeInShuffle": true
     },
     {
       "id": "hard-things",
       "name": "hard-things",
       "filePath": "Y:\\media\\videos\\ALttP\\questions-about-hard-things.mp4",
       "sceneItem": "meme1",
-      "length": 39
+      "length": 39,
+      "includeInShuffle": true
     },
     {
       "id": "18arrows",
       "name": "18arrows",
       "filePath": "Y:\\media\\videos\\ALttP\\screevo-18-arrows-fine.mp4",
       "sceneItem": "meme1",
-      "length": 41
+      "length": 41,
+      "includeInShuffle": true
     },
     {
       "id": "quake",
       "name": "quake",
       "filePath": "Y:\\media\\videos\\ALttP\\trock-indoor-quake.mp4",
       "sceneItem": "meme1",
-      "length": 17
+      "length": 17,
+      "includeInShuffle": true
     }
   ],
   "debug": false

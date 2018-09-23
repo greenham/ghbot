@@ -12,7 +12,6 @@ const util = require('./lib/util');
 let config = require('./config.json');
 const snesGames = require('./conf/snesgames.json');
 const twitchChannel = config.twitch.channels[0].toLowerCase();
-const randSort = () => { return 0.5 - Math.random() };
 
 let videoQueue = recentlyPlayed = [];
 let currentVideo;
@@ -40,71 +39,50 @@ obs.on('error', err => {
   console.error(`OBS socket error: ${JSON.stringify(err)}`);
 });
 
-// Initialize Twitch chat
+// Connect to twitch, set up basic event listeners
 const twitchInit = (config, obs) => {
   return new Promise((resolve, reject) => {
     console.log('Connecting to Twitch...');
-
-    // Connect to Twitch IRC server with the Bot
-    let twitchChat = new irc.Client(config.twitch.ircServer, config.twitch.username, {
-      password: config.twitch.oauth,
+    let defaultTwitchConfig = {
       autoRejoin: true,
       retryCount: 10,
       channels: config.twitch.channels,
       debug: config.debug
-    });
+    };
 
-    // Also connect with an editor account
-    let editorChat = new irc.Client(config.twitch.ircServer, config.twitch.editorLogin.username, {
-      password: config.twitch.editorLogin.oauth,
-      autoRejoin: true,
-      retryCount: 10,
-      channels: config.twitch.channels,
-      debug: config.debug
-    });
+    // Connect to Twitch with the bot account
+    let botChat = new irc.Client(
+      config.twitch.ircServer, 
+      config.twitch.username, 
+      Object.assign({password: config.twitch.oauth}, defaultTwitchConfig)
+    );
 
-    // Set up event listeners for Twitch
-    twitchChat.addListener('error', message => {
+    // Connect to Twitch with an editor account
+    let editorChat = new irc.Client(
+      config.twitch.ircServer, 
+      config.twitch.editorLogin.username, 
+      Object.assign({password: config.twitch.editorLogin.oauth}, defaultTwitchConfig)
+    );
+
+    let twitchErrorHandler = message => {
       if (message.command != 'err_unknowncommand') {
-        console.error('error from Twitch IRC Server: ', message);
+        console.error('Error from Twitch IRC Server: ', message);
       }
-    });
-    editorChat.addListener('error', message => {
-      if (message.command != 'err_unknowncommand') {
-        console.error('error from Twitch IRC Server: ', message);
-      }
-    });
+    };
 
-    twitchChat.addListener('registered', message => {
-      console.log(`Connected to ${message.server}`);
-    });
+    // Set up bare minimum event listeners for Twitch
+    botChat.addListener('error', twitchErrorHandler);
+    editorChat.addListener('error', twitchErrorHandler);
 
-    twitchChat.addListener('join', (channel, nick, message) => {
-      if (nick === config.twitch.username) {
-        console.log(`Joined channel ${channel}`);
-      }
-    });
-
-    twitchChat.addListener('part', (channel, nick, message) => {
-      if (nick === config.twitch.username) {
-        console.log(`Left channel ${channel}`);
-      }
-    });
-
-    twitchChat.addListener('motd', motd => {
-      //console.log(`Received MOTD: ${motd}`);
-    });
-
-    resolve({"botChat": twitchChat, "editorChat": editorChat});
+    resolve({"botChat": botChat, "editorChat": editorChat});
   });
 }
 
 // Initialize Stream automation
 const streamInit = (config, obs, twitch) => {
   return new Promise((resolve, reject) => {
-    console.log(`Setting up initial video queue...`);
-    videoQueue = config.vods.sort(randSort).slice(0, config.initialQueueSize);
-    console.log(`Initial queue: ${videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);   
+    videoQueue = config.vods.sort(util.randSort).slice(0, config.initialQueueSize);
+    console.log(`Initial video queue: ${videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);   
 
     // Shows a video in the given scene and triggers a callback when it's finished
     const playVideoInScene = (video, scene, callback) => {
@@ -168,7 +146,7 @@ const streamInit = (config, obs, twitch) => {
             nextVideo();
           });
         } else {
-          let commercial = config.memes.sort(randSort)[0];
+          let commercial = config.memes.sort(util.randSort)[0];
           console.log(`Showing random meme: ${commercial.name}`);
 
           obs.setCurrentScene({"scene-name": config.commercialSceneName})
@@ -230,7 +208,7 @@ const streamInit = (config, obs, twitch) => {
         let freshVods = config.vods.filter(e => {
           return !recentlyPlayed.includes(e.id);
         });
-        currentVideo = freshVods.sort(randSort).slice(0, 1).shift();
+        currentVideo = freshVods.sort(util.randSort).slice(0, 1).shift();
       }
       
       showVideo(currentVideo);
@@ -383,7 +361,7 @@ const streamInit = (config, obs, twitch) => {
           // memes on-demand
           } else if (commandNoPrefix === 'meme') {
             commercialPlaying = true;
-            let commercial = config.memes.sort(randSort)[0];
+            let commercial = config.memes.sort(util.randSort)[0];
             obs.setCurrentScene({"scene-name": config.commercialSceneName})
               .then(res => {
                 return playVideoInScene(commercial, config.commercialSceneName, () => {
@@ -588,7 +566,7 @@ const streamInit = (config, obs, twitch) => {
         
         // RNGAMES
         } else if (commandNoPrefix === 'rngames') {
-          twitch.botChat.say(to, snesGames.sort(randSort).slice(0, 10).join(' | '));
+          twitch.botChat.say(to, snesGames.sort(util.randSort).slice(0, 10).join(' | '));
         }
         ////////////////
       }
@@ -648,7 +626,7 @@ const streamInit = (config, obs, twitch) => {
         let inQueue = videoQueue.findIndex(q => q.id === e.id) !== -1;
         return !inQueue;
       });
-      currentChoices = vodsNotInQueue.sort(randSort).slice(0, config.videoPollSize);
+      currentChoices = vodsNotInQueue.sort(util.randSort).slice(0, config.videoPollSize);
 
       // Poll the chat
       let chatChoices = currentChoices.map((c, i) => {

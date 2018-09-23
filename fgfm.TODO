@@ -16,6 +16,10 @@ TODO:
   ☐ Command to stop video rotation / timers (shutdown)
   ☐ Ability to include/exclude vods from shuffle in config
 
+Ideas:
+  ☐ Web interface for viewers to issue commands -- twitch extension?!?!?!
+  ☐ Support songrequests -- play through discord?
+
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
  ✔ show commercials after a video length cap is hit -- show at conclusion of video @done (18-09-19 11:11) @project(TODO)
