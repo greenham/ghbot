@@ -1,7 +1,6 @@
 TODO:
+  ☐ Modularize OBS and Twitch code
   ☐ Room vid requests / import
-  ✔ Add random chance for room grind playlist to show for certain amount of time @done (18-09-21 12:28)
-  ☐ modularize OBS and Twitch code
   ☐ Rotating background images (leftside)
   ☐ Stream alerts for chat
   ☐ support for $pause
@@ -17,11 +16,12 @@ TODO:
   ☐ Ability to include/exclude vods from shuffle in config
 
 Ideas:
-  ☐ Web interface for viewers to issue commands -- twitch extension?!?!?!
+  ☐ Web interface for viewers to issue commands -- twitch extension?!
   ☐ Support songrequests -- play through discord?
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ Add random chance for room grind playlist to show for certain amount of time @done (18-09-21 12:28) @project(TODO)
  ✔ show commercials after a video length cap is hit -- show at conclusion of video @done (18-09-19 11:11) @project(TODO)
  ✔ add memes to commercial scene @done (18-09-19 11:11) @project(TODO)
  ✔ add $setcurrent support (to update text label through obs websocket instead of chat) @done (18-09-17 18:06) @project(TODO)

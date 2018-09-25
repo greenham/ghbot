@@ -4,64 +4,55 @@
 
 // Import modules
 const irc = require('irc');
-const OBSWebSocket = require('obs-websocket-js');
 const schedule = require('node-schedule');
 const util = require('./lib/util');
+const GHOBS = require('./lib/ghobs');
 
 // Read internal configuration
 let config = require('./config.json');
-const snesGames = require('./conf/snesgames.json');
-const twitchChannel = config.twitch.channels[0].toLowerCase();
+config.vods = require(config.vodConfigFile);
+let snesGames = require('./conf/snesgames.json');
 
-let videoQueue = recentlyPlayed = [];
-let currentVideo;
-let videoTimer;
-let lastCommercialShownAt;
-let commercialPlaying = false;
+// Set up initial state
+let state = {
+  "videoQueue": [],
+  "recentlyPlayed": [],
+  "currentVideo": null,
+  "videoTimer": null,
+  "lastCommercialShownAt": Date.now(),
+  "commercialPlaying": false
+};
 
-// Connect to OBS Websocket
-const obs = new OBSWebSocket();
-console.log(`Connecting to OBS...`);
-obs.connect({ address: config.obs.websocket.address, password: config.obs.websocket.password })
-  .then(() => {
-    console.log(`Success! We're connected to OBS!`);
-    return twitchInit(config, obs);
-  })
-  .then(twitch => {
-    return streamInit(config, obs, twitch);
-  })
-  .catch(err => {
-    console.log(err);
-  });
-
-// Listen for errors from OBS
-obs.on('error', err => {
-  console.error(`OBS socket error: ${JSON.stringify(err)}`);
-});
+const obs = new GHOBS(config);
+obs.init()
+  .then(() => {return twitchInit(config.twitch)})
+  .then(twitch => {return streamInit(config, twitch)})
+  .catch(console.error);
 
 // Connect to twitch, set up basic event listeners
-const twitchInit = (config, obs) => {
+const twitchInit = (config) => {
   return new Promise((resolve, reject) => {
-    console.log('Connecting to Twitch...');
+    console.log(`Connecting to Twitch / ${config.channel}...`);
+
     let defaultTwitchConfig = {
       autoRejoin: true,
       retryCount: 10,
-      channels: config.twitch.channels,
+      channels: [config.channel],
       debug: config.debug
     };
 
     // Connect to Twitch with the bot account
     let botChat = new irc.Client(
-      config.twitch.ircServer, 
-      config.twitch.username, 
-      Object.assign({password: config.twitch.oauth}, defaultTwitchConfig)
+      config.ircServer, 
+      config.botLogin.username, 
+      Object.assign({password: config.botLogin.oauth}, defaultTwitchConfig)
     );
 
     // Connect to Twitch with an editor account
     let editorChat = new irc.Client(
-      config.twitch.ircServer, 
-      config.twitch.editorLogin.username, 
-      Object.assign({password: config.twitch.editorLogin.oauth}, defaultTwitchConfig)
+      config.ircServer, 
+      config.editorLogin.username, 
+      Object.assign({password: config.editorLogin.oauth}, defaultTwitchConfig)
     );
 
     let twitchErrorHandler = message => {
@@ -76,127 +67,106 @@ const twitchInit = (config, obs) => {
 
     resolve({"botChat": botChat, "editorChat": editorChat});
   });
-}
+};
 
 // Initialize Stream automation
-const streamInit = (config, obs, twitch) => {
+// @TODO: Move anything that calls websocket here to GHOBS lib
+const streamInit = (config, twitch) => {
   return new Promise((resolve, reject) => {
-    videoQueue = config.vods.sort(util.randSort).slice(0, config.initialQueueSize);
-    console.log(`Initial video queue: ${videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);   
-
-    // Shows a video in the given scene and triggers a callback when it's finished
-    const playVideoInScene = (video, scene, callback) => {
-      return new Promise((resolve, reject) => {
-        // set the file path
-        obs.setSourceSettings({"sourceName": video.sceneItem, "sourceSettings": {"local_file": video.filePath}})
-          // show the video
-          .then(data => obs.setSceneItemProperties({"item": video.sceneItem, "scene-name": scene, "visible": true}))
-          // trigger callback when the video is over, but resolve promise immediately with the timer
-          .then(data => {
-            resolve(setTimeout(() => {callback(data)}, video.length*1000));
-          })       
-          .catch(reject);
-      });
-    };
+    // Set up the initial queue by randomly choosing the configured amount of vods included in shuffling
+    state.videoQueue = config.vods.alttp.filter(e => e.includeInShuffle === true).sort(util.randSort).slice(0, config.initialQueueSize);
+    console.log(`Initial video queue: ${state.videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);   
 
     // Show a gameplay vod
     const showVideo = video => {
       console.log(`Showing video: ${video.chatName}`);
 
-      let handleVideoFinish = () => {
-        obs.setSceneItemProperties({"item": video.sceneItem, "scene-name": config.defaultSceneName, "visible": false})
-          .then(data => {nextVideo()})
-          .catch(console.error);
-      };
+      // play the next video when the previous finishes
+      let handleVideoEnd = () => {nextVideo()};
 
-      obs.setCurrentScene({"scene-name": config.defaultSceneName})
-        .then(res => {
-          playVideoInScene(video, config.defaultSceneName, handleVideoFinish)
-          .then(timer => {
-            // track timer so we can cancel callback later on if necessary
-            videoTimer = timer;
+      obs.playVideoInScene(video, config.defaultSceneName, handleVideoEnd)
+        .then(timer => {
+          // track timer so we can cancel callback later on if necessary
+          state.videoTimer = timer;
 
-            // update activity label and show/hide appropriately
-            if (video.hasOwnProperty('label') && video.label !== false) {
-              obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "render": true, "text": video.label});
-            } else {
-              obs.setSceneItemProperties({"item": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "visible": false});
-            }
-          });
+          // update activity label and show/hide appropriately
+          if (video.hasOwnProperty('label') && video.label !== false) {
+            obs.showActivity(video.label);
+          } else {
+            obs.hideActivity();
+          }
         })
         .catch(console.error);
     };
 
     // Picks the next video in the queue (shuffles if empty)
-    // Also handles "commercial breaks"
+    // Also handles "commercial breaks" if enabled
     const nextVideo = () => {
       // Show a "commercial break" if it's been long enough since the last one
-      let secondsSinceLastCommercial = (Date.now() - lastCommercialShownAt) / 1000;
+     /* let secondsSinceLastCommercial = (Date.now() - state.lastCommercialShownAt) / 1000;
       if (config.commercialsEnabled === true && secondsSinceLastCommercial >= config.commercialInterval) {
-        commercialPlaying = true;
+        state.commercialPlaying = true;
 
         console.log(`It has been ${secondsSinceLastCommercial} seconds since the last commercial break!`);
         // Random chance for it to be "everybody wow"
         if ((Math.floor(Math.random() * 100) + 1) <= config.auwChance) {
           console.log(`Showing AUW!`);
           auw(() => {
-            // show next video in queue
-            lastCommercialShownAt = Date.now();
-            commercialPlaying = false;
+            // show next video in queue once the commercial is done
+            state.lastCommercialShownAt = Date.now();
+            state.commercialPlaying = false;
             nextVideo();
           });
         } else {
-          let commercial = config.memes.sort(util.randSort)[0];
+          let commercial = config.vods.memes.sort(util.randSort)[0];
           console.log(`Showing random meme: ${commercial.name}`);
 
-          obs.setCurrentScene({"scene-name": config.commercialSceneName})
-            .then(res => {
-              return playVideoInScene(commercial, config.commercialSceneName, () => {
-                // hide video
-                obs.setSceneItemProperties({"item": commercial.sceneItem, "scene-name": config.commercialSceneName, "visible": false})
-                // unmute songrequest audio
-                twitch.editorChat.say(twitchChannel, `!volume ${config.defaultSRVolume}`);
-                // show next video in queue
-                lastCommercialShownAt = Date.now();
-                commercialPlaying = false;
-                nextVideo();
-              })
-            })
+          let handleCommercialFinish = () => {
+            // unmute songrequest audio
+            twitch.editorChat.say(config.twitch.channel, `!volume ${config.defaultSRVolume}`);
+
+            // update commercial state and show next video in queue
+            state.lastCommercialShownAt = Date.now();
+            state.commercialPlaying = false;
+            nextVideo();
+          };
+
+          obs.playVideoInScene(commercial, config.commercialSceneName, handleCommercialFinish)
             .then(res => {
               // mute songrequest audio
-              twitch.editorChat.say(twitchChannel, '!volume 0');
-            })
-            .catch(console.error);
+              twitch.editorChat.say(config.twitch.channel, `!volume 0`);
+            });
         }
           
         return;
-      }
+      }*/
 
       // Keep track of recently played videos
-      if (recentlyPlayed.length === config.recentlyPlayedMemory) {
-        recentlyPlayed.shift();
+      if (state.recentlyPlayed.length === config.recentlyPlayedMemory) {
+        state.recentlyPlayed.shift();
       }
-      recentlyPlayed.push(currentVideo.id);
+      state.recentlyPlayed.push(state.currentVideo.id);
 
-      // if a commercial/meme is playing (manually triggered), wait until it's done and calls this function again
-      if (commercialPlaying === true) {
-        return;
+      // If a commercial is playing, wait until it's done
+      while (state.commercialPlaying === true) {
+        //
       }
 
       // play the next video in the queue, or pick one at random if the queue is empty
-      if (videoQueue.length > 0) {
-        currentVideo = videoQueue.shift();
+      if (state.videoQueue.length > 0) {
+        state.currentVideo = state.videoQueue.shift();
       } else {
         // Random chance for room grind to be played for an amount of time instead of another video be shuffled to
         if ((Math.floor(Math.random() * 100) + 1) <= config.roomGrindChance) {
           console.log(`Room grind selected!`);
           // show room-grind source
-          obs.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": true})
+          // obs.showRoomGrind(config.roomGrindPlaytime);
+          obs.websocket.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": true})
             .then(res => {
-              obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "render": true, "text": "NOW SHOWING: TTAS Room Grind !ttas"});
-              videoTimer = setTimeout(() => {
+              obs.showActivity("NOW SHOWING: TTAS Room Grind !ttas");
+              state.videoTimer = setTimeout(() => {
                 // after timeout, hide room-grind and call nextVideo()
-                obs.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": false});
+                obs.websocket.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": false});
                 nextVideo();
               }, config.roomGrindPlaytime*1000)
             });
@@ -205,53 +175,54 @@ const streamInit = (config, obs, twitch) => {
         }
 
         // filter recently played from shuffle
-        let freshVods = config.vods.filter(e => {
-          return !recentlyPlayed.includes(e.id);
+        let freshVods = config.vods.alttp.filter(e => {
+          return e.includeInShuffle === true && !state.recentlyPlayed.includes(e.id);
         });
-        currentVideo = freshVods.sort(util.randSort).slice(0, 1).shift();
+        state.currentVideo = freshVods.sort(util.randSort).slice(0, 1).shift();
       }
       
-      showVideo(currentVideo);
+      showVideo(state.currentVideo);
     };
 
-    lastCommercialShownAt = Date.now();
+    // Start queue playback
+    state.currentVideo = state.videoQueue.shift();
+    showVideo(state.currentVideo);
 
-    // grab the first video in the queue and show it
-    currentVideo = videoQueue.shift();
-    showVideo(currentVideo);
+    const showCommercial = (video, callback) => {
+      return new Promise((resolve, reject) => {
+        let handleFinish = () => {
+          // unmute songrequest audio
+          //twitch.editorChat.say(config.twitch.channel, `!volume ${config.defaultSRVolume}`);
+          if (typeof callback !== 'undefined') callback();
+        };
 
+        obs.playVideoInScene(video, config.commercialSceneName, handleFinish)
+          .then(timer => {
+            // mute songrequest audio
+            //twitch.editorChat.say(config.twitch.channel, `!volume 0`);
+            resolve(timer);
+          })
+          .catch(reject);
+      });
+    };
+
+    // Everybody OwenWow
     const auw = (callback) => {
-      let currentScene;
-      obs.getCurrentScene()
-        .then(res => {
-          currentScene = res.name;
-          // switch to commercial scene
-          return obs.setCurrentScene({"scene-name": config.commercialSceneName});
-        })
-        .then(res => {
-          // show the video
-          return obs.setSceneItemProperties({"item": "everybody-wow", "scene-name": config.commercialSceneName, "visible": true});
-        })
-        .then(res => {
-          // mute songrequest audio
-          twitch.editorChat.say(twitchChannel, '!volume 0');
+      // find the vod in memes
+      let video = config.vods.memes.find(e => e.id === 'auw');
+      let handleFinish = () => {
+         // hide owen
+        obs.websocket.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": false});
+        // trigger user callback
+        if (typeof callback !== 'undefined') callback();
+      };
+
+      showCommercial(video, handleFinish)
+        .then(videoHasStarted => {
           // show owen
-          obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": true});              
+          obs.websocket.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": true});              
           // tell chat what's up
-          twitch.botChat.say(twitchChannel, 'Everybody OwenWow');
-          // swap back to the original scene after the video ends
-          setTimeout(() => {
-            // hide video
-            obs.setSceneItemProperties({"item": "everybody-wow", "scene-name": config.commercialSceneName, "visible": false})
-            // hide owen
-            obs.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": false});
-            // unmute songrequest audio
-            twitch.editorChat.say(twitchChannel, `!volume ${config.defaultSRVolume}`);
-            // swap back to fgfm
-            obs.setCurrentScene({"scene-name": currentScene});
-            // trigger user callback
-            if (callback) callback();
-          }, 246500);
+          twitch.botChat.say(config.twitch.channel, 'Everybody OwenWow');
         })
         .catch(console.error);
     };
@@ -289,13 +260,13 @@ const streamInit = (config, obs, twitch) => {
               sceneItem["scene-name"] = sceneOrGroup;
             }
 
-            obs.getSceneItemProperties(sceneItem)
+            obs.websocket.getSceneItemProperties(sceneItem)
               .then(data => {
                 if (data.visible === newVisibility) {
                   twitch.botChat.say(to, `This scene item is already ${visibleTerm}. DerpHam`);
                 } else {
                   sceneItem.visible = newVisibility;
-                  obs.setSceneItemProperties(sceneItem)
+                  obs.websocket.setSceneItemProperties(sceneItem)
                     .then(res => {
                       twitch.botChat.say(to, `${target} is now ${visibleTerm}.`);
                     })
@@ -305,9 +276,7 @@ const streamInit = (config, obs, twitch) => {
               .catch(err => {
                 twitch.botChat.say(to, JSON.stringify(err));
               });
-          
-
-
+       
           // TOGGLE SOURCE VISIBILITY
           } else if (commandNoPrefix === 't') {
             let target = commandParts[1] || false;
@@ -318,13 +287,13 @@ const streamInit = (config, obs, twitch) => {
 
             let sceneItem = {"item": target};
 
-            obs.getSceneItemProperties(sceneItem)
+            obs.websocket.getSceneItemProperties(sceneItem)
               .then(data => {
                 let newVisibility = !data.visible;
                 let visibleTerm = (newVisibility ? 'visible' : 'hidden');
 
                 sceneItem.visible = newVisibility;
-                obs.setSceneItemProperties(sceneItem)
+                obs.websocket.setSceneItemProperties(sceneItem)
                   .then(res => {
                     twitch.botChat.say(to, `${target} is now ${visibleTerm}.`);
                   })
@@ -333,7 +302,6 @@ const streamInit = (config, obs, twitch) => {
               .catch(err => {
                 twitch.botChat.say(to, JSON.stringify(err));
               });
-
 
           // SWAP -- Hide one source, show another
           } else if (commandNoPrefix === 'swap') {
@@ -345,42 +313,28 @@ const streamInit = (config, obs, twitch) => {
               return
             }
 
-            obs.setSceneItemProperties({"item": targetToHide, "visible": false})
+            obs.websocket.setSceneItemProperties({"item": targetToHide, "visible": false})
               .then(res => {
-                obs.setSceneItemProperties({"item": targetToShow, "visible": true});
+                obs.websocket.setSceneItemProperties({"item": targetToShow, "visible": true});
               })
               .catch(console.error);
-          
-
+         
           // Black Box "Everybody Wow"
           } else if (commandNoPrefix === 'auw') {
-            commercialPlaying = true;
+            state.commercialPlaying = true;
             auw(() => {
-              commercialPlaying = false;
+              state.commercialPlaying = false;
             });
+          
           // memes on-demand
           } else if (commandNoPrefix === 'meme') {
-            commercialPlaying = true;
-            let commercial = config.memes.sort(util.randSort)[0];
-            obs.setCurrentScene({"scene-name": config.commercialSceneName})
-              .then(res => {
-                return playVideoInScene(commercial, config.commercialSceneName, () => {
-                  // video is done playing, hide it
-                  obs.setSceneItemProperties({"item": commercial.sceneItem, "scene-name": config.commercialSceneName, "visible": false})
-                  // unmute songrequest audio
-                  twitch.editorChat.say(to, `!volume ${config.defaultSRVolume}`);
-                  // swap back to fgfm
-                  obs.setCurrentScene({"scene-name": config.defaultSceneName});
-                  commercialPlaying = false;
-                });
-              })
-              .then(res => {
-                // mute songrequest audio once video starts playing
-                twitch.editorChat.say(to, '!volume 0');
-              })
-              .catch(console.error);
+            // @TODO: support request by ID
+            state.commercialPlaying = true;
+            let commercial = config.vods.memes.sort(util.randSort)[0];
+            showCommercial(commercial, () => {
+              state.commercialPlaying = false;
+            });
           
-
           // SWITCH SCENES
           } else if (commandNoPrefix === 'switch') {
 
@@ -390,19 +344,18 @@ const streamInit = (config, obs, twitch) => {
               return;
             }
 
-            obs.getCurrentScene()
+            obs.websocket.getCurrentScene()
               .then(data => {
                 if (data.name === target) {
                   twitch.botChat.say(to, `That scene is already active! DerpHam`);
                 } else {
-                  obs.setCurrentScene({"scene-name": target})
+                  obs.websocket.setCurrentScene({"scene-name": target})
                     .then(() => {twitch.botChat.say(to, `${target} is now active`)})
                     .catch(console.error);
                 }
               })
               .catch(console.error);
           
-
           // SET ON-SCREEN ACTIVITY
           } else if (commandNoPrefix === 'setactivity') {
             let target = commandParts.slice(1).join(' ');
@@ -411,30 +364,27 @@ const streamInit = (config, obs, twitch) => {
               return;
             }
 
-            obs.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "render": true, "text": target})
+            obs.websocket.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "render": true, "text": target})
               .then(res => {
                 twitch.botChat.say(to, `Activity updated!`);
                 return;
               })
               .catch(console.error);
-          
-
+         
           // REBOOT
           } else if (commandNoPrefix === 'reboot') {
             console.log('Received request from admin to reboot...');
             twitch.botChat.say(to, 'Rebooting...');
             process.exit(0);
           
-
           // SKIP
           } else if (commandNoPrefix === 'skip') {
-            clearTimeout(videoTimer);
-            obs.setSceneItemProperties({"item": currentVideo.sceneItem, "scene-name": config.defaultSceneName, "visible": false})
+            clearTimeout(state.videoTimer);
+            obs.websocket.setSceneItemProperties({"item": state.currentVideo.sceneItem, "scene-name": config.defaultSceneName, "visible": false})
               .then(res => {
                 nextVideo();
               });
           
-
           // ADD
           } else if (commandNoPrefix === 'add') {
             let requestedVideoId = commandParts[1] || false;
@@ -444,30 +394,28 @@ const streamInit = (config, obs, twitch) => {
             }
 
             // make sure request vid isn't in the queue already
-            if (videoQueue.findIndex(e => e.id == requestedVideoId) !== -1) {
+            if (state.videoQueue.findIndex(e => e.id == requestedVideoId) !== -1) {
               twitch.botChat.say(to, `That video is in the queue already!`);
               return;
             }
 
-            // search for req'd vid by id in config.vods
-            let vodIndex = config.vods.findIndex(e => e.id == requestedVideoId);
+            // search for req'd vid by id in config.vods.alttp
+            let vodIndex = config.vods.alttp.findIndex(e => e.id == requestedVideoId);
             if (vodIndex === -1) {
               twitch.botChat.say(to, `A video with that ID does not exist!`);
               return;
             }
 
             // add to queue if it exists
-            videoQueue.push(config.vods[vodIndex]);
-            twitch.botChat.say(to, `${config.vods[vodIndex].chatName} has been added to the queue [${videoQueue.length}]`);
+            state.videoQueue.push(config.vods.alttp[vodIndex]);
+            twitch.botChat.say(to, `${config.vods.alttp[vodIndex].chatName} has been added to the queue [${state.videoQueue.length}]`);
             return;
           
-
           // START VOTE
           } else if (commandNoPrefix === 'startvote') {
             videoVoteJob.reschedule("*/15 * * * *");
             twitch.botChat.say(to, `Video Queue Voting will start in 15 minutes!`);
           
-
           // PAUSE VOTE
           } else if (commandNoPrefix === 'pausevote') {
             clearInterval(rtvInterval);
@@ -514,8 +462,8 @@ const streamInit = (config, obs, twitch) => {
 
         // QUEUE STATUS
         } else if (commandNoPrefix === 'queue') {
-          if (videoQueue.length > 0) {
-            let chatQueue = videoQueue.map((c, i) => {
+          if (state.videoQueue.length > 0) {
+            let chatQueue = state.videoQueue.map((c, i) => {
               return `[${i+1}] ${c.chatName}`;
             });
             twitch.botChat.say(to, chatQueue.join(' | '));
@@ -526,13 +474,13 @@ const streamInit = (config, obs, twitch) => {
 
         // CURRENT VIDEO
         } else if (commandNoPrefix === 'current') {
-          twitch.botChat.say(to, `Now Playing: ${currentVideo.chatName}`);
+          twitch.botChat.say(to, `Now Playing: ${state.currentVideo.chatName}`);
         
 
         // NEXT VIDEO
         } else if (commandNoPrefix === 'next') {
-          if (videoQueue.length > 0) {
-            twitch.botChat.say(to, `Next Video: ${videoQueue[0].chatName}`);
+          if (state.videoQueue.length > 0) {
+            twitch.botChat.say(to, `Next Video: ${state.videoQueue[0].chatName}`);
           } else {
             twitch.botChat.say(to, `No videos currently in queue!`);
           }
@@ -547,21 +495,21 @@ const streamInit = (config, obs, twitch) => {
           }
 
           // make sure request vid isn't in the queue already
-          if (videoQueue.findIndex(e => e.id === requestedVideoId) !== -1) {
+          if (state.videoQueue.findIndex(e => e.id === requestedVideoId) !== -1) {
             twitch.botChat.say(to, `That video is in the queue already!`);
             return;
           }
 
-          // search for req'd vid by id in config.vods
-          let vodIndex = config.vods.findIndex(e => e.id === requestedVideoId);
+          // search for req'd vid by id in config.vods.alttp
+          let vodIndex = config.vods.alttp.findIndex(e => e.id === requestedVideoId);
           if (vodIndex === -1) {
             twitch.botChat.say(to, `A video with that ID does not exist!`);
             return;
           }
 
           // add to queue if it exists
-          videoQueue.push(config.vods[vodIndex]);
-          twitch.botChat.say(to, `${config.vods[vodIndex].chatName} has been added to the queue [${videoQueue.length}]`);
+          state.videoQueue.push(config.vods.alttp[vodIndex]);
+          twitch.botChat.say(to, `${config.vods.alttp[vodIndex].chatName} has been added to the queue [${state.videoQueue.length}]`);
           return;
         
         // RNGAMES
@@ -571,13 +519,12 @@ const streamInit = (config, obs, twitch) => {
         ////////////////
       }
     });
-
-    console.log(`Initializing stream timers...`);
   
+    // @TODO: Modularize timed events
+    console.log(`Initializing stream timers...`);
     let userVotes = currentChoices = [];
     let rockTheVote = () => {};
     let rtvInterval = setInterval(() => {rockTheVote()}, 300000);
-    
     let videoVoteJob = new schedule.Job(async () => {
       // Tally votes from previous election (if there was one), add the winner to the queue
       let winner;
@@ -586,7 +533,7 @@ const streamInit = (config, obs, twitch) => {
           // choose a random element from currentChoices
           winner = util.randElement(currentChoices);
           console.log(`VIDEO CHOSEN RANDOMLY: ${winner.chatName}`);
-          twitch.botChat.say(twitchChannel, `No Votes Logged -- Next Video Chosen at Random: ${winner.chatName}`);
+          twitch.botChat.say(config.twitch.channel, `No Votes Logged -- Next Video Chosen at Random: ${winner.chatName}`);
         } else {
           // tally and sort votes
           let voteTallies = [];
@@ -612,18 +559,18 @@ const streamInit = (config, obs, twitch) => {
           console.log(`Voting Results: ${JSON.stringify(voteTallies)}`);
           winner = currentChoices[voteTallies[0].id-1];
           console.log(`WINNER OF THE VOTE: ${winner.chatName}`);
-          twitch.botChat.say(twitchChannel, `Winner of the Video Vote: ${winner.chatName}`);
+          twitch.botChat.say(config.twitch.channel, `Winner of the Video Vote: ${winner.chatName}`);
 
           // clear user votes
           userVotes = [];
         }
 
-        videoQueue.push(winner);
+        state.videoQueue.push(winner);
       }
       
-      // choose more random videos from config.vods (that aren't already in the queue)
-      let vodsNotInQueue = config.vods.filter(e => {
-        let inQueue = videoQueue.findIndex(q => q.id === e.id) !== -1;
+      // choose more random videos from config.vods.alttp (that aren't already in the queue)
+      let vodsNotInQueue = config.vods.alttp.filter(e => {
+        let inQueue = state.videoQueue.findIndex(q => q.id === e.id) !== -1;
         return !inQueue;
       });
       currentChoices = vodsNotInQueue.sort(util.randSort).slice(0, config.videoPollSize);
@@ -634,16 +581,16 @@ const streamInit = (config, obs, twitch) => {
       });
 
       rockTheVote = () => {
-        twitch.botChat.say(twitchChannel, `Vote for which video you'd like to add to the queue using ${config.twitch.cmdPrefix}vote #: ${chatChoices.join(' | ')}`)
+        twitch.botChat.say(config.twitch.channel, `Vote for which video you'd like to add to the queue using ${config.twitch.cmdPrefix}vote #: ${chatChoices.join(' | ')}`)
       };
       clearInterval(rtvInterval);
       rockTheVote();
       rtvInterval = setInterval(() => {rockTheVote()}, 300000);
     });
 
-    resolve();
+    resolve(obs);
   });
-}
+};
 
 // catches Promise errors
 process.on('unhandledRejection', console.error);
