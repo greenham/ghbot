@@ -1,19 +1,16 @@
 TODO:
-  ☐ Modularize OBS and Twitch code
   ☐ Room vid requests / import
+  ☐ Support viewer skip voting
+  ☐ Command to add sets of videos to the queue at once (like the entire ttas or all gold segments)
+  ☐ support for $pause
+  ☐ Command to stop video rotation / timers (shutdown)
+  ☐ Start/stop stream automation
   ☐ Rotating background images (leftside)
   ☐ Stream alerts for chat
-  ☐ support for $pause
   ☐ remove currently playing video from vote choices
   ☐ restrict # of requests a user can have in the queue at once
   ☐ Add cooldowns
-  ☐ Start/stop stream automation
-  ☐ Move vods to their own config
   ☐ Tool to output list of video ID's / descriptions
-  ☐ Support viewer skip voting
-  ☐ Command to add sets of videos to the queue at once (like the entire ttas or all gold segments)
-  ☐ Command to stop video rotation / timers (shutdown)
-  ☐ Ability to include/exclude vods from shuffle in config
 
 Ideas:
   ☐ Web interface for viewers to issue commands -- twitch extension?!
@@ -21,6 +18,9 @@ Ideas:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ Move vods to their own config @done (18-09-25 15:40) @project(TODO)
+ ✔ Modularize OBS and Twitch code @done (18-09-25 15:39) @project(TODO)
+ ✔ Ability to include/exclude vods from shuffle in config @done (18-09-25 15:39) @project(TODO)
  ✔ Add random chance for room grind playlist to show for certain amount of time @done (18-09-21 12:28) @project(TODO)
  ✔ show commercials after a video length cap is hit -- show at conclusion of video @done (18-09-19 11:11) @project(TODO)
  ✔ add memes to commercial scene @done (18-09-19 11:11) @project(TODO)

@@ -72,18 +72,22 @@ const twitchInit = (config) => {
 // Initialize Stream automation
 const streamInit = (config, twitch) => {
   return new Promise((resolve, reject) => {
-    // Set up the initial queue by randomly choosing the configured amount of vods included in shuffling
-    state.videoQueue = config.vods.alttp.filter(e => e.includeInShuffle === true).sort(util.randSort).slice(0, config.initialQueueSize);
-    console.log(`Initial video queue: ${state.videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);   
+    // Set up initial queue + start playback
+    const init = () => {
+      // Set up the initial queue by randomly choosing the configured amount of vods included in shuffling
+      state.videoQueue = config.vods.alttp.filter(e => e.includeInShuffle === true).sort(util.randSort).slice(0, config.initialQueueSize);
+      console.log(`Initial video queue: ${state.videoQueue.map((c, i) => `[${i+1}] ${c.chatName}`).join(' | ')}`);   
+
+      // Start queue playback
+      state.currentVideo = state.videoQueue.shift();
+      showVideo(state.currentVideo);
+    }
 
     // Show a gameplay vod
     const showVideo = video => {
       console.log(`Showing video: ${video.chatName}`);
 
-      // play the next video when the previous finishes
-      let handleVideoEnd = () => {nextVideo()};
-
-      obs.playVideoInScene(video, config.defaultSceneName, handleVideoEnd)
+      obs.playVideoInScene(video, config.defaultSceneName, nextVideo)
         .then(timer => {
           // track timer so we can cancel callback later on if necessary
           state.videoTimer = timer;
@@ -156,10 +160,6 @@ const streamInit = (config, twitch) => {
       
       showVideo(state.currentVideo);
     };
-
-    // Start queue playback
-    state.currentVideo = state.videoQueue.shift();
-    showVideo(state.currentVideo);
 
     // "Commercials"
     const showCommercial = (video, callback) => {
@@ -502,6 +502,7 @@ const streamInit = (config, twitch) => {
       rtvInterval = setInterval(() => {rockTheVote()}, 300000);
     });
 
+    init();
     resolve(obs);
   });
 };
