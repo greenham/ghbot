@@ -460,7 +460,7 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%-mg-ahp\\2017-12-22-100mg-11912.mp4",
       "sceneItem": "16x9ph",
       "length": 4786,
-      "includeInShuffle": true
+      "includeInShuffle": false
     },
     {
       "id": "pb-ab",
@@ -482,7 +482,7 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\all-dungeons\\2017-11-19-ad-11459.mp4",
       "sceneItem": "16x9ph",
       "length": 4555,
-      "includeInShuffle": true
+      "includeInShuffle": false
     },
     {
       "id": "pb-any-nmg",
@@ -493,7 +493,7 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\any%-nmg-nsq\\2018-05-27-nmg-12624.mp4",
       "sceneItem": "16x9ph",
       "length": 5190,
-      "includeInShuffle": true
+      "includeInShuffle": false
     },
     {
       "id": "pb-any-no-eg",
@@ -526,7 +526,7 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\mirror-shield\\2017-06-20-mirror-shield-5032.mp4",
       "sceneItem": "16x9ph",
       "length": 3068,
-      "includeInShuffle": true
+      "includeInShuffle": false
     },
     {
       "id": "pb-ms-no-eg",
@@ -548,7 +548,7 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\rbo\\2017-12-01-rbo-11813.mp4",
       "sceneItem": "16x9ph",
       "length": 4725,
-      "includeInShuffle": true
+      "includeInShuffle": false
     },
     {
       "id": "pb-100-nmg",

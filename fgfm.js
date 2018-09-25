@@ -103,43 +103,24 @@ const streamInit = (config, twitch) => {
     // Also handles "commercial breaks" if enabled
     const nextVideo = () => {
       // Show a "commercial break" if it's been long enough since the last one
-     /* let secondsSinceLastCommercial = (Date.now() - state.lastCommercialShownAt) / 1000;
+      let secondsSinceLastCommercial = (Date.now() - state.lastCommercialShownAt) / 1000;
       if (config.commercialsEnabled === true && secondsSinceLastCommercial >= config.commercialInterval) {
         state.commercialPlaying = true;
-
         console.log(`It has been ${secondsSinceLastCommercial} seconds since the last commercial break!`);
         // Random chance for it to be "everybody wow"
+        let memeId = false;
         if ((Math.floor(Math.random() * 100) + 1) <= config.auwChance) {
           console.log(`Showing AUW!`);
-          auw(() => {
-            // show next video in queue once the commercial is done
-            state.lastCommercialShownAt = Date.now();
-            state.commercialPlaying = false;
-            nextVideo();
-          });
-        } else {
-          let commercial = config.vods.memes.sort(util.randSort)[0];
-          console.log(`Showing random meme: ${commercial.name}`);
-
-          let handleCommercialFinish = () => {
-            // unmute songrequest audio
-            twitch.editorChat.say(config.twitch.channel, `!volume ${config.defaultSRVolume}`);
-
-            // update commercial state and show next video in queue
-            state.lastCommercialShownAt = Date.now();
-            state.commercialPlaying = false;
-            nextVideo();
-          };
-
-          obs.playVideoInScene(commercial, config.commercialSceneName, handleCommercialFinish)
-            .then(res => {
-              // mute songrequest audio
-              twitch.editorChat.say(config.twitch.channel, `!volume 0`);
-            });
+          memeId = 'auw';
         }
+        showMeme(memeId).then(() => {
+          state.lastCommercialShownAt = Date.now();
+          state.commercialPlaying = false;
+          nextVideo();
+        }).catch(console.error);
           
         return;
-      }*/
+      }
 
       // Keep track of recently played videos
       if (state.recentlyPlayed.length === config.recentlyPlayedMemory) {
@@ -147,10 +128,8 @@ const streamInit = (config, twitch) => {
       }
       state.recentlyPlayed.push(state.currentVideo.id);
 
-      // If a commercial is playing, wait until it's done
-      while (state.commercialPlaying === true) {
-        //
-      }
+      // If a commercial is playing, wait until it's done to switch
+      while (state.commercialPlaying === true) {}
 
       // play the next video in the queue, or pick one at random if the queue is empty
       if (state.videoQueue.length > 0) {
@@ -160,17 +139,12 @@ const streamInit = (config, twitch) => {
         if ((Math.floor(Math.random() * 100) + 1) <= config.roomGrindChance) {
           console.log(`Room grind selected!`);
           // show room-grind source
-          // obs.showRoomGrind(config.roomGrindPlaytime);
-          obs.websocket.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": true})
-            .then(res => {
-              obs.showActivity("NOW SHOWING: TTAS Room Grind !ttas");
-              state.videoTimer = setTimeout(() => {
-                // after timeout, hide room-grind and call nextVideo()
-                obs.websocket.setSceneItemProperties({"item": "room-grind", "scene-name": config.defaultSceneName, "visible": false});
-                nextVideo();
-              }, config.roomGrindPlaytime*1000)
-            });
-            
+          obs.showRoomGrind(config.roomGrindPlaytime, () => {nextVideo()})
+            .then(timer => {
+              videoTimer = timer;
+            })
+            .catch(console.error);
+
           return;
         }
 
@@ -188,6 +162,7 @@ const streamInit = (config, twitch) => {
     state.currentVideo = state.videoQueue.shift();
     showVideo(state.currentVideo);
 
+    // "Commercials"
     const showCommercial = (video, callback) => {
       return new Promise((resolve, reject) => {
         let handleFinish = () => {
@@ -206,25 +181,32 @@ const streamInit = (config, twitch) => {
       });
     };
 
-    // Everybody OwenWow
-    const auw = (callback) => {
-      // find the vod in memes
-      let video = config.vods.memes.find(e => e.id === 'auw');
-      let handleFinish = () => {
-         // hide owen
-        obs.websocket.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": false});
-        // trigger user callback
-        if (typeof callback !== 'undefined') callback();
-      };
+    // Memes-By-Id
+    const showMeme = (id) => {
+      return new Promise((resolve, reject) => {
+        // find the vod in memes
+        let video = config.vods.memes.find(e => e.id === id);
+        if (!video) {
+          reject(`No meme found matching ID ${id}`);
+        }
 
-      showCommercial(video, handleFinish)
-        .then(videoHasStarted => {
-          // show owen
-          obs.websocket.setSceneItemProperties({"item": "owen", "scene-name": config.commercialSceneName, "visible": true});              
-          // tell chat what's up
-          twitch.botChat.say(config.twitch.channel, 'Everybody OwenWow');
-        })
-        .catch(console.error);
+        let handleFinish = () => {
+          if (id === 'auw') {
+            obs.hide("owen", config.commercialSceneName);
+          }
+          resolve();
+        };
+
+        showCommercial(video, handleFinish)
+          .then(videoHasStarted => {
+            // in the case of 'auw', show owen + tell chat what's up
+            if (id === 'auw') {
+              obs.show("owen", config.commercialSceneName);
+              twitch.botChat.say(config.twitch.channel, 'Everybody OwenWow');
+            }
+          })
+          .catch(console.error);
+      });
     };
 
     // Twitch Chat Commands
@@ -322,18 +304,24 @@ const streamInit = (config, twitch) => {
           // Black Box "Everybody Wow"
           } else if (commandNoPrefix === 'auw') {
             state.commercialPlaying = true;
-            auw(() => {
-              state.commercialPlaying = false;
-            });
-          
-          // memes on-demand
+            showMeme('auw').then(() => state.commercialPlaying = false).catch(console.error);
+
+          // Memes on-demand
           } else if (commandNoPrefix === 'meme') {
-            // @TODO: support request by ID
+            let memeId = commandParts[1] || false;
+            if (memeId) {
+              console.log(`${memeId} meme requested`);
+              if ( config.vods.memes.findIndex(e => e.id === memeId) === -1) {
+                twitch.botChat.say(to, `No meme with that ID exists!`);
+                return;
+              }
+            } else {
+              memeId = config.vods.memes.sort(util.randSort)[0].id;
+              console.log(`${memeId} meme randomly selected`);
+            }
+
             state.commercialPlaying = true;
-            let commercial = config.vods.memes.sort(util.randSort)[0];
-            showCommercial(commercial, () => {
-              state.commercialPlaying = false;
-            });
+            showMeme(memeId).then(() => state.commercialPlaying = false).catch(console.error);
           
           // SWITCH SCENES
           } else if (commandNoPrefix === 'switch') {
