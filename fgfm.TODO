@@ -5,12 +5,12 @@ TODO:
   ☐ support for $pause
   ☐ Command to stop video rotation / timers (shutdown)
   ☐ Start/stop stream automation
-  ☐ Rotating background images (leftside)
   ☐ Stream alerts for chat
   ☐ remove currently playing video from vote choices
   ☐ restrict # of requests a user can have in the queue at once
   ☐ Add cooldowns
   ☐ Tool to output list of video ID's / descriptions
+  ☐ Rotating background images (leftside)
 
 Ideas:
   ☐ Web interface for viewers to issue commands -- twitch extension?!

@@ -279,14 +279,14 @@ const streamInit = (config, twitch) => {
             obs.switchToScene(newScene).catch(console.error);
           
           // SET ON-SCREEN ACTIVITY
-          } else if (commandNoPrefix === 'setactivity') {
+          } else if (commandNoPrefix === 'setact') {
             let newActivity = commandParts.slice(1).join(' ');
             if (!newActivity) {
               twitch.botChat.say(to, `Please provide a new activity`);
               return;
             }
 
-            obs.showActivity(newActivity).then(() => twitch.botChat.say(to, `Activity updated!`)).catch(console.error);
+            obs.showActivity(newActivity).catch(console.error);
          
           // REBOOT
           } else if (commandNoPrefix === 'reboot') {
