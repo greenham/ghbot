@@ -70,7 +70,6 @@ const twitchInit = (config) => {
 };
 
 // Initialize Stream automation
-// @TODO: Move anything that calls websocket here to GHOBS lib
 const streamInit = (config, twitch) => {
   return new Promise((resolve, reject) => {
     // Set up the initial queue by randomly choosing the configured amount of vods included in shuffling
@@ -225,88 +224,33 @@ const streamInit = (config, twitch) => {
 
           // SHOW/HIDE SOURCE
           if (commandNoPrefix === 'show' || commandNoPrefix === 'hide') {
-
             let newVisibility = (commandNoPrefix === 'show');
-            let visibleTerm = (newVisibility ? 'visible' : 'hidden');
 
-            let target = commandParts[1] || false;
-            if (!target) {
+            let sceneItem = commandParts[1] || false;
+            if (!sceneItem) {
               twitch.botChat.say(to, `A scene item name is required!`);
               return;
             }
 
-            let sceneItem = {"item": target};
-
-            let sceneOrGroup = commandParts[2] || false;
-            if (sceneOrGroup !== false) {
-              sceneItem["scene-name"] = sceneOrGroup;
-            }
-
-            obs.websocket.getSceneItemProperties(sceneItem)
-              .then(data => {
-                if (data.visible === newVisibility) {
-                  twitch.botChat.say(to, `This scene item is already ${visibleTerm}. DerpHam`);
-                } else {
-                  sceneItem.visible = newVisibility;
-                  obs.websocket.setSceneItemProperties(sceneItem)
-                    .then(res => {
-                      twitch.botChat.say(to, `${target} is now ${visibleTerm}.`);
-                    })
-                    .catch(console.error);
-                }
-              })
-              .catch(err => {
-                twitch.botChat.say(to, JSON.stringify(err));
-              });
+            let sceneOrGroup = commandParts[2] || obs.currentScene;
+            obs.setVisible(sceneItem, sceneOrGroup, newVisibility).catch(console.error);
        
           // TOGGLE SOURCE VISIBILITY
           } else if (commandNoPrefix === 't') {
-            let target = commandParts[1] || false;
-            if (!target) {
+            let sceneItem = commandParts[1] || false;
+            if (!sceneItem) {
               twitch.botChat.say(to, `A scene item name is required!`);
               return;
             }
 
-            let sceneItem = {"item": target};
-
-            obs.websocket.getSceneItemProperties(sceneItem)
-              .then(data => {
-                let newVisibility = !data.visible;
-                let visibleTerm = (newVisibility ? 'visible' : 'hidden');
-
-                sceneItem.visible = newVisibility;
-                obs.websocket.setSceneItemProperties(sceneItem)
-                  .then(res => {
-                    twitch.botChat.say(to, `${target} is now ${visibleTerm}.`);
-                  })
-                  .catch(console.error);
-              })
-              .catch(err => {
-                twitch.botChat.say(to, JSON.stringify(err));
-              });
-
-          // SWAP -- Hide one source, show another
-          } else if (commandNoPrefix === 'swap') {
-            // hide first argument, show second argument
-            let targetToHide = commandParts[1] || false;
-            let targetToShow = commandParts[2] || false;
-            if (targetToHide === false || targetToShow == false) {
-              twitch.botChat.say(to, `Format: ${config.twitch.cmdPrefix}swap <item-to-hide> <item-to-show>`);
-              return
-            }
-
-            obs.websocket.setSceneItemProperties({"item": targetToHide, "visible": false})
-              .then(res => {
-                obs.websocket.setSceneItemProperties({"item": targetToShow, "visible": true});
-              })
-              .catch(console.error);
+            obs.toggleVisible(sceneItem).catch(console.error);
          
-          // Black Box "Everybody Wow"
+          // EVERYBODY WOW
           } else if (commandNoPrefix === 'auw') {
             state.commercialPlaying = true;
             showMeme('auw').then(() => state.commercialPlaying = false).catch(console.error);
 
-          // Memes on-demand
+          // MEMES ON-DEMAND
           } else if (commandNoPrefix === 'meme') {
             let memeId = commandParts[1] || false;
             if (memeId) {
@@ -326,38 +270,23 @@ const streamInit = (config, twitch) => {
           // SWITCH SCENES
           } else if (commandNoPrefix === 'switch') {
 
-            let target = commandParts[1] || false;
-            if (!target) {
+            let newScene = commandParts[1] || false;
+            if (!newScene) {
               twitch.botChat.say(to, `A scene name is required!`);
               return;
             }
 
-            obs.websocket.getCurrentScene()
-              .then(data => {
-                if (data.name === target) {
-                  twitch.botChat.say(to, `That scene is already active! DerpHam`);
-                } else {
-                  obs.websocket.setCurrentScene({"scene-name": target})
-                    .then(() => {twitch.botChat.say(to, `${target} is now active`)})
-                    .catch(console.error);
-                }
-              })
-              .catch(console.error);
+            obs.switchToScene(newScene).catch(console.error);
           
           // SET ON-SCREEN ACTIVITY
           } else if (commandNoPrefix === 'setactivity') {
-            let target = commandParts.slice(1).join(' ');
-            if (!target) {
+            let newActivity = commandParts.slice(1).join(' ');
+            if (!newActivity) {
               twitch.botChat.say(to, `Please provide a new activity`);
               return;
             }
 
-            obs.websocket.setTextGDIPlusProperties({"source": config.currentActivitySceneItemName, "scene-name": config.defaultSceneName, "render": true, "text": target})
-              .then(res => {
-                twitch.botChat.say(to, `Activity updated!`);
-                return;
-              })
-              .catch(console.error);
+            obs.showActivity(newActivity).then(() => twitch.botChat.say(to, `Activity updated!`)).catch(console.error);
          
           // REBOOT
           } else if (commandNoPrefix === 'reboot') {
@@ -368,10 +297,7 @@ const streamInit = (config, twitch) => {
           // SKIP
           } else if (commandNoPrefix === 'skip') {
             clearTimeout(state.videoTimer);
-            obs.websocket.setSceneItemProperties({"item": state.currentVideo.sceneItem, "scene-name": config.defaultSceneName, "visible": false})
-              .then(res => {
-                nextVideo();
-              });
+            obs.hide(state.currentVideo.sceneItem, config.defaultSceneName).then(nextVideo).catch(console.error);
           
           // ADD
           } else if (commandNoPrefix === 'add') {
@@ -401,8 +327,8 @@ const streamInit = (config, twitch) => {
           
           // START VOTE
           } else if (commandNoPrefix === 'startvote') {
-            videoVoteJob.reschedule("*/15 * * * *");
-            twitch.botChat.say(to, `Video Queue Voting will start in 15 minutes!`);
+            videoVoteJob.reschedule(`*/${config.videoPollIntervalMinutes} * * * *`);
+            twitch.botChat.say(to, `Video Queue Voting will start in ${config.videoPollIntervalMinutes} minutes!`);
           
           // PAUSE VOTE
           } else if (commandNoPrefix === 'pausevote') {
