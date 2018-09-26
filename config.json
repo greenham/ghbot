@@ -37,7 +37,7 @@
   "defaultSceneName": "fgfm",
   "commercialSceneName": "commercial",
   "currentActivitySceneItemName": "now-showing-txt",
-  "initialQueueSize": 3,
+  "initialQueueSize": 1,
   "recentlyPlayedMemory": 5,
   "roomGrindChance": 25,
   "roomGrindPlaytime": 1800,
@@ -51,5 +51,7 @@
   "roomConfigFile": "./conf/rooms.json",
   "roomVidsBasePath": "Y:\\media\\videos\\ALttP\\my-vids\\room-vids",
   "roomVidPlaytime": 60,
+  "roomShuffleChance": 85,
+  "roomShuffleCount": 15,
   "debug": false
 }

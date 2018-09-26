@@ -105,8 +105,17 @@ const streamInit = (config, twitch) => {
         .catch(console.error);
     };
 
-    const addRoomVideo = room => {
-      let loops = Math.floor(config.roomVidPlaytime / room.videoData.length);
+    const addRoomVideo = (room, loop) => {
+      if (Array.isArray(room)) {
+        for (var i = 0; i < room.length; i++) {
+          return addRoomVideo(room[i], loop);
+        }
+      }
+
+      let loops = 1;
+      if (typeof loop === 'undefined' || loop === true) {
+        loops = Math.floor(config.roomVidPlaytime / room.videoData.length);
+      }
       console.log(`Adding ${loops} instances of room video for ${room.dungeonName} - ${room.roomName} to the queue`);
 
       let video = {
@@ -171,11 +180,23 @@ const streamInit = (config, twitch) => {
           return;
         }
 
-        // filter recently played from shuffle
-        let freshVods = config.vods.alttp.filter(e => {
-          return e.includeInShuffle === true && !state.recentlyPlayed.includes(e.id);
-        });
-        state.currentVideo = freshVods.sort(util.randSort).slice(0, 1).shift();
+        // Random chance for room videos to be added
+        if ((Math.floor(Math.random() * 100) + 1) <= config.roomShuffleChance) {
+          console.log(`Room vids selected!`);
+
+          let roomVid = config.rooms.sort(util.randSort).slice(0, 1);
+
+          addRoomVideo(roomVid);
+
+          // play the first one
+          state.currentVideo = state.videoQueue.shift();
+        } else {
+          // filter recently played from shuffle
+          let freshVods = config.vods.alttp.filter(e => {
+            return e.includeInShuffle === true && !state.recentlyPlayed.includes(e.id);
+          });
+          state.currentVideo = freshVods.sort(util.randSort).slice(0, 1).shift();
+        }
       }
       
       showVideo(state.currentVideo);
