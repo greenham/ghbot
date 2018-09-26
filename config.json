@@ -10,6 +10,7 @@
   "textCmdCooldown": 5,
   "twitch": {
     "channel": "#greenham",
+    "modChannel": "#greenham (the-lab)",
     "botLogin": {
       "username": "greenhambot",
       "oauth": "oauth:90aunml4vwyt7zgulm7s5m7xt4hnpc"
@@ -22,7 +23,10 @@
     "admins": ["greenham","greenhambot"],
     "blacklistedUsers": [],
     "ircServer" : "irc.chat.twitch.tv",
-    "debug": false
+    "debug": false,
+    "channelId": 78410627,
+    "controlRoomId": "637d55c7-f194-4c86-98e3-3bce54fd8b30",
+    "subRoomId": "6686e48b-7c5c-408d-ab58-034766b99cd4"
   },
   "obs": {
     "websocket": {

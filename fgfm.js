@@ -32,12 +32,14 @@ obs.init()
 // Connect to twitch, set up basic event listeners
 const twitchInit = (config) => {
   return new Promise((resolve, reject) => {
-    console.log(`Connecting to Twitch / ${config.channel}...`);
+    let controlRoom = `#chatrooms:${config.channelId}:${config.controlRoomId}`;
+
+    console.log(`Connecting to Twitch / ${config.channel} / ${controlRoom}`);
 
     let defaultTwitchConfig = {
       autoRejoin: true,
       retryCount: 10,
-      channels: [config.channel],
+      channels: [config.channel, controlRoom],
       debug: config.debug
     };
 
