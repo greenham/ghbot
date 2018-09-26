@@ -11,6 +11,7 @@ const GHOBS = require('./lib/ghobs');
 // Read internal configuration
 let config = require('./config.json');
 config.vods = require(config.vodConfigFile);
+config.rooms = require(config.roomConfigFile);
 let snesGames = require('./conf/snesgames.json');
 
 // Set up initial state
@@ -102,6 +103,23 @@ const streamInit = (config, twitch) => {
           }
         })
         .catch(console.error);
+    };
+
+    const addRoomVideo = room => {
+      let loops = Math.floor(config.roomVidPlaytime / room.videoData.length);
+      console.log(`Adding ${loops} instances of room video for ${room.dungeonName} - ${room.roomName} to the queue`);
+
+      let video = {
+        "filePath": `${config.roomVidsBasePath}${room.winPath}`,
+        "sceneItem": (room.videoData.width === 960) ? "4x3ph" : "16x9ph",
+        "length": room.videoData.length,
+        "label": room.roomName,
+        "chatName": room.roomName
+      };
+
+      for (var i = 0; i < loops; i++) {
+        state.videoQueue.push(video);
+      }
     };
 
     // Picks the next video in the queue (shuffles if empty)
@@ -246,6 +264,24 @@ const streamInit = (config, twitch) => {
             }
 
             obs.toggleVisible(sceneItem).catch(console.error);
+
+          // ROOM VIDS
+          } else if (commandNoPrefix === 'room') {
+            let roomId = commandParts[1] || false;
+            if (roomId.length !== 4) {
+              twitch.botChat.say(to, `Please provide a 4-digit room ID!`);
+              return;
+            }
+
+            let roomIndex = config.rooms.findIndex(e => e.dungeonId === roomId.substring(0,2) && e.roomId === roomId.substring(2,4));
+            if (roomIndex === -1) {
+              twitch.botChat.say(to, `No room found matching that ID!`);
+              return;  
+            }
+
+            let room = config.rooms[roomIndex];
+            addRoomVideo(room);
+            twitch.botChat.say(to, `Added ${room.dungeonName} - ${room.roomName} to the queue!`);
          
           // EVERYBODY WOW
           } else if (commandNoPrefix === 'auw') {

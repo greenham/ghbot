@@ -48,5 +48,8 @@
   "auwChance": 25,
   "defaultSRVolume": 75,
   "vodConfigFile": "./conf/vods.json",
+  "roomConfigFile": "./conf/rooms.json",
+  "roomVidsBasePath": "Y:\\media\\videos\\ALttP\\my-vids\\room-vids",
+  "roomVidPlaytime": 60,
   "debug": false
 }
