@@ -1,6 +1,10 @@
 TODO:
+  ✔ Fix queue to only return first 20 or so @done (18-09-26 12:04)
+  ✔ Update the queue to support looping @done (18-09-26 18:28)
+    ✔ specify # of loops in video object @done (18-09-26 18:28)
+    ✔ change source to loop? calculate time? @done (18-09-26 18:28)
   ☐ Room vid requests / import
-    ☐ Importing
+    ✔ Importing @done (18-09-26 08:25)
       - Read the Y:\media\videos\ALttP\my-vids\room-vids directory
       - Go through each folder and get all the .mp4 files
       - Store the following as metadata:
@@ -10,6 +14,11 @@ TODO:
         - dungeon (parse from root folder name)
         - room ID
         - video length
+      ☐ Requests
+        ☐ Web interface? Twitch extension?
+      ☐ Improvements
+        ☐ When playing a room back, loop it at slower speeds for a few iterations
+        ✔ Look into just making the video loop instead of hiding at the end @done (18-09-26 18:29)
   ☐ Support viewer skip voting
   ☐ Remove currently playing video from vote choices
   ☐ Command to add sets of videos to the queue at once (like the entire ttas or all gold segments)

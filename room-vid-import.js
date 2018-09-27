@@ -18,14 +18,15 @@ populateDatabase();
 
 async function populateDatabase() {
 	let database = [];
-	await util.asyncForEach(roomVidFiles, async (file) => {
-		// @TODO: ignore anything that's not an mp4
+	await util.asyncForEach(roomVidFiles, async (file, index) => {
+		// ignore anything that's not an mp4
 		let shortPath = file.replace(roomVidPath, '');
 		if (!/\.mp4$/.test(shortPath)) {
 			return;
 		}
 
 		let entry = {
+			id: index+1,
 			shortPath: shortPath,
 			winPath: shortPath.replace(/\//g, '\\')
 		};
@@ -38,6 +39,8 @@ async function populateDatabase() {
 			entry.roomId = matches[3];
 			entry.roomName = matches[4];
 		}
+
+		// @TODO support some other paths / structures
 
 		entry.videoData = await getVideoMetadata(file);
 		database.push(entry);
