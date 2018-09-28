@@ -39,7 +39,7 @@
   "currentActivitySceneItemName": "now-showing-txt",
   "initialQueueSize": 3,
   "recentlyPlayedMemory": 5,
-  "roomGrindChance": 25,
+  "roomGrindChance": 20,
   "roomGrindPlaytime": 900,
   "roomShuffleChance": 85,
   "roomVidPlaytime": 150,

@@ -106,12 +106,6 @@ const streamInit = (config, twitch) => {
     };
 
     const addRoomVideo = (room, loop) => {
-      if (Array.isArray(room)) {
-        for (var i = 0; i < room.length; i++) {
-          return addRoomVideo(room[i], loop);
-        }
-      }
-
       let loops = 1;
       if (typeof loop === 'undefined' || loop === true) {
         loops = Math.floor(config.roomVidPlaytime / room.videoData.length);
@@ -124,7 +118,8 @@ const streamInit = (config, twitch) => {
         "length": room.videoData.length,
         "label": room.roomName,
         "chatName": room.roomName,
-        "loops": loops
+        "loops": loops,
+        "requestedBy": room.requestedBy
       };
 
       state.videoQueue.push(video);
@@ -172,7 +167,7 @@ const streamInit = (config, twitch) => {
           // show room-grind source
           obs.showRoomGrind(config.roomGrindPlaytime, () => {nextVideo()})
             .then(timer => {
-              videoTimer = timer;
+              state.videoTimer = timer;
             })
             .catch(console.error);
 
@@ -184,6 +179,7 @@ const streamInit = (config, twitch) => {
           console.log(`Room vids selected!`);
 
           let roomVid = config.rooms.sort(util.randSort).slice(0, 1);
+          roomVid.requestedBy = 'shuffle';
 
           addRoomVideo(roomVid);
 
@@ -284,28 +280,6 @@ const streamInit = (config, twitch) => {
             }
 
             obs.toggleVisible(sceneItem).catch(console.error);
-
-          // ROOM VID REQUESTS
-          } else if (commandNoPrefix === 'room') {
-            let roomId = commandParts[1] || false;
-            let room;
-            
-            if (roomId !== false) {
-              let roomIndex = config.rooms.findIndex(e => e.id === parseInt(roomId));
-              
-              if (roomIndex === -1) {
-                twitch.botChat.say(to, `No room found matching that ID!`);
-                return;
-              }
-
-              room = config.rooms[roomIndex];
-            } else {
-              // choose a room at random
-              room = config.rooms.sort(util.randSort).slice(0, 1).shift();
-            }
-
-            addRoomVideo(room);
-            twitch.botChat.say(to, `Added ${room.dungeonName} - ${room.roomName} to the queue!`);
          
           // EVERYBODY WOW
           } else if (commandNoPrefix === 'auw') {
@@ -360,6 +334,10 @@ const streamInit = (config, twitch) => {
           } else if (commandNoPrefix === 'skip') {
             clearTimeout(state.videoTimer);
             obs.hide(state.currentVideo.sceneItem, config.defaultSceneName).then(nextVideo).catch(console.error);
+
+          // CLEAR QUEUE
+          } else if (commandNoPrefix === 'clear') {
+            state.videoQueue = [];
           
           // ADD
           } else if (commandNoPrefix === 'add') {
@@ -483,10 +461,38 @@ const streamInit = (config, twitch) => {
             return;
           }
 
+          config.vods.alttp[vodIndex].requestedBy = from;
+
           // add to queue if it exists
           state.videoQueue.push(config.vods.alttp[vodIndex]);
           twitch.botChat.say(to, `${config.vods.alttp[vodIndex].chatName} has been added to the queue [${state.videoQueue.length}]`);
           return;
+
+        // ROOM VID REQUESTS
+        } else if (commandNoPrefix === 'room') {
+          let roomId = commandParts[1] || false;
+          let room;
+          
+          if (roomId !== false) {
+            let roomIndex = config.rooms.findIndex(e => e.id === parseInt(roomId));
+            
+            if (roomIndex === -1) {
+              twitch.botChat.say(to, `No room found matching that ID!`);
+              return;
+            }
+
+            room = config.rooms[roomIndex];
+          } else {
+            // choose a room at random
+            // room = config.rooms.sort(util.randSort).slice(0, 1).shift();
+            twitch.botChat.say(to, `Useage: ${config.twitch.cmdPrefix}room <room-id> | Rooms: https://goo.gl/qoNmuH`);
+            return;
+          }
+
+          room.requestedBy = from;
+
+          addRoomVideo(room);
+          twitch.botChat.say(to, `Added ${room.dungeonName||'?'} - ${room.roomName||'?'} to the queue [${state.videoQueue.length}]!`);
         
         // RNGAMES
         } else if (commandNoPrefix === 'rngames') {

@@ -1,30 +1,21 @@
 TODO:
-  ✔ Fix queue to only return first 20 or so @done (18-09-26 12:04)
-  ✔ Update the queue to support looping @done (18-09-26 18:28)
-    ✔ specify # of loops in video object @done (18-09-26 18:28)
-    ✔ change source to loop? calculate time? @done (18-09-26 18:28)
+  ☐ Support a CLI flag to delay showing queue until command is issued
   ☐ Room vid requests / import
-    ✔ Importing @done (18-09-26 08:25)
-      - Read the Y:\media\videos\ALttP\my-vids\room-vids directory
-      - Go through each folder and get all the .mp4 files
-      - Store the following as metadata:
-        - root folder name
-        - original file name
-        - keywords
-        - dungeon (parse from root folder name)
-        - room ID
-        - video length
-      ☐ Requests
-        ☐ Web interface? Twitch extension?
-      ☐ Improvements
-        ☐ When playing a room back, loop it at slower speeds for a few iterations
-        ✔ Look into just making the video loop instead of hiding at the end @done (18-09-26 18:29)
+    ☐ Support viewer requests
+      ☐ Web interface? Twitch extension?
+    ☐ Improvements
+      ☐ When playing a room back, loop it at slower speeds for a few iterations
   ☐ Support viewer skip voting
   ☐ Remove currently playing video from vote choices
   ☐ Command to add sets of videos to the queue at once (like the entire ttas or all gold segments)
   ☐ Command to stop video rotation / timers (shutdown)
   ☐ Restrict # of requests a user can have in the queue at once
   ☐ Start/stop stream automation
+    ☐ Start
+      - Starting Soon is shown until countdown is triggered
+      - Countdown for X minutes is triggered and shown
+      - Once countdown finishes, switch to intro scene and play
+      - Switch to fgfm once intro finishes
   ☐ Support for $pause -- not sure how to pull this off
   ☐ Add cooldowns
   ☐ Tool to output list of video ID's / descriptions
@@ -37,6 +28,21 @@ Ideas:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ video length @done (18-09-28 09:33) @project(TODO)
+ ✔ root folder name @done (18-09-28 09:33) @project(TODO)
+ ✔ room ID @done (18-09-28 09:33) @project(TODO)
+ ✔ original file name @done (18-09-28 09:33) @project(TODO)
+ ✔ keywords @done (18-09-28 09:33) @project(TODO)
+ ✔ dungeon (parse from root folder name) @done (18-09-28 09:33) @project(TODO)
+ ✔ Store the following as metadata: @done (18-09-28 09:33) @project(TODO)
+ ✔ Read the Y:\media\videos\ALttP\my-vids\room-vids directory @done (18-09-28 09:33) @project(TODO)
+ ✔ Go through each folder and get all the .mp4 files @done (18-09-28 09:33) @project(TODO)
+ ✔ Look into just making the video loop instead of hiding at the end @done (18-09-26 18:29) @project(TODO)
+ ✔ specify # of loops in video object @done (18-09-26 18:28) @project(TODO)
+ ✔ change source to loop? calculate time? @done (18-09-26 18:28) @project(TODO)
+ ✔ Update the queue to support looping @done (18-09-26 18:28) @project(TODO)
+ ✔ Fix queue to only return first 20 or so @done (18-09-26 12:04) @project(TODO)
+ ✔ Importing @done (18-09-26 08:25) @project(TODO)
  ✔ Move vods to their own config @done (18-09-25 15:40) @project(TODO)
  ✔ Modularize OBS and Twitch code @done (18-09-25 15:39) @project(TODO)
  ✔ Ability to include/exclude vods from shuffle in config @done (18-09-25 15:39) @project(TODO)
