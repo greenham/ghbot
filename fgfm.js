@@ -178,7 +178,7 @@ const streamInit = (config, twitch) => {
         if ((Math.floor(Math.random() * 100) + 1) <= config.roomShuffleChance) {
           console.log(`Room vids selected!`);
 
-          let roomVid = config.rooms.sort(util.randSort).slice(0, 1);
+          let roomVid = config.rooms.sort(util.randSort).slice(0, 1).shift();
           roomVid.requestedBy = 'shuffle';
 
           addRoomVideo(roomVid);
