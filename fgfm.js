@@ -24,6 +24,7 @@ let state = {
   "commercialPlaying": false
 };
 
+// Main screen turn on
 const obs = new GHOBS(config);
 obs.init()
   .then(() => {return twitchInit(config.twitch)})

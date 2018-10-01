@@ -1,7 +1,8 @@
 TODO:
+  ☐ Move vrmode timer to this bot, delete from SLCB
   ☐ Support a CLI flag to delay showing queue until command is issued
   ☐ Room vid requests / import
-    ☐ Support viewer requests
+    ☐ Improved interface for viewer requests
       ☐ Web interface? Twitch extension?
     ☐ Improvements
       ☐ When playing a room back, loop it at slower speeds for a few iterations
