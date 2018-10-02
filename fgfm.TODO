@@ -1,4 +1,5 @@
 TODO:
+  ☐ Add cooldowns
   ☐ Move vrmode timer to this bot, delete from SLCB
   ☐ Support a CLI flag to delay showing queue until command is issued
   ☐ Room vid requests / import
@@ -18,7 +19,6 @@ TODO:
       - Once countdown finishes, switch to intro scene and play
       - Switch to fgfm once intro finishes
   ☐ Support for $pause -- not sure how to pull this off
-  ☐ Add cooldowns
   ☐ Tool to output list of video ID's / descriptions
   ☐ Stream alerts for chat
   ☐ Rotating background images (leftside)
