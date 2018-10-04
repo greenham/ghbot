@@ -267,13 +267,13 @@ const streamInit = (config, twitch) => {
 
 
       current: (cmd) => {
-        // @TODO: Move into FGFM
+        // @TODO: Move retrieval of currentVideo into FGFM
         twitch.botChat.say(cmd.to, `Now Playing: ${director.state.currentVideo.chatName}`);
       },
 
 
       next: (cmd) => {
-        // @TODO: Move into FGFM
+        // @TODO: Move retrieval of videoQueue into FGFM
         if (director.state.videoQueue.length > 0) {
           twitch.botChat.say(cmd.to, `Next Video: ${director.state.videoQueue[0].chatName}`);
         } else {
@@ -290,7 +290,7 @@ const streamInit = (config, twitch) => {
         }
 
         // make sure request vid isn't in the queue already
-        // @TODO: Move into FGFM
+        // @TODO: Move check into FGFM
         if (director.state.videoQueue.findIndex(e => e.id === requestedVideoId) !== -1) {
           twitch.botChat.say(cmd.to, `That video is in the queue already!`);
           return;
@@ -302,6 +302,8 @@ const streamInit = (config, twitch) => {
           twitch.botChat.say(cmd.to, `A video with that ID does not exist!`);
           return;
         }
+
+        // @TODO: Make sure user hasn't met the request limit
 
         config.vods.alttp[vodIndex].requestedBy = cmd.from;
 
@@ -332,6 +334,8 @@ const streamInit = (config, twitch) => {
           twitch.botChat.say(cmd.to, `Useage: ${config.twitch.cmdPrefix}room <room-id> | Rooms: https://goo.gl/qoNmuH`);
           return;
         }
+
+        // @TODO: Make sure user hasn't met the request limit
 
         room.requestedBy = cmd.from;
 
