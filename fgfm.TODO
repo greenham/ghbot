@@ -1,6 +1,14 @@
+- Ability to control stream from web or twitch
+  - The OBS "director" and its state need to be accessible from both
+  - How to accomplish this? Websocket?
+
 TODO:
   ✔ Add cooldowns @done (18-10-02 10:16)
-  ☐ Move anything that calls director.state from app into fgfm lib
+  ☐ Fix commercial playing issue (switches back to scene early)
+    ☐ Change $auw and $meme to queue up the videos just like the others (don't switch scenes)
+  ☐ Don't auto-init GHOBS or FGFM, make them on-demand
+  ☐ Decouple twitch chat from GHOBS
+    ☐ Move anything that calls director.state from app into fgfm lib
   ☐ Restrict # of requests a user can have in the queue at once
   ☐ Move vrmode timer to this bot, delete from SLCB
   ☐ Support a CLI flag to delay showing queue until command is issued
@@ -9,7 +17,7 @@ TODO:
       ☐ Web interface? Twitch extension?
     ☐ Improvements
       ☐ When playing a room back, loop it at slower speeds for a few iterations
-  ☐ Support viewer skip voting
+  ☐ Support viewer $skip voting
   ☐ Remove currently playing video from vote choices
   ☐ Command to add sets of videos to the queue at once (like the entire ttas or all gold segments)
   ☐ Command to stop video rotation / timers (shutdown)
