@@ -27,6 +27,16 @@ Ideas:
   ☐ Web interface for viewers to issue commands -- twitch extension?!
   ☐ Support songrequests -- play through discord?
 
+StreamWebRemote:
+  - OBS Websocket Connection Mgmt
+  - Stream Start/Stop/Restart
+  - Video Queue Mgmt
+  - Video DB Mgmt
+  Users:
+    - use twitch login
+    - video requests
+    - room requests
+
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
  ✔ video length @done (18-09-28 09:33) @project(TODO)
