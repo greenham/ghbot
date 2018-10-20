@@ -12223,5 +12223,65 @@
       "fps": 60,
       "length": 48.933984
     }
+  },
+  {
+    "id": 817,
+    "shortPath": "/comparisons/desert-exit.mp4",
+    "winPath": "\\comparisons\\desert-exit.mp4",
+    "dungeonId": "04",
+    "dungeonName": "hera",
+    "roomId": "01",
+    "roomName": "desert-exit-comparisons",
+    "videoData": {
+      "width": 960,
+      "height": 720,
+      "fps": 60,
+      "length": 14.183
+    }
+  },
+  {
+    "id": 818,
+    "shortPath": "/comparisons/bnc.mp4",
+    "winPath": "\\comparisons\\bnc.mp4",
+    "dungeonId": "01",
+    "dungeonName": "escape",
+    "roomId": "20",
+    "roomName": "bnc-comparisons",
+    "videoData": {
+      "width": 960,
+      "height": 720,
+      "fps": 60,
+      "length": 12.27
+    }
+  },
+  {
+    "id": 819,
+    "shortPath": "/comparisons/escape-1st-keyguard.mp4",
+    "winPath": "\\comparisons\\escape-1st-keyguard.mp4",
+    "dungeonId": "01",
+    "dungeonName": "escape",
+    "roomId": "11",
+    "roomName": "1st-keyguard-comparisons",
+    "videoData": {
+      "width": 960,
+      "height": 720,
+      "fps": 60,
+      "length": 5.78
+    }
+  },
+  {
+    "id": 820,
+    "shortPath": "/comparisons/pod-arrow-statue-dash-vs-walk.mp4",
+    "winPath": "\\comparisons\\pod-arrow-statue-dash-vs-walk.mp4",
+    "dungeonId": "06",
+    "dungeonName": "pod",
+    "roomId": "30",
+    "roomName": "pod-arrow-statue-comparisons",
+    "videoData": {
+      "width": 960,
+      "height": 720,
+      "fps": 60,
+      "length": 24.52
+    }
   }
 ]
