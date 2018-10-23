@@ -156,6 +156,16 @@ const streamInit = (config, twitch) => {
       },
 
 
+      showact: (cmd) => {
+        obs.showActivity().catch(console.error);
+      },
+
+
+      hideact: (cmd) => {
+        obs.hideActivity().catch(console.error);
+      },
+
+
       add: (cmd) => {
         // @TODO: DRY this out with the checks in vr
         let requestedVideoId = cmd.args[1] || false;
