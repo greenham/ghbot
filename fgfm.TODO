@@ -23,12 +23,16 @@ TODO:
   ☐ Command to stop video rotation / timers (shutdown)
   ☐ Start/stop stream automation
     ☐ Start
+      - Start stream
       - Starting Soon is shown until countdown is triggered
       - Countdown for X minutes is triggered and shown
       - Once countdown finishes, switch to intro scene and play
       - Switch to fgfm once intro finishes
     ☐ Stop
-      - 
+      - Parameter for how long until the stream should end
+      - Switch to credits with 1 minute remaining
+      - Fade out audio sources with 5 seconds left
+      - Stop Stream
   ☐ Support for $pause -- not sure how to pull this off
   ☐ Tool to output list of video ID's / descriptions
   ☐ Stream alerts for chat
