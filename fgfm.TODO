@@ -27,10 +27,13 @@ TODO:
       - Countdown for X minutes is triggered and shown
       - Once countdown finishes, switch to intro scene and play
       - Switch to fgfm once intro finishes
+    ☐ Stop
+      - 
   ☐ Support for $pause -- not sure how to pull this off
   ☐ Tool to output list of video ID's / descriptions
   ☐ Stream alerts for chat
   ☐ Rotating background images (leftside)
+  ☐ Support gif's via command through gifph
 
 Ideas:
   ☐ Web interface for viewers to issue commands -- twitch extension?!
