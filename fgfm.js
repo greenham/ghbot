@@ -73,11 +73,28 @@ const streamInit = (config, twitch) => {
 
   // All your comfy are belong to us
   const director = new FGFM({config: config, obs: obs});
-  director.init();
   
   // Chat commands
   const commands = {
     admin: {
+
+      init: (cmd) => {
+        let delaySeconds = cmd.args[1] || 300;
+        director.startingSoon(delaySeconds);
+      },
+
+
+      start: (cmd) => {
+        director.startTheShow();
+      },
+
+
+      end: (cmd) => {
+        let creditsDelay = cmd.args[1] || 0;
+        let endDelay = cmd.args[2] || 60;
+        director.endTheShow(creditsDelay, endDelay);
+      },
+
 
       changevis: (cmd, newVisibility) => {
         let sceneItem = command.args[1] || false;

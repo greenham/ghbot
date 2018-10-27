@@ -4,6 +4,22 @@
 
 TODO:
   ✔ Add cooldowns @done (18-10-02 10:16)
+  ☐ Silence detection
+    - If stream has been silent for more than X minutes, try skipping song
+  ☐ Start/stop stream automation
+    ☐ Set up the queue upon init so it can be managed during startup
+    ☐ Start
+      ✔ Start stream @done (18-10-26 09:44)
+      ✔ Starting Soon is shown until countdown is triggered @done (18-10-26 09:44)
+      - Add parameter for countdown
+      - Countdown for X minutes is triggered and shown
+      - Once countdown finishes, switch to intro scene and play
+      - Switch to fgfm once intro finishes
+    ☐ Stop
+      - Parameter for how long until the stream should end
+      - Switch to credits with 1 minute remaining
+      - Fade out audio sources with 5 seconds left
+      - Stop Stream
   ☐ Fix commercial playing issue (switches back to scene early)
     ☐ Change $auw and $meme to queue up the videos just like the others (don't switch scenes)
   ☐ Don't auto-init GHOBS or FGFM, make them on-demand
@@ -11,7 +27,6 @@ TODO:
     ☐ Move anything that calls director.state from app into fgfm lib
   ☐ Restrict # of requests a user can have in the queue at once
   ☐ Move vrmode timer to this bot, delete from SLCB
-  ☐ Support a CLI flag to delay showing queue until command is issued
   ☐ Room vid requests / import
     ☐ Improved interface for viewer requests
       ☐ Web interface? Twitch extension?
@@ -21,23 +36,15 @@ TODO:
   ☐ Remove currently playing video from vote choices
   ☐ Command to add sets of videos to the queue at once (like the entire ttas or all gold segments)
   ☐ Command to stop video rotation / timers (shutdown)
-  ☐ Start/stop stream automation
-    ☐ Start
-      - Start stream
-      - Starting Soon is shown until countdown is triggered
-      - Countdown for X minutes is triggered and shown
-      - Once countdown finishes, switch to intro scene and play
-      - Switch to fgfm once intro finishes
-    ☐ Stop
-      - Parameter for how long until the stream should end
-      - Switch to credits with 1 minute remaining
-      - Fade out audio sources with 5 seconds left
-      - Stop Stream
-  ☐ Support for $pause -- not sure how to pull this off
+  ☐ Support for $pause (pauses queue after current video finishes)
   ☐ Tool to output list of video ID's / descriptions
   ☐ Stream alerts for chat
   ☐ Rotating background images (leftside)
   ☐ Support gif's via command through gifph
+    - !slowdance
+    - !bender
+    - !carlton
+    - !weeb
 
 Ideas:
   ☐ Web interface for viewers to issue commands -- twitch extension?!
