@@ -1,0 +1,7 @@
+[
+	{
+		"name": "vr",
+		"interval": 1800,
+		"value": "Video and room requests are on! Use $vr <video-id> to request a video from this list [https://pastebin.com/qv0wDkvB] or $room <room-id> to request a specific room (looped for a few minutes) from this list [https://goo.gl/qoNmuH]"
+	}
+]

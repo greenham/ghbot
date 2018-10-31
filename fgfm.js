@@ -6,6 +6,7 @@
 const irc = require('irc');
 const schedule = require('node-schedule');
 const md5 = require('md5');
+const moment = require('moment');
 
 // Import local packages
 const GHOBS = require('./lib/ghobs');
@@ -18,6 +19,15 @@ let config = require('./config.json');
 config.vods = require(config.vodConfigFile);
 config.rooms = require(config.roomConfigFile);
 let snesGames = require('./conf/snesgames.json');
+let timersList = require('./conf/timers.json');
+
+let activeTimers = [];
+let skipVote = {
+  target: null,
+  count: 0
+};
+// @TODO: Move to config
+config.skipVoteThreshold = 2;
 
 // Main screen turn on
 const obs = new GHOBS(config);
@@ -80,6 +90,7 @@ const streamInit = (config, twitch) => {
 
       init: (cmd) => {
         let delaySeconds = cmd.args[1] || 300;
+
         director.startingSoon(delaySeconds);
       },
 
@@ -126,6 +137,49 @@ const streamInit = (config, twitch) => {
         }
 
         obs.toggleVisible(sceneItem).catch(console.error);
+      },
+
+
+      timer: (cmd) => {
+        let timerName = cmd.args[1] || false;
+        if (!timerName) {
+          twitch.botChat.say(cmd.to, `A timer name is required!`);
+          return;
+        }
+
+        // search timers for matching name
+        let theTimerIndex = timersList.findIndex(e => e.name === timerName);
+        if (theTimerIndex === -1) {
+          twitch.botChat.say(cmd.to, `Invalid timer name!`);
+          return; 
+        }
+
+        let theTimer = timersList[theTimerIndex];
+
+        // look in activeTimers for current status
+        let currentTimerIndex = activeTimers.findIndex(e => e.name === timerName);
+        
+        let timerStatus = cmd.args[2] || false;
+        if (!timerStatus || timerStatus !== 'on' || timerStatus !== 'off') {
+          // toggle by default
+          if (currentTimerIndex === -1) {
+            timerStatus = 'on';
+          } else {
+            timerStatus = 'off';
+          }
+        }
+      
+        if (currentTimerIndex === -1 && timerStatus === 'on') {
+          let timerFunc = () => {
+            twitch.botChat.say(config.twitch.channel, theTimer.value);
+          };
+          let timerInterval = setInterval(timerFunc, theTimer.interval*1000);
+          activeTimers.push({name: theTimer.name, timer: timerInterval});
+          timerFunc();
+        } else if (timerStatus === 'off') {
+          clearInterval(activeTimers[currentTimerIndex].timer);
+          activeTimers.splice(currentTimerIndex, 1);
+        }
       },
 
 
@@ -217,6 +271,16 @@ const streamInit = (config, twitch) => {
 
       skip: (cmd) => {
         director.skip();
+      },
+
+
+      pause: (cmd) => {
+        director.pause();
+      },
+
+
+      resume: (cmd) => {
+        director.resume();
       },
 
 
@@ -374,7 +438,25 @@ const streamInit = (config, twitch) => {
 
       rngames: (cmd) => {
         twitch.botChat.say(cmd.to, snesGames.sort(util.randSort).slice(0, 10).join(' | '));
-      }
+      },
+
+
+      // voting to skip current video
+      skip: (cmd) => {
+        // check if there is an existing vote to skip for the director.state.currentVideo
+        if (skipVote.target === director.state.currentVideo.id) {
+          // if yes, add the vote, check if threshold is met, skip if necessary
+          skipVote.count++;
+        } else {
+          skipVote.target = director.state.currentVideo.id;
+          skipVote.count = 1;
+        }
+
+        if (skipVote.count >= config.skipVoteThreshold) {
+          director.skip();
+          skipVote.target = null;
+        }
+      },
     }
   };
 
@@ -424,6 +506,8 @@ const streamInit = (config, twitch) => {
     })
     .catch(console.error);
   });
+
+
 
   // @TODO: Modularize timed events
   //console.log(`Initializing stream timers...`);
@@ -477,7 +561,7 @@ const streamInit = (config, twitch) => {
     // choose more random videos from config.vods.alttp (that aren't already in the queue)
     // @TODO: Move into FGFM
     let vodsNotInQueue = config.vods.alttp.filter(e => {
-      let inQueue = director.state.videoQueue.findIndex(q => q.id === e.id) !== -1;
+      let inQueue = (director.state.videoQueue.findIndex(q => q.id === e.id) !== -1) && (director.state.currentVideo.id !== e.id);
       return !inQueue;
     });
     currentChoices = vodsNotInQueue.sort(util.randSort).slice(0, config.videoPollSize);
@@ -494,6 +578,12 @@ const streamInit = (config, twitch) => {
     rockTheVote();
     rtvInterval = setInterval(() => {rockTheVote()}, 300000);
   });
+};
+
+const startTimer = (timer) => {
+  setInterval(() => {
+    
+  }, timer.interval*1000);
 };
 
 // catches Promise errors
