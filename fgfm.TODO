@@ -1,15 +1,10 @@
 TODO:
-  ☐ Have director emit events for bots to listen to
-    - show status changing
-    - video starting/ending/skipped
-  ☐ Auto-enable vrmode timer when show starts (listen for event)
+  ☐ Handle socket disconnect
   ☐ Start/stop stream automation
     ☐ Support scheduled start/stop
       - instead of countdown for X seconds, use datetime argument
     ☐ Start
       - Countdown for X minutes is triggered and shown
-      - Once countdown finishes, switch to intro scene and play
-      - Switch to fgfm once intro finishes
   ☐ Decouple twitch chat from GHOBS
     ☐ Move anything that calls director.state from app into fgfm lib
   ☐ Restrict # of requests a user can have in the queue at once
@@ -46,6 +41,14 @@ StreamWebRemote:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ Stop @done (18-11-06 21:54) @project(TODO)
+ ✔ video starting/ending/skipped @done (18-11-06 21:53) @project(TODO)
+ ✔ show status changing @done (18-11-06 21:53) @project(TODO)
+ ✔ Have director emit events for bots to listen to @done (18-11-06 21:53) @project(TODO)
+ ✔ Auto-enable vrmode timer when show starts (listen for event) @done (18-11-06 21:53) @project(TODO)
+ ✔ hide sources before switching to credits @done (18-11-06 21:41) @project(TODO)
+ ✔ Support a delay for Start Streaming @done (18-11-06 21:41) @project(TODO)
+ ✔ Add a $rooms alias for $room @done (18-11-06 15:05) @project(TODO)
  ✔ Remove currently playing video from vote choices @done (18-10-30 11:51) @project(TODO)
  ✔ track votes for the current playing video @done (18-10-30 11:48) @project(TODO)
  ✔ if threshold is met, skip @done (18-10-30 11:48) @project(TODO)

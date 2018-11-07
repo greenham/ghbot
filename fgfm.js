@@ -22,12 +22,7 @@ let snesGames = require('./conf/snesgames.json');
 let timersList = require('./conf/timers.json');
 
 let activeTimers = [];
-let skipVote = {
-  target: null,
-  count: 0
-};
-// @TODO: Move to config
-config.skipVoteThreshold = 2;
+let skipVote = {target: null, count: 0};
 
 // Main screen turn on
 const obs = new GHOBS(config);
@@ -83,15 +78,34 @@ const streamInit = (config, twitch) => {
 
   // All your comfy are belong to us
   const director = new FGFM({config: config, obs: obs});
+
+  // Handle show events from the director
+  director.on('SHOW_STARTED', () => {
+    // Enable vrmode timer
+    manageTimer('vr', 'on');
+  });
+
+  director.on('SHOW_ENDING', (secondsUntilCredits) => {
+    // Disable vrmode timer
+    manageTimer('vr', 'off');
+
+    // Let the chat know the stream is ending soon
+    twitch.botChat.say(config.twitch.channel, `The stream will be ending in ${parseFloat(secondsUntilCredits/60).toFixed(0)} minutes!`);
+  });
+
+  director.on('CREDITS_SHOWN', (secondsUntilEnd) => {
+    twitch.editorChat.say(config.twitch.channel, `Thanks to everyone for watching and lurking! Have a wonderful night and stay comfy. greenhComfy`);
+  });
   
   // Chat commands
   const commands = {
     admin: {
 
       init: (cmd) => {
-        let delaySeconds = cmd.args[1] || 300;
+        let streamStartDelaySeconds = cmd.args[1] || 1;
+        let showStartDelaySeconds = cmd.args[2] || 300;
 
-        director.startingSoon(delaySeconds);
+        director.startingSoon(streamStartDelaySeconds, showStartDelaySeconds);
       },
 
 
@@ -101,7 +115,7 @@ const streamInit = (config, twitch) => {
 
 
       end: (cmd) => {
-        let creditsDelay = cmd.args[1] || 0;
+        let creditsDelay = cmd.args[1] || 1;
         let endDelay = cmd.args[2] || 60;
         director.endTheShow(creditsDelay, endDelay);
       },
@@ -147,38 +161,12 @@ const streamInit = (config, twitch) => {
           return;
         }
 
-        // search timers for matching name
-        let theTimerIndex = timersList.findIndex(e => e.name === timerName);
-        if (theTimerIndex === -1) {
-          twitch.botChat.say(cmd.to, `Invalid timer name!`);
-          return; 
-        }
-
-        let theTimer = timersList[theTimerIndex];
-
-        // look in activeTimers for current status
-        let currentTimerIndex = activeTimers.findIndex(e => e.name === timerName);
-        
         let timerStatus = cmd.args[2] || false;
-        if (!timerStatus || timerStatus !== 'on' || timerStatus !== 'off') {
-          // toggle by default
-          if (currentTimerIndex === -1) {
-            timerStatus = 'on';
-          } else {
-            timerStatus = 'off';
-          }
-        }
-      
-        if (currentTimerIndex === -1 && timerStatus === 'on') {
-          let timerFunc = () => {
-            twitch.botChat.say(config.twitch.channel, theTimer.value);
-          };
-          let timerInterval = setInterval(timerFunc, theTimer.interval*1000);
-          activeTimers.push({name: theTimer.name, timer: timerInterval});
-          timerFunc();
-        } else if (timerStatus === 'off') {
-          clearInterval(activeTimers[currentTimerIndex].timer);
-          activeTimers.splice(currentTimerIndex, 1);
+
+        try {
+          manageTimer(timerName, timerStatus);
+        } catch (e) {
+          twitch.botChat.say(cmd.to, e);
         }
       },
 
@@ -460,6 +448,11 @@ const streamInit = (config, twitch) => {
     }
   };
 
+  // Aliases for chat commands
+  const aliases = {
+    "rooms": "room"
+  };
+
   // Listen for the above commands
   twitch.botChat.addListener('message', (from, to, message) => {
     // Ignore everything from blacklisted users
@@ -480,6 +473,9 @@ const streamInit = (config, twitch) => {
 
     // Ignore messages without a command
     if (!key || key.length === 0) return;
+
+    // Check for aliased commands
+    if (aliases.hasOwnProperty(key)) key = aliases[key];
 
     // Ignore unrecognized commands
     if (!commands.admin.hasOwnProperty(key) && !commands.user.hasOwnProperty(key)) return;
@@ -507,7 +503,41 @@ const streamInit = (config, twitch) => {
     .catch(console.error);
   });
 
+  const manageTimer = (timerName, timerStatus) => {
+    // search timers for matching name
+    let theTimerIndex = timersList.findIndex(e => e.name === timerName);
+    if (theTimerIndex === -1) {
+      throw("Invalid timer name!");
+    }
 
+    let theTimer = timersList[theTimerIndex];
+
+    // look in activeTimers for current status
+    let currentTimerIndex = activeTimers.findIndex(e => e.name === timerName);
+    
+    if (!timerStatus || timerStatus !== 'on' || timerStatus !== 'off') {
+      // toggle by default
+      if (currentTimerIndex === -1) {
+        timerStatus = 'on';
+      } else {
+        timerStatus = 'off';
+      }
+    }
+  
+    if (currentTimerIndex === -1 && timerStatus === 'on') {
+      let timerFunc = () => {
+        twitch.botChat.say(config.twitch.channel, theTimer.value);
+      };
+      let timerInterval = setInterval(timerFunc, theTimer.interval*1000);
+      activeTimers.push({name: theTimer.name, timer: timerInterval});
+      timerFunc();
+    } else if (timerStatus === 'off') {
+      clearInterval(activeTimers[currentTimerIndex].timer);
+      activeTimers.splice(currentTimerIndex, 1);
+    }
+
+    return;
+  }
 
   // @TODO: Modularize timed events
   //console.log(`Initializing stream timers...`);
@@ -578,12 +608,6 @@ const streamInit = (config, twitch) => {
     rockTheVote();
     rtvInterval = setInterval(() => {rockTheVote()}, 300000);
   });
-};
-
-const startTimer = (timer) => {
-  setInterval(() => {
-    
-  }, timer.interval*1000);
 };
 
 // catches Promise errors
