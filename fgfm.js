@@ -13,6 +13,7 @@ const GHOBS = require('./lib/ghobs');
 const FGFM = require('./lib/fgfm');
 const cooldowns = require('./lib/cooldowns');
 const util = require('./lib/util');
+const Spotify = require('./lib/spotify');
 
 // Read internal configuration
 let config = require('./config.json');
@@ -95,6 +96,13 @@ const streamInit = (config, twitch) => {
 
   director.on('CREDITS_SHOWN', (secondsUntilEnd) => {
     twitch.editorChat.say(config.twitch.channel, `Thanks to everyone for watching and lurking! Have a wonderful night and stay comfy. greenhComfy`);
+  });
+
+  // Spotify integration
+  const spotify = new Spotify(config.spotify);
+  spotify.init()
+  .then(() => {
+    spotify.getPlaybackState();    
   });
   
   // Chat commands
