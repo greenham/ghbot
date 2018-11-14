@@ -1,6 +1,17 @@
 {
   "alttp": [
     {
+      "id": "ttas",
+      "category": "Optimal TTAS",
+      "label": "Any% NMG Optimal Theory TAS [1:20:38.72]",
+      "name": "OTTAS Full",
+      "chatName": "OTTAS Full",
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\full-risky-raw.mp4",
+      "sceneItem": "16x9ph",
+      "length": 4843,
+      "includeInShuffle": true
+    },
+    {
       "id": "ot-seg-escape",
       "category": "Optimal TTAS Segment",
       "label": false,
@@ -152,6 +163,17 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\14-ganon.mp4",
       "sceneItem": "4x3ph",
       "length": 108,
+      "includeInShuffle": true
+    },
+    {
+      "id": "rta-ttas",
+      "category": "Safe TTAS",
+      "label": "Any% NMG Safe/RTA Theory TAS [1:21:26.52]",
+      "name": "STTAS Full",
+      "chatName": "STTAS Full",
+      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\full-rta-raw.mp4",
+      "sceneItem": "16x9ph",
+      "length": 4892,
       "includeInShuffle": true
     },
     {
@@ -460,7 +482,7 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%-mg-ahp\\2017-12-22-100mg-11912.mp4",
       "sceneItem": "16x9ph",
       "length": 4786,
-      "includeInShuffle": false
+      "includeInShuffle": true
     },
     {
       "id": "pb-ab",
@@ -471,18 +493,18 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\all-bosses\\2017-11-20-ab-10923.mp4",
       "sceneItem": "16x9ph",
       "length": 4200,
-      "includeInShuffle": false
+      "includeInShuffle": true
     },
     {
       "id": "pb-ad",
       "category": "Personal Best",
-      "label": "Personal Best: All Dungeons No EG/DW/WW (1:14:59) [2017-11-19]",
+      "label": "Personal Best: All Dungeons No EG/DG/WW (1:14:59) [2017-11-19]",
       "name": "All Dungeons (PB)",
       "chatName": "All Dungeons (PB)",
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\all-dungeons\\2017-11-19-ad-11459.mp4",
       "sceneItem": "16x9ph",
       "length": 4555,
-      "includeInShuffle": false
+      "includeInShuffle": true
     },
     {
       "id": "pb-any-nmg",
@@ -493,7 +515,7 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\any%-nmg-nsq\\2018-05-27-nmg-12624.mp4",
       "sceneItem": "16x9ph",
       "length": 5190,
-      "includeInShuffle": false
+      "includeInShuffle": true
     },
     {
       "id": "pb-any-no-eg",
@@ -526,7 +548,7 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\mirror-shield\\2017-06-20-mirror-shield-5032.mp4",
       "sceneItem": "16x9ph",
       "length": 3068,
-      "includeInShuffle": false
+      "includeInShuffle": true
     },
     {
       "id": "pb-ms-no-eg",
@@ -548,7 +570,7 @@
       "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\rbo\\2017-12-01-rbo-11813.mp4",
       "sceneItem": "16x9ph",
       "length": 4725,
-      "includeInShuffle": false
+      "includeInShuffle": true
     },
     {
       "id": "pb-100-nmg",

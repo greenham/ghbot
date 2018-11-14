@@ -474,6 +474,9 @@ const streamInit = (config, twitch) => {
     // Ignore messages without a command
     if (!key || key.length === 0) return;
 
+    // Case-insensitive
+    key.toLowerCase();
+
     // Check for aliased commands
     if (aliases.hasOwnProperty(key)) key = aliases[key];
 
