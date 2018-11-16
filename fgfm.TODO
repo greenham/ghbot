@@ -1,4 +1,5 @@
 TODO:
+  ☐ Don't re-create queue on start if it already exists
   ☐ Handle socket disconnect
   ☐ Start/stop stream automation
     ☐ Support scheduled start/stop
