@@ -1,11 +1,14 @@
 TODO:
+  ☐ Spotify integration
+    ☐ !song -- display current song + link
+    ☐ !skip -- mods auto-skip, voting for regs
+    ☐ !volume -- volume adjustment
+    ☐ !pause / !resume
+  ☐ Web interface for viewers to issue commands
+  ☐ Admin panel on website for control
+  ☐ Add support for a command to mute/unmute audio sources
   ☐ Don't re-create queue on start if it already exists
   ☐ Handle socket disconnect
-  ☐ Start/stop stream automation
-    ☐ Support scheduled start/stop
-      - instead of countdown for X seconds, use datetime argument
-    ☐ Start
-      - Countdown for X minutes is triggered and shown
   ☐ Decouple twitch chat from GHOBS
     ☐ Move anything that calls director.state from app into fgfm lib
   ☐ Restrict # of requests a user can have in the queue at once
@@ -25,9 +28,11 @@ TODO:
     - !weeb
   ☐ Fix commercial playing issue (switches back to scene early)
     ☐ Change $auw and $meme to queue up the videos just like the others (don't switch scenes)
+  ☐ Stats tracking for games
+    ☐ Most won/lost gambling
+    ☐ Most trivia answered
 
 Ideas:
-  ☐ Web interface for viewers to issue commands -- twitch extension?!
   ☐ Support songrequests -- play through discord?
 
 StreamWebRemote:
