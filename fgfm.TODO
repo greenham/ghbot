@@ -1,9 +1,10 @@
 TODO:
   ☐ Spotify integration
-    ☐ !song -- display current song + link
-    ☐ !skip -- mods auto-skip, voting for regs
+    ✔ !song -- display current song + link @done (18-12-04 11:24)
+    ✔ !playlist -- display current context / album @done (18-12-04 11:24)
+    ✔ !skip -- mods auto-skip @done (18-12-04 11:47)
     ☐ !volume -- volume adjustment
-    ☐ !pause / !resume
+    ✔ !pause / !resume @done (18-12-04 11:49)
   ☐ Web interface for viewers to issue commands
   ☐ Admin panel on website for control
   ☐ Add support for a command to mute/unmute audio sources

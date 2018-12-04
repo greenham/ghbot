@@ -82,12 +82,16 @@ const streamInit = (config, twitch) => {
 
   // Handle show events from the director
   director.on('SHOW_STARTED', () => {
-    // Enable vrmode timer
+    manageTimer('vr', 'on');
+  });
+  director.on('SHOW_PAUSED', () => {
+    manageTimer('vr', 'off');
+  });
+  director.on('SHOW_RESUMED', () => {
     manageTimer('vr', 'on');
   });
 
   director.on('SHOW_ENDING', (secondsUntilCredits) => {
-    // Disable vrmode timer
     manageTimer('vr', 'off');
 
     // Let the chat know the stream is ending soon
@@ -100,10 +104,7 @@ const streamInit = (config, twitch) => {
 
   // Spotify integration
   const spotify = new Spotify(config.spotify);
-  spotify.init()
-  .then(() => {
-    spotify.getPlaybackState();    
-  });
+  spotify.init();
   
   // Chat commands
   const commands = {
@@ -298,6 +299,25 @@ const streamInit = (config, twitch) => {
       },
 
 
+      songskip: (cmd) => {
+        spotify.skip();
+      },
+
+      songpause: (cmd) => {
+        spotify.pause();
+      },
+
+      songresume: (cmd) => {
+        spotify.resume();
+      },
+
+      songvol: (cmd) => {
+        let volume = parseInt(cmd.args[1]) || 100;
+        spotify.setVolume(volume)
+          .then(res => twitch.botChat.say(cmd.to, `Volume set to ${volume}`))
+          .catch(err => twitch.botChat.say(cmd.to, `Error setting spotify volume: ${JSON.stringify(err)}`));
+      },
+
       reboot: (cmd) => {
         console.log('Received request from admin to reboot...');
         twitch.botChat.say(cmd.to, 'Rebooting...');
@@ -436,7 +456,6 @@ const streamInit = (config, twitch) => {
         twitch.botChat.say(cmd.to, snesGames.sort(util.randSort).slice(0, 10).join(' | '));
       },
 
-
       // voting to skip current video
       skip: (cmd) => {
         // check if there is an existing vote to skip for the director.state.currentVideo
@@ -453,6 +472,22 @@ const streamInit = (config, twitch) => {
           skipVote.target = null;
         }
       },
+
+      song: async (cmd) => {
+        spotify.getCurrentSong()
+          .then(async song => {
+            let artists = [];
+            await util.asyncForEach(song.artists, async (artist) => artists.push(artist.name));
+            twitch.botChat.say(cmd.to, `Current Song: ${artists.join(',')} - ${song.name} | ${song.url}`);
+          })
+          .catch(err => twitch.botChat.say(cmd.to, `Error retrieving current song: ${JSON.stringify(err)}`));
+      },
+
+      playlist: (cmd) => {
+        spotify.getCurrentPlaylist()
+          .then(playlist => twitch.botChat.say(cmd.to, `Current Playlist: ${playlist}`))
+          .catch(err => twitch.botChat.say(cmd.to, `Error retrieving current playlist: ${JSON.stringify(err)}`));
+      }
     }
   };
 
