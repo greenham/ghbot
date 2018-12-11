@@ -13,6 +13,7 @@ const GHOBS = require('./lib/ghobs');
 const FGFM = require('./lib/fgfm');
 const cooldowns = require('./lib/cooldowns');
 const util = require('./lib/util');
+const Spotify = require('./lib/spotify');
 
 // Read internal configuration
 let config = require('./config.json');
@@ -81,12 +82,16 @@ const streamInit = (config, twitch) => {
 
   // Handle show events from the director
   director.on('SHOW_STARTED', () => {
-    // Enable vrmode timer
+    manageTimer('vr', 'on');
+  });
+  director.on('SHOW_PAUSED', () => {
+    manageTimer('vr', 'off');
+  });
+  director.on('SHOW_RESUMED', () => {
     manageTimer('vr', 'on');
   });
 
   director.on('SHOW_ENDING', (secondsUntilCredits) => {
-    // Disable vrmode timer
     manageTimer('vr', 'off');
 
     // Let the chat know the stream is ending soon
@@ -96,6 +101,10 @@ const streamInit = (config, twitch) => {
   director.on('CREDITS_SHOWN', (secondsUntilEnd) => {
     twitch.editorChat.say(config.twitch.channel, `Thanks to everyone for watching and lurking! Have a wonderful night and stay comfy. greenhComfy`);
   });
+
+  // Spotify integration
+  const spotify = new Spotify(config.spotify);
+  spotify.init();
   
   // Chat commands
   const commands = {
@@ -290,6 +299,95 @@ const streamInit = (config, twitch) => {
       },
 
 
+      songskip: (cmd) => {
+        spotify.skip();
+      },
+
+      songpause: (cmd) => {
+        spotify.pause();
+      },
+
+      songresume: (cmd) => {
+        spotify.resume();
+      },
+
+      songvol: (cmd) => {
+        let volume = parseInt(cmd.args[1]) || 100;
+        spotify.setVolume(volume)
+          .then(res => twitch.botChat.say(cmd.to, `Volume set to ${volume}`))
+          .catch(err => twitch.botChat.say(cmd.to, `Error setting spotify volume: ${JSON.stringify(err)}`));
+      },
+
+      songplay: (cmd) => {
+        let url = cmd.args[1] || false;
+        if (url === false) {
+          return twitch.botChat.say(cmd.to, `You must provide a link to a spotify playlist or album!`);
+        }
+
+        // parse+validate url
+        let spotifyUri = false;
+
+        // check for native spotify URI first
+        if (url.includes('spotify:')) {
+          let parsedUrl = url.match(/spotify:(playlist|album):([A-Za-z0-9]{22})/);
+          if (parsedUrl !== null) {
+            spotifyUri = parsedUrl[0];
+          }
+        } else if (url.includes('spotify.com')) {
+          // determine if it's an album or playlist
+          if (!url.includes('/playlist/') && !url.includes('/album/')) {
+            return twitch.botChat.say(cmd.to, `Spotify URL must be a playlist or album!`);
+          }
+
+          // parse the URL to get the resource type and ID
+          let parsedUrl = url.match(/(playlist|album)\/([A-Za-z0-9]{22})/);
+          if (parsedUrl !== null) {
+            spotifyUri = `spotify:${parsedUrl[1]}:${parsedUrl[2]}`;
+          } else {
+            return twitch.botChat.say(cmd.to, `Unable to parse spotify URL!`);
+          }
+        } else {
+          return twitch.botChat.say(cmd.to, `Invalid spotify URL!`);
+        }
+
+        if (spotifyUri !== false) {
+          spotify.playContext(spotifyUri)
+            .then(res => twitch.botChat.say(cmd.to, `Changed playlist!`))
+            .catch(err => twitch.botChat.say(cmd.to, `Error changing playlist: ${JSON.stringify(err)}`));
+        } else {
+          return twitch.botChat.say(cmd.to, `Unable to parse Spotify URL!`);
+        }
+      },
+
+      songshuffle: (cmd) => {
+        let state = cmd.args[1] || true;
+
+        if (state === 'off' || state === 'false') {
+          state = false;
+        } else {
+          state = true;
+        }
+
+        spotify.shuffle(state)
+          .then(res => twitch.botChat.say(cmd.to, `Updated shuffle state!`))
+          .catch(err => twitch.botChat.say(cmd.to, `Error changing shuffle state: ${JSON.stringify(err)}`))
+      },
+
+      songrepeat: (cmd) => {
+        let state = cmd.args[1] || false;
+        if (state === false) {
+          return twitch.botChat.say(cmd.to, `You must provide a repeat mode (track, context, or off)!`);
+        }
+
+        if (!['track', 'context', 'off'].includes(state)) {
+          return twitch.botChat.say(cmd.to, `You must provide a valid repeat mode (track, context, or off)!`);
+        }
+
+        spotify.repeat(state)
+          .then(res => twitch.botChat.say(cmd.to, `Updated repeat mode!`))
+          .catch(err => twitch.botChat.say(cmd.to, `Error changing repeat mode: ${JSON.stringify(err)}`))        
+      },
+
       reboot: (cmd) => {
         console.log('Received request from admin to reboot...');
         twitch.botChat.say(cmd.to, 'Rebooting...');
@@ -428,7 +526,6 @@ const streamInit = (config, twitch) => {
         twitch.botChat.say(cmd.to, snesGames.sort(util.randSort).slice(0, 10).join(' | '));
       },
 
-
       // voting to skip current video
       skip: (cmd) => {
         // check if there is an existing vote to skip for the director.state.currentVideo
@@ -445,6 +542,22 @@ const streamInit = (config, twitch) => {
           skipVote.target = null;
         }
       },
+
+      song: async (cmd) => {
+        spotify.getCurrentSong()
+          .then(async song => {
+            let artists = [];
+            await util.asyncForEach(song.artists, async (artist) => artists.push(artist.name));
+            twitch.botChat.say(cmd.to, `Current Song: ${artists.join(',')} - ${song.name} | ${song.url}`);
+          })
+          .catch(err => twitch.botChat.say(cmd.to, `Error retrieving current song: ${JSON.stringify(err)}`));
+      },
+
+      playlist: (cmd) => {
+        spotify.getCurrentPlaylist()
+          .then(playlist => twitch.botChat.say(cmd.to, `Current Playlist: ${playlist}`))
+          .catch(err => twitch.botChat.say(cmd.to, `Error retrieving current playlist: ${JSON.stringify(err)}`));
+      }
     }
   };
 
