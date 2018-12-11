@@ -6,7 +6,7 @@
       "label": "Any% NMG Optimal Theory TAS [1:20:38.72]",
       "name": "OTTAS Full",
       "chatName": "OTTAS Full",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\full-risky-raw.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\full-risky-raw.mp4",
       "sceneItem": "16x9ph",
       "length": 4843,
       "includeInShuffle": true
@@ -17,7 +17,7 @@
       "label": false,
       "name": "Escape (OTTAS Seg)",
       "chatName": "Escape (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\01-escape.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\01-escape.mp4",
       "sceneItem": "4x3ph",
       "length": 352,
       "includeInShuffle": true
@@ -28,7 +28,7 @@
       "label": false,
       "name": "Eastern (OTTAS Seg)",
       "chatName": "Eastern (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\02-eastern.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\02-eastern.mp4",
       "sceneItem": "4x3ph",
       "length": 277,
       "includeInShuffle": true
@@ -39,7 +39,7 @@
       "label": false,
       "name": "Desert (OTTAS Seg)",
       "chatName": "Desert (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\03-desert.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\03-desert.mp4",
       "sceneItem": "4x3ph",
       "length": 345,
       "includeInShuffle": true
@@ -50,7 +50,7 @@
       "label": false,
       "name": "Hera (OTTAS Seg)",
       "chatName": "Hera (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\04-hera.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\04-hera.mp4",
       "sceneItem": "4x3ph",
       "length": 299,
       "includeInShuffle": true
@@ -61,7 +61,7 @@
       "label": false,
       "name": "ATower (OTTAS Seg)",
       "chatName": "ATower (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\05-atower.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\05-atower.mp4",
       "sceneItem": "4x3ph",
       "length": 352,
       "includeInShuffle": true
@@ -72,7 +72,7 @@
       "label": false,
       "name": "PoD (OTTAS Seg)",
       "chatName": "PoD (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\06-pod.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\06-pod.mp4",
       "sceneItem": "4x3ph",
       "length": 309,
       "includeInShuffle": true
@@ -83,7 +83,7 @@
       "label": false,
       "name": "Thieves (OTTAS Seg)",
       "chatName": "Thieves (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\07-thieves.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\07-thieves.mp4",
       "sceneItem": "4x3ph",
       "length": 377,
       "includeInShuffle": true
@@ -94,7 +94,7 @@
       "label": false,
       "name": "Skull (OTTAS Seg)",
       "chatName": "Skull (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\08-skull.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\08-skull.mp4",
       "sceneItem": "4x3ph",
       "length": 267,
       "includeInShuffle": true
@@ -105,7 +105,7 @@
       "label": false,
       "name": "Ice (OTTAS Seg)",
       "chatName": "Ice (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\09-ice.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\09-ice.mp4",
       "sceneItem": "4x3ph",
       "length": 318,
       "includeInShuffle": true
@@ -116,7 +116,7 @@
       "label": false,
       "name": "Swamp (OTTAS Seg)",
       "chatName": "Swamp (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\10-swamp.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\10-swamp.mp4",
       "sceneItem": "4x3ph",
       "length": 345,
       "includeInShuffle": true
@@ -127,7 +127,7 @@
       "label": false,
       "name": "Mire (OTTAS Seg)",
       "chatName": "Mire (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\11-mire.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\11-mire.mp4",
       "sceneItem": "4x3ph",
       "length": 365,
       "includeInShuffle": true
@@ -138,7 +138,7 @@
       "label": false,
       "name": "TRock (OTTAS Seg)",
       "chatName": "TRock (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\12-trock.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\12-trock.mp4",
       "sceneItem": "4x3ph",
       "length": 361,
       "includeInShuffle": true
@@ -149,7 +149,7 @@
       "label": false,
       "name": "GTower (OTTAS Seg)",
       "chatName": "GTower (OTTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\13-gtower.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\13-gtower.mp4",
       "sceneItem": "4x3ph",
       "length": 396,
       "includeInShuffle": true
@@ -160,7 +160,7 @@
       "label": false,
       "name": "Ganon (TTAS Seg)",
       "chatName": "Ganon (TTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\Risky\\final-versions-timed\\14-ganon.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\Risky\\final-versions-timed\\14-ganon.mp4",
       "sceneItem": "4x3ph",
       "length": 108,
       "includeInShuffle": true
@@ -171,7 +171,7 @@
       "label": "Any% NMG Safe/RTA Theory TAS [1:21:26.52]",
       "name": "STTAS Full",
       "chatName": "STTAS Full",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\full-rta-raw.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\full-rta-raw.mp4",
       "sceneItem": "16x9ph",
       "length": 4892,
       "includeInShuffle": true
@@ -182,7 +182,7 @@
       "label": false,
       "name": "Escape (STTAS Seg)",
       "chatName": "Escape (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\01-escape.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\01-escape.mp4",
       "sceneItem": "4x3ph",
       "length": 354,
       "includeInShuffle": true
@@ -193,7 +193,7 @@
       "label": false,
       "name": "Eastern (STTAS Seg)",
       "chatName": "Eastern (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\02-eastern.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\02-eastern.mp4",
       "sceneItem": "4x3ph",
       "length": 281,
       "includeInShuffle": true
@@ -204,7 +204,7 @@
       "label": false,
       "name": "Desert (STTAS Seg)",
       "chatName": "Desert (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\03-desert.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\03-desert.mp4",
       "sceneItem": "4x3ph",
       "length": 347,
       "includeInShuffle": true
@@ -215,7 +215,7 @@
       "label": false,
       "name": "Hera (STTAS Seg)",
       "chatName": "Hera (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\04-hera.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\04-hera.mp4",
       "sceneItem": "4x3ph",
       "length": 303,
       "includeInShuffle": true
@@ -226,7 +226,7 @@
       "label": false,
       "name": "Agah Tower (STTAS Seg)",
       "chatName": "Agah Tower (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\05-atower.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\05-atower.mp4",
       "sceneItem": "4x3ph",
       "length": 354,
       "includeInShuffle": true
@@ -237,7 +237,7 @@
       "label": false,
       "name": "PoD (STTAS Seg)",
       "chatName": "PoD (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\06-pod.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\06-pod.mp4",
       "sceneItem": "4x3ph",
       "length": 310,
       "includeInShuffle": true
@@ -248,7 +248,7 @@
       "label": false,
       "name": "Thieves (STTAS Seg)",
       "chatName": "Thieves (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\07-thieves.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\07-thieves.mp4",
       "sceneItem": "4x3ph",
       "length": 379,
       "includeInShuffle": true
@@ -259,7 +259,7 @@
       "label": false,
       "name": "Skull (STTAS Seg)",
       "chatName": "Skull (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\08-skull.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\08-skull.mp4",
       "sceneItem": "4x3ph",
       "length": 270,
       "includeInShuffle": true
@@ -270,7 +270,7 @@
       "label": false,
       "name": "Ice (STTAS Seg)",
       "chatName": "Ice (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\09-ice.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\09-ice.mp4",
       "sceneItem": "4x3ph",
       "length": 321,
       "includeInShuffle": true
@@ -281,7 +281,7 @@
       "label": false,
       "name": "Swamp (STTAS Seg)",
       "chatName": "Swamp (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\10-swamp.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\10-swamp.mp4",
       "sceneItem": "4x3ph",
       "length": 351,
       "includeInShuffle": true
@@ -292,7 +292,7 @@
       "label": false,
       "name": "Mire (STTAS Seg)",
       "chatName": "Mire (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\11-mire.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\11-mire.mp4",
       "sceneItem": "4x3ph",
       "length": 370,
       "includeInShuffle": true
@@ -303,7 +303,7 @@
       "label": false,
       "name": "TRock (STTAS Seg)",
       "chatName": "TRock (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\12-trock.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\12-trock.mp4",
       "sceneItem": "4x3ph",
       "length": 364,
       "includeInShuffle": true
@@ -314,7 +314,7 @@
       "label": false,
       "name": "GTower (STTAS Seg)",
       "chatName": "GTower (STTAS Seg)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\ttas\\RTA\\final-versions-timed\\13-gtower.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\ttas\\RTA\\final-versions-timed\\13-gtower.mp4",
       "sceneItem": "4x3ph",
       "length": 408,
       "includeInShuffle": true
@@ -325,7 +325,7 @@
       "label": "Any% NMG Gold Segment: Escape (5:52.43) [2018-09-19]",
       "name": "Escape (NMG Gold)",
       "chatName": "Escape (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\01-[552.43]-2018-09-19-escape.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\01-[552.43]-2018-09-19-escape.mp4",
       "sceneItem": "4x3ph",
       "length": 360,
       "includeInShuffle": true
@@ -336,7 +336,7 @@
       "label": "Any% NMG Gold Segment: Eastern (5:00.12) [2018-06-25]",
       "name": "Eastern (NMG Gold)",
       "chatName": "Eastern (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\02-[500.12]-2018-06-25-eastern.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\02-[500.12]-2018-06-25-eastern.mp4",
       "sceneItem": "4x3ph",
       "length": 302,
       "includeInShuffle": true
@@ -347,7 +347,7 @@
       "label": "Any% NMG Gold Segment: Desert (6:10.32) [2018-06-02]",
       "name": "Desert (NMG Gold)",
       "chatName": "Desert (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\03-[610.32]-2018-06-02-desert.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\03-[610.32]-2018-06-02-desert.mp4",
       "sceneItem": "4x3ph",
       "length": 374,
       "includeInShuffle": true
@@ -358,7 +358,7 @@
       "label": "Any% NMG Gold Segment: Hera (5:28.83) [2018-06-01]",
       "name": "Hera (NMG Gold)",
       "chatName": "Hera (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\04-[528.83]-2018-06-01-hera.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\04-[528.83]-2018-06-01-hera.mp4",
       "sceneItem": "4x3ph",
       "length": 332,
       "includeInShuffle": true
@@ -369,7 +369,7 @@
       "label": "Any% NMG Gold Segment: Agah Tower (5:13.45) [2018-09-07]",
       "name": "Agah Tower (NMG Gold)",
       "chatName": "Agah Tower (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\05a-[513.45]-2018-09-07-atower.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\05a-[513.45]-2018-09-07-atower.mp4",
       "sceneItem": "4x3ph",
       "length": 314,
       "includeInShuffle": true
@@ -380,7 +380,7 @@
       "label": "Any% NMG Gold Segment: Palace of Darkness (6:11.15) [2018-05-27]",
       "name": "PoD (NMG Gold)",
       "chatName": "PoD (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\06-[611.15]-2018-05-27-pod.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\06-[611.15]-2018-05-27-pod.mp4",
       "sceneItem": "4x3ph",
       "length": 376,
       "includeInShuffle": true
@@ -391,7 +391,7 @@
       "label": "Any% NMG Gold Segment: Thieves Town (7:08.37) [2018-07-01]",
       "name": "Thieves (NMG Gold)",
       "chatName": "Thieves (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\07-[708.37]-2018-07-01-thieves.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\07-[708.37]-2018-07-01-thieves.mp4",
       "sceneItem": "4x3ph",
       "length": 432,
       "includeInShuffle": true
@@ -402,7 +402,7 @@
       "label": "Any% NMG Gold Segment: Skull Woods (5:24.28) [2018-06-02]",
       "name": "Skull (NMG Gold)",
       "chatName": "Skull (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\08-[524.28]-2018-06-02-skull.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\08-[524.28]-2018-06-02-skull.mp4",
       "sceneItem": "4x3ph",
       "length": 328,
       "includeInShuffle": true
@@ -413,7 +413,7 @@
       "label": "Any% NMG Gold Segment: Ice Palace (6:18.13) [2018-09-08]",
       "name": "Ice (NMG Gold)",
       "chatName": "Ice (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\09-[618.13]-2018-09-08-ice.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\09-[618.13]-2018-09-08-ice.mp4",
       "sceneItem": "4x3ph",
       "length": 379,
       "includeInShuffle": true
@@ -424,7 +424,7 @@
       "label": "Any% NMG Gold Segment: Swamp Palace (6:51.87) [2018-06-10]",
       "name": "Swamp (NMG Gold)",
       "chatName": "Swamp (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\10-[651.87]-2018-06-10-swamp.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\10-[651.87]-2018-06-10-swamp.mp4",
       "sceneItem": "4x3ph",
       "length": 418,
       "includeInShuffle": true
@@ -435,7 +435,7 @@
       "label": "Any% NMG Gold Segment: Misery Mire (7:06.58) [2018-10-21]",
       "name": "Mire (NMG Gold)",
       "chatName": "Mire (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\11-[706.58]-2018-10-21-mire.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\11-[706.58]-2018-10-21-mire.mp4",
       "sceneItem": "4x3ph",
       "length": 430,
       "includeInShuffle": true
@@ -446,7 +446,7 @@
       "label": "Any% NMG Gold Segment: Turtle Rock (7:07.34) [2018-06-25]",
       "name": "TRock (NMG Gold)",
       "chatName": "TRock (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\12-[707.34]-2018-06-25-trock.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\12-[707.34]-2018-06-25-trock.mp4",
       "sceneItem": "4x3ph",
       "length": 434,
       "includeInShuffle": true
@@ -457,7 +457,7 @@
       "label": "Any% NMG Gold Segment: Ganon's Tower (7:09.85) [2018-08-19]",
       "name": "GTower (NMG Gold)",
       "chatName": "GTower (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\13-[709.85]-2018-08-19-gtower.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\13-[709.85]-2018-08-19-gtower.mp4",
       "sceneItem": "4x3ph",
       "length": 433,
       "includeInShuffle": true
@@ -468,9 +468,31 @@
       "label": "Any% NMG Gold Segment: Ganon (1:43.06) [2018-05-30]",
       "name": "Ganon (NMG Gold)",
       "chatName": "Ganon (NMG Gold)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\gold-segments\\any%-nmg-nsq\\720p\\timed\\14-[143.06]-2018-05-30-ganon.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\any%-nmg-nsq\\720p\\timed\\14-[143.06]-2018-05-30-ganon.mp4",
       "sceneItem": "4x3ph",
       "length": 117,
+      "includeInShuffle": true
+    },
+    {
+      "id": "ad-gold-ice",
+      "category": "All Dungeons Gold Segment",
+      "label": "All Dungeons Gold Segment: Ice (3:17.62) [2018-01-22]",
+      "name": "Ice (AD Gold)",
+      "chatName": "Ice (AD Gold)",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\all-dungeons\\2018-01-22-ice-317.62.mp4",
+      "sceneItem": "4x3ph",
+      "length": 202,
+      "includeInShuffle": true
+    },
+    {
+      "id": "ad-gold-mire",
+      "category": "All Dungeons Gold Segment",
+      "label": "All Dungeons Gold Segment: Mire (7:21.00) [2018-11-25]",
+      "name": "Mire (AD Gold)",
+      "chatName": "Mire (AD Gold)",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\gold-segments\\all-dungeons\\2018-11-25-mire-721.00.mp4",
+      "sceneItem": "4x3ph",
+      "length": 447,
       "includeInShuffle": true
     },
     {
@@ -479,7 +501,7 @@
       "label": "Personal Best: 100% All Heart Pieces (1:19:12) [2017-12-22]",
       "name": "100% MG AHP (PB)",
       "chatName": "100% MG AHP (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%-mg-ahp\\2017-12-22-100mg-11912.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\100%-mg-ahp\\2017-12-22-100mg-11912.mp4",
       "sceneItem": "16x9ph",
       "length": 4786,
       "includeInShuffle": true
@@ -490,7 +512,7 @@
       "label": "Personal Best: All Bosses No EG (1:09:23) [2017-11-20]",
       "name": "All Bosses (PB)",
       "chatName": "All Bosses (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\all-bosses\\2017-11-20-ab-10923.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\all-bosses\\2017-11-20-ab-10923.mp4",
       "sceneItem": "16x9ph",
       "length": 4200,
       "includeInShuffle": true
@@ -501,7 +523,7 @@
       "label": "Personal Best: All Dungeons No EG/DG/WW (1:14:59) [2017-11-19]",
       "name": "All Dungeons (PB)",
       "chatName": "All Dungeons (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\all-dungeons\\2017-11-19-ad-11459.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\all-dungeons\\2017-11-19-ad-11459.mp4",
       "sceneItem": "16x9ph",
       "length": 4555,
       "includeInShuffle": true
@@ -512,7 +534,7 @@
       "label": "Personal Best: Any% NMG No S+Q (1:26:24) [2018-05-27]",
       "name": "Any% NMG (PB)",
       "chatName": "Any% NMG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\any%-nmg-nsq\\2018-05-27-nmg-12624.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\any%-nmg-nsq\\2018-05-27-nmg-12624.mp4",
       "sceneItem": "16x9ph",
       "length": 5190,
       "includeInShuffle": true
@@ -523,7 +545,7 @@
       "label": "Personal Best: Any% No EG (29:05) [2018-10-14]",
       "name": "Any% No EG (PB)",
       "chatName": "Any% No EG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\any%-no-eg\\2018-10-14-no-eg-2905.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\any%-no-eg\\2018-10-14-no-eg-2905.mp4",
       "sceneItem": "16x9ph",
       "length": 1777,
       "includeInShuffle": true
@@ -534,7 +556,7 @@
       "label": "Personal Best: Master Sword NMG (22:23) [2018-08-23]",
       "name": "Master Sword (PB)",
       "chatName": "Master Sword (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\master-sword\\2018-08-23-master-sword-2223.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\master-sword\\2018-08-23-master-sword-2223.mp4",
       "sceneItem": "16x9ph",
       "length": 1409,
       "includeInShuffle": true
@@ -545,8 +567,8 @@
       "label": "Personal Best: Mirror Shield NMG (50:32) [2017-06-20]",
       "name": "Mirror Shield (PB)",
       "chatName": "Mirror Shield (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\mirror-shield\\2017-06-20-mirror-shield-5032.mp4",
-      "sceneItem": "16x9ph",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\mirror-shield\\2017-06-20-mirror-shield-5032-resized.mp4",
+      "sceneItem": "4x3ph",
       "length": 3068,
       "includeInShuffle": true
     },
@@ -556,7 +578,7 @@
       "label": "Personal Best: Mirror Shield No EG (11:38) [2017-07-02]",
       "name": "Mirror Shield No EG (PB)",
       "chatName": "Mirror Shield No EG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\mirror-shield-no-eg\\2017-07-02-mirror-shield-no-eg-1138-resized.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\mirror-shield-no-eg\\2017-07-02-mirror-shield-no-eg-1138-resized.mp4",
       "sceneItem": "4x3ph",
       "length": 738,
       "includeInShuffle": true
@@ -567,7 +589,7 @@
       "label": "Personal Best: Reverse Boss Order (1:18:13) [2017-12-01]",
       "name": "Reverse Boss Order (PB)",
       "chatName": "Reverse Boss Order (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\rbo\\2017-12-01-rbo-11813.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\rbo\\2017-12-01-rbo-11813.mp4",
       "sceneItem": "16x9ph",
       "length": 4725,
       "includeInShuffle": true
@@ -578,7 +600,7 @@
       "label": "Personal Best: 100% NMG (1:49:30) [2017-01-31]",
       "name": "100% NMG (PB)",
       "chatName": "100% NMG (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\100%\\2017-01-31-hundo-14930.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\100%\\2017-01-31-hundo-14930.mp4",
       "sceneItem": "legacyph",
       "length": 6598,
       "includeInShuffle": false
@@ -589,7 +611,7 @@
       "label": "Personal Best: Defeat Ganon (13:41) [2017-02-20]",
       "name": "Defeat Ganon (PB)",
       "chatName": "Defeat Ganon (PB)",
-      "filePath": "Y:\\media\\videos\\ALttP\\my-vids\\personal-bests\\defeat-ganon\\2017-02-20_12-55-40-defeat-ganon-1341.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\greenham\\personal-bests\\defeat-ganon\\2017-02-20_12-55-40-defeat-ganon-1341.mp4",
       "sceneItem": "legacyph",
       "length": 868,
       "includeInShuffle": true
@@ -599,7 +621,7 @@
     {
       "id": "auw",
       "name": "auw",
-      "filePath": "Y:\\media\\videos\\black-box-everybody-wow.mp4",
+      "filePath": "D:\\media\\videos\\black-box-everybody-wow.mp4",
       "sceneItem": "everybody-wow",
       "length": 247,
       "includeInShuffle": true
@@ -607,7 +629,7 @@
     {
       "id": "archery",
       "name": "archery",
-      "filePath": "Y:\\media\\videos\\ALttP\\memes\\archery-contest.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\memes\\archery-contest.mp4",
       "sceneItem": "meme1",
       "length": 27,
       "includeInShuffle": true
@@ -615,7 +637,7 @@
     {
       "id": "69blazeit",
       "name": "69blazeit",
-      "filePath": "Y:\\media\\videos\\ALttP\\memes\\69BlazeIt.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\memes\\69BlazeIt.mp4",
       "sceneItem": "meme1",
       "length": 92,
       "includeInShuffle": true
@@ -623,7 +645,7 @@
     {
       "id": "rpgfarm",
       "name": "rpgfarm",
-      "filePath": "Y:\\media\\videos\\ALttP\\memes\\2016-07-24-1424-06-rpg-race-sniped.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\memes\\2016-07-24-1424-06-rpg-race-sniped.mp4",
       "sceneItem": "meme1",
       "length": 144,
       "includeInShuffle": true
@@ -631,7 +653,7 @@
     {
       "id": "emmapeg",
       "name": "emmapeg",
-      "filePath": "Y:\\media\\videos\\ALttP\\memes\\emma-pegging.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\memes\\emma-pegging.mp4",
       "sceneItem": "meme1",
       "length": 8,
       "includeInShuffle": true
@@ -639,7 +661,7 @@
     {
       "id": "handy",
       "name": "handy",
-      "filePath": "Y:\\media\\videos\\ALttP\\memes\\handy-in-the-mothhole.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\memes\\handy-in-the-mothhole.mp4",
       "sceneItem": "meme1",
       "length": 39,
       "includeInShuffle": true
@@ -647,7 +669,7 @@
     {
       "id": "bodyguard",
       "name": "bodyguard",
-      "filePath": "Y:\\media\\videos\\ALttP\\memes\\heroic-popo.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\memes\\heroic-popo.mp4",
       "sceneItem": "meme1",
       "length": 14,
       "includeInShuffle": true
@@ -655,7 +677,7 @@
     {
       "id": "whowillitbe",
       "name": "whowillitbe",
-      "filePath": "Y:\\media\\videos\\ALttP\\memes\\its-gonna-be-may.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\memes\\its-gonna-be-may.mp4",
       "sceneItem": "meme1",
       "length": 30,
       "includeInShuffle": true
@@ -663,7 +685,7 @@
     {
       "id": "mindblown",
       "name": "mindblown",
-      "filePath": "Y:\\media\\videos\\ALttP\\memes\\mindblowing-and-lifechanging.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\memes\\mindblowing-and-lifechanging.mp4",
       "sceneItem": "meme1",
       "length": 55,
       "includeInShuffle": true
@@ -671,7 +693,7 @@
     {
       "id": "nerd-nookie",
       "name": "nerd-nookie",
-      "filePath": "Y:\\media\\videos\\ALttP\\memes\\nerd-bizkit.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\memes\\nerd-bizkit.mp4",
       "sceneItem": "meme1",
       "length": 27,
       "includeInShuffle": true
@@ -679,7 +701,7 @@
     {
       "id": "curling",
       "name": "curling",
-      "filePath": "Y:\\media\\videos\\ALttP\\curling-bored-janitors.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\curling-bored-janitors.mp4",
       "sceneItem": "meme1",
       "length": 16,
       "includeInShuffle": true
@@ -687,7 +709,7 @@
     {
       "id": "airplane",
       "name": "airplane",
-      "filePath": "Y:\\media\\videos\\ALttP\\emetaPlane.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\emetaPlane.mp4",
       "sceneItem": "meme1",
       "length": 5,
       "includeInShuffle": true
@@ -695,7 +717,7 @@
     {
       "id": "hard-things",
       "name": "hard-things",
-      "filePath": "Y:\\media\\videos\\ALttP\\questions-about-hard-things.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\questions-about-hard-things.mp4",
       "sceneItem": "meme1",
       "length": 39,
       "includeInShuffle": true
@@ -703,7 +725,7 @@
     {
       "id": "18arrows",
       "name": "18arrows",
-      "filePath": "Y:\\media\\videos\\ALttP\\screevo-18-arrows-fine.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\screevo-18-arrows-fine.mp4",
       "sceneItem": "meme1",
       "length": 41,
       "includeInShuffle": true
@@ -711,7 +733,7 @@
     {
       "id": "quake",
       "name": "quake",
-      "filePath": "Y:\\media\\videos\\ALttP\\trock-indoor-quake.mp4",
+      "filePath": "D:\\media\\videos\\alttp\\trock-indoor-quake.mp4",
       "sceneItem": "meme1",
       "length": 17,
       "includeInShuffle": true
