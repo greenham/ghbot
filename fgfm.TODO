@@ -1,13 +1,4 @@
 TODO:
-  ☐ Spotify integration
-    ✔ song -- display current song + link @done (18-12-04 11:24)
-    ✔ playlist -- display current context / album @done (18-12-04 11:24)
-    ✔ skip -- mods auto-skip @done (18-12-04 11:47)
-    ✔ volume -- volume adjustment @done (18-12-04 19:49)
-    ✔ pause / resume @done (18-12-04 11:49)
-    ✔ ability to change the playlist (setplaylist <spotify-uri>) @done (18-12-11 10:52)
-    ✔ shuffle on/off @done (18-12-11 11:22)
-    ✔ repeat mode control @done (18-12-11 11:22)
   ☐ Web interface for viewers to issue commands
     ☐ Organized room / video list, one-click add-to-queue
   ☐ Admin panel on website for control
@@ -36,6 +27,7 @@ TODO:
   ☐ Stats tracking for games
     ☐ Most won/lost gambling
     ☐ Most trivia answered
+    ☐ Last time jackpot was hit
   ☐ Allow %'s for !gamble
 
 Ideas:  
@@ -52,6 +44,15 @@ StreamWebRemote:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ Spotify integration @done (18-12-28 17:46) @project(TODO)
+ ✔ shuffle on/off @done (18-12-11 11:22) @project(TODO)
+ ✔ repeat mode control @done (18-12-11 11:22) @project(TODO)
+ ✔ ability to change the playlist (setplaylist <spotify-uri>) @done (18-12-11 10:52) @project(TODO)
+ ✔ volume -- volume adjustment @done (18-12-04 19:49) @project(TODO)
+ ✔ pause / resume @done (18-12-04 11:49) @project(TODO)
+ ✔ skip -- mods auto-skip @done (18-12-04 11:47) @project(TODO)
+ ✔ song -- display current song + link @done (18-12-04 11:24) @project(TODO)
+ ✔ playlist -- display current context / album @done (18-12-04 11:24) @project(TODO)
  ✔ Stop @done (18-11-06 21:54) @project(TODO)
  ✔ video starting/ending/skipped @done (18-11-06 21:53) @project(TODO)
  ✔ show status changing @done (18-11-06 21:53) @project(TODO)
