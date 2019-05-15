@@ -21,6 +21,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "pm2 start discord.js --name ghbot-discord",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
