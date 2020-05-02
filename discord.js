@@ -1,26 +1,16 @@
 // Import modules
-const { Client } = require("discord.js"),
+const Discord = require("discord.js"),
   fs = require("fs"),
   path = require("path"),
   axios = require("axios"),
   staticCommands = require("./lib/static-commands.js"),
   ankhbotCommands = require("./lib/ankhbot-commands.js"),
-  config = require("./config.json");
-
-function chunkSubstr(str, size) {
-  const numChunks = Math.ceil(str.length / size);
-  const chunks = new Array(numChunks);
-
-  for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
-    chunks[i] = str.substr(o, size);
-  }
-
-  return chunks;
-}
+  config = require("./config.json"),
+  { randElement, chunkSubstr } = require("./lib/utils.js");
 
 function init(config) {
   // Set up Discord client
-  const client = new Client();
+  const client = new Discord.Client();
 
   // Set up SFX
   const sfxFilePath = path.join(__dirname, "sfx");
@@ -234,6 +224,7 @@ function init(config) {
     // Wait for discord to be ready, handle messages
     .on("ready", () => {
       console.log(`${config.botName} is connected and ready`);
+      client.setRandomActivity();
     })
     // Listen for commands for the bot to respond to across all channels
     .on("message", (msg) => {
@@ -242,19 +233,16 @@ function init(config) {
         if (!config.discord.guilds[msg.guild.id]) {
           return;
         }
-      } else if (config.discord.handleDMs === false) {
-        return;
       }
 
+      // Find the guild config for this msg, use default if no guild (DM)
+      let guildConfig = config.discord.guilds[msg.guild.id];
+
+      // Parse message content
       msg.originalContent = msg.content;
       msg.content = msg.content.toLowerCase();
 
-      // Find the guild config for this msg, use default if no guild (DM)
-      let guildConfig = msg.guild
-        ? config.discord.guilds[msg.guild.id]
-        : config.discord.guilds.default;
-
-      // Make sure it starts with the configured prefix
+      // Make sure the command starts with the configured prefix
       if (!msg.content.startsWith(guildConfig.prefix)) return;
 
       let commandNoPrefix = msg.content
@@ -376,3 +364,13 @@ process.on("unhandledRejection", console.error);
 
 // Fire it up
 init(config);
+
+Discord.Client.prototype.setRandomActivity = function () {
+  if (!config.discord.master) return;
+  let activity = randElement(config.discord.activities);
+  console.log(`Setting Discord activity to: ${activity}`);
+  this.user.setActivity(activity, {
+    url: `https://twitch.tv/fgfm`,
+    type: "STREAMING"
+  });
+};
