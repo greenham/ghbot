@@ -1,9 +1,9 @@
 {
   "botName": "greenhambot",
-  "adminID": "YOUR DISCORD USER ID",
   "debug": false,
   "discord": {
     "token": "YOUR DISCORD APP TOKEN",
+    "adminID": "YOUR DISCORD USER ID",
     "master": true,
     "guilds": {
       "GUILD ID": {
