@@ -236,12 +236,17 @@ function init(config) {
     })
     // Listen for commands for the bot to respond to across all channels
     .on("message", (msg) => {
-      // Ignore messages from unconfigured guilds
+      // Ignore DMs and messages from unconfigured guilds
       if (msg.guild) {
         if (!config.discord.guilds[msg.guild.id]) {
           return;
         }
       } else {
+        return;
+      }
+
+      // Ignore anything from blacklisted users
+      if (config.discord.blacklistedUsers.includes(msg.author.id)) {
         return;
       }
 
@@ -375,8 +380,14 @@ init(config);
 
 Discord.Client.prototype.setRandomActivity = function () {
   if (!config.discord.master) return;
-  let activity = randElement(config.discord.activities);
+
+  let activity =
+    config.discord.activities.length > 0
+      ? randElement(config.discord.activities)
+      : "DESTROY ALL HUMANS";
+
   console.log(`Setting Discord activity to: ${activity}`);
+
   this.user.setActivity(activity, {
     url: `https://twitch.tv/fgfm`,
     type: "STREAMING"
