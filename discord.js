@@ -108,7 +108,11 @@ function init(config) {
           .on("start", () => {});
       })(sfxPath.toString());
     },
-    funfact: (msg) => {
+    funfact: (msg, guildConfig) => {
+      if (guildConfig.enableFunFacts === false) {
+        return;
+      }
+
       if (funFacts.length > 0) {
         // return random element from funFacts, unless one is specifically requested
         let el;
@@ -134,7 +138,11 @@ function init(config) {
         msg.channel.send("No fun facts found!");
       }
     },
-    hamfact: (msg) => {
+    hamfact: (msg, guildConfig) => {
+      if (guildConfig.enableHamFacts === false) {
+        return;
+      }
+
       if (hamFacts.length > 0) {
         // return random element from hamFacts, unless one is specifically requested
         let el;
@@ -160,12 +168,12 @@ function init(config) {
         msg.channel.send("No ham facts found!");
       }
     },
-    dance: (msg) => {
+    dance: (msg, guildConfig) => {
       msg.channel.send(
         "*┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛*"
       );
     },
-    join: (msg) => {
+    join: (msg, guildConfig) => {
       if (!msg.guild.voiceConnection) {
         joinVoiceChannel(msg)
           .then(() => {
@@ -176,7 +184,7 @@ function init(config) {
         return msg.reply(`I'm already in a voice channel!`);
       }
     },
-    leave: (msg) => {
+    leave: (msg, guildConfig) => {
       if (msg.guild.voiceConnection) {
         msg.guild.voiceConnection.disconnect();
       } else {
@@ -185,7 +193,7 @@ function init(config) {
         );
       }
     },
-    listen: (msg) => {
+    listen: (msg, guildConfig) => {
       // listen for a particular member to speak and respond appropriately
       if (msg.guild.voiceConnection) {
         // get the guild member
@@ -210,13 +218,13 @@ function init(config) {
         // join the voice channel then call this command again
         joinVoiceChannel(msg)
           .then(() => {
-            commands.listen(msg);
+            commands.listen(msg, guildConfig);
           })
           .catch(console.error);
       }
     },
-    reboot: (msg) => {
-      if (msg.author.id == config.adminID) process.exit(); //Requires a node module like Forever to work.
+    reboot: (msg, guildConfig) => {
+      if (msg.author.id == config.discord.adminID) process.exit(); // Requires a node module like Forever to work.
     }
   };
 
@@ -233,6 +241,8 @@ function init(config) {
         if (!config.discord.guilds[msg.guild.id]) {
           return;
         }
+      } else {
+        return;
       }
 
       // Find the guild config for this msg, use default if no guild (DM)
@@ -249,18 +259,16 @@ function init(config) {
         .slice(guildConfig.prefix.length)
         .split(" ")[0];
 
+      console.log(
+        `'${commandNoPrefix}' received in ${guildConfig.internalName}#${msg.channel.name} from @${msg.author.username}`
+      );
+
       // check for native command first
       if (commands.hasOwnProperty(commandNoPrefix)) {
-        console.log(
-          `'${commandNoPrefix}' received in ${guildConfig.internalName}#${msg.channel.name} from @${msg.author.username}`
-        );
         commands[commandNoPrefix](msg, guildConfig);
         // then a static command we've manually added
       } else if (staticCommands.exists(commandNoPrefix)) {
         let result = staticCommands.get(commandNoPrefix);
-        console.log(
-          `'${commandNoPrefix}' received in ${guildConfig.internalName}#${msg.channel.name} from @${msg.author.username}`
-        );
         msg.channel
           .send({
             embed: {
@@ -293,7 +301,7 @@ function init(config) {
         if (!config.discord.guilds[member.guild.id]) {
           return;
         }
-      } else if (config.discord.handleDMs === false) {
+      } else {
         return;
       }
 

@@ -1,11 +1,36 @@
 {
   "botName": "greenhambot",
-  "d_token": "YOUR DISCORD APP TOKEN",
   "adminID": "YOUR DISCORD USER ID",
-  "prefix": "!", // prefix that must precede all commands
-  "botChannel": "bot" // default channel where the bot will post things
-  "allowedSfxChannels": "bot", // channels where sfx can be used (separated by pipes)
-  "sfxVolume": 0.3,
-  "passes": 2, // can be increased to reduce packetloss at the expense of upload bandwidth, 4-5 should be lossless at the expense of 4-5x upload
-  "textCmdCooldown": 5 // default cooldown in seconds for all text commands
+  "debug": false,
+  "discord": {
+    "token": "YOUR DISCORD APP TOKEN",
+    "master": true,
+    "guilds": {
+      "GUILD ID": {
+        "internalName": "GUILD NAME",
+        "id": "GUILD ID",
+        "prefix": "!",
+        "enableSfx": true,
+        "allowedSfxChannels": "piped|list|of-valid-channels",
+        "sfxVolume": 0.5,
+        "passes": 2,
+        "enableFunFacts": true,
+        "enableHamFacts": true
+      },
+      "SECOND GUILD ID": {
+        "internalName": "SECOND GUILD NAME",
+        "id": "SECOND GUILD ID",
+        "prefix": "!",
+        "enableSfx": true,
+        "allowedSfxChannels": "piped|list|of-valid-channels",
+        "sfxVolume": 0.5,
+        "passes": 2,
+        "enableFunFacts": true,
+        "enableHamFacts": true
+      },
+    },
+    "activities": [
+      "that gum you like"
+    ]
+  }
 }
