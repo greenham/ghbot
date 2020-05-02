@@ -5,8 +5,8 @@ const Discord = require("discord.js"),
   axios = require("axios"),
   staticCommands = require("./lib/static-commands.js"),
   ankhbotCommands = require("./lib/ankhbot-commands.js"),
-  config = require("./config.json"),
-  { randElement, chunkSubstr } = require("./lib/utils.js");
+  { randElement, chunkSubstr } = require("./lib/utils.js"),
+  config = require("./config.json");
 
 function init(config) {
   // Set up Discord client
