@@ -5,8 +5,15 @@
   "main": "main.js",
   "dependencies": {
     "axios": "^0.19.2",
-    "discord.js": "^11.6.4",
-    "node-opus": "^0.2.9"
+    "@discordjs/opus": "^0.2.1",
+    "bufferutil": "^4.0.1",
+    "discord.js": "^12.2.0",
+    "erlpack": "discordapp/erlpack",
+    "fgfm-api-client": "^1.1.2",
+    "fgfm-websocket-client": "^1.2.0",
+    "libsodium-wrappers": "^0.7.6",
+    "utf-8-validate": "^5.0.2",
+    "zlib-sync": "^0.1.6"
   },
   "devDependencies": {},
   "scripts": {
