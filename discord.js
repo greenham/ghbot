@@ -14,7 +14,6 @@ function init(config) {
 
   // Set up SFX
   const sfxFilePath = path.join(__dirname, "sfx");
-  let playing = false;
 
   // Read in sfx directory, filenames are the commands
   let sfxList = readSfxDirectory(sfxFilePath);
@@ -47,7 +46,7 @@ function init(config) {
 
   // Set up the native commands to handle
   const commands = {
-    sfx: (msg, guildConfig) => {
+    sfx: async (msg, guildConfig) => {
       let allowedSfxChannels = new RegExp(guildConfig.allowedSfxChannels);
       if (!allowedSfxChannels.test(msg.channel.name)) return;
       let sfx = msg.content.split(" ")[1];
@@ -73,9 +72,6 @@ function init(config) {
         return true;
       }
 
-      if (playing === true)
-        return msg.channel.send("Already playing, please wait.");
-
       // make sure this file exists either as an mp3 or wav
       let sfxPath;
       if (fs.existsSync(path.join(sfxFilePath, sfx + ".mp3"))) {
@@ -86,23 +82,23 @@ function init(config) {
         return msg.reply("This sound effect does not exist!");
       }
 
-      if (!msg.guild.voiceConnection)
-        return joinVoiceChannel(msg).then(() => commands.sfx(msg, guildConfig));
+      // Join the same voice channel of the author of the message
+      const connection = await joinVoiceChannel(msg);
+      if (connection === false) {
+        return msg.reply("I couldn't connect to your voice channel...");
+      }
 
-      playing = true;
       (function play(sfxFile) {
-        const dispatcher = msg.guild.voiceConnection.playFile(sfxFile, {
+        const dispatcher = connection.play(sfxFile, {
           volume: guildConfig.sfxVolume,
           passes: guildConfig.passes
         });
         dispatcher
-          .on("end", (reason) => {
-            playing = false;
-            msg.guild.voiceConnection.disconnect();
+          .on("finish", (reason) => {
+            connection.disconnect();
           })
           .on("error", (error) => {
-            playing = false;
-            msg.guild.voiceConnection.disconnect();
+            connection.disconnect();
             console.error("Error playing sfx: " + error);
           })
           .on("start", () => {});
@@ -233,6 +229,9 @@ function init(config) {
     .on("ready", () => {
       console.log(`${config.botName} is connected and ready`);
       client.setRandomActivity();
+      setInterval(() => {
+        client.setRandomActivity();
+      }, 3600 * 1000);
     })
     // Listen for commands for the bot to respond to across all channels
     .on("message", (msg) => {
@@ -347,16 +346,13 @@ function readSfxDirectory(path) {
   return sfxList;
 }
 
-function joinVoiceChannel(msg) {
-  return new Promise((resolve, reject) => {
-    const voiceChannel = msg.member.voiceChannel;
-    if (!voiceChannel || voiceChannel.type !== "voice")
-      return msg.reply("I couldn't connect to your voice channel...");
-    voiceChannel
-      .join()
-      .then((connection) => resolve(connection))
-      .catch((err) => reject(err));
-  });
+async function joinVoiceChannel(message) {
+  // Join the same voice channel of the author of the message
+  if (message.member.voice.channel) {
+    return await message.member.voice.channel.join();
+  } else {
+    return false;
+  }
 }
 
 // Read/parse text lines from a file
