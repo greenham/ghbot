@@ -54,3 +54,5 @@ start.bat
 tokens.json
 
 config.json
+
+*.todo
