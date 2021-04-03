@@ -54,7 +54,7 @@ function init(config) {
       // retrieve sfx list from pastebin
       if (sfx == "" || sfx === undefined) {
         axios
-          .get("https://pastebin.com/raw/vRsZxrrw")
+          .get("https://rentry.co/ghbotsfx/raw")
           .then((res) => {
             // break the result into half chunks if it exceeds the message limit size
             // (the backticks take up 6 characters, discord limit is 2k)
@@ -91,7 +91,7 @@ function init(config) {
       (function play(sfxFile) {
         const dispatcher = connection.play(sfxFile, {
           volume: guildConfig.sfxVolume,
-          passes: guildConfig.passes
+          passes: guildConfig.passes,
         });
         dispatcher
           .on("finish", (reason) => {
@@ -126,8 +126,8 @@ function init(config) {
             embed: {
               title: "FunFact #" + displayNum,
               color: 0x21c629,
-              description: funFact
-            }
+              description: funFact,
+            },
           })
           .catch(console.error);
       } else {
@@ -156,8 +156,8 @@ function init(config) {
             embed: {
               title: "HamFact #" + displayNum,
               color: 0x21c629,
-              description: hamFact
-            }
+              description: hamFact,
+            },
           })
           .catch(console.error);
       } else {
@@ -221,7 +221,7 @@ function init(config) {
     },
     reboot: (msg, guildConfig) => {
       if (msg.author.id == config.discord.adminID) process.exit(); // Requires a node module like Forever to work.
-    }
+    },
   };
 
   client
@@ -278,8 +278,8 @@ function init(config) {
             embed: {
               title: commandNoPrefix,
               color: 0x21c629,
-              description: result
-            }
+              description: result,
+            },
           })
           .catch(console.error);
         // then a command exported from ankhbot
@@ -290,8 +290,8 @@ function init(config) {
             embed: {
               title: commandNoPrefix,
               color: 0x21c629,
-              description: result
-            }
+              description: result,
+            },
           })
           .catch(console.error);
       } else {
@@ -386,6 +386,6 @@ Discord.Client.prototype.setRandomActivity = function () {
 
   this.user.setActivity(activity, {
     url: `https://twitch.tv/fgfm`,
-    type: "STREAMING"
+    type: "STREAMING",
   });
 };
