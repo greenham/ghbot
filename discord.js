@@ -3,6 +3,7 @@ const Discord = require("discord.js"),
   fs = require("fs"),
   path = require("path"),
   axios = require("axios"),
+  schedule = require("node-schedule"),
   staticCommands = require("./lib/static-commands.js"),
   ankhbotCommands = require("./lib/ankhbot-commands.js"),
   { randElement, chunkSubstr } = require("./lib/utils.js"),
@@ -57,14 +58,14 @@ function init(config) {
           .get("https://rentry.co/ghbotsfx/raw")
           .then((res) => {
             // break the result into half chunks if it exceeds the message limit size
-            // (the backticks take up 6 characters, discord limit is 2k)
+            // (discord limit is 2k)
             let chunks = [res.data];
-            if (res.data.length > 1994) {
+            if (res.data.length > 2000) {
               chunks = chunkSubstr(res.data, res.data.length / 2);
             }
 
             chunks.forEach((chunk) => {
-              return msg.channel.send("```" + chunk + "```");
+              return msg.channel.send(chunk);
             });
           })
           .catch(console.error);
@@ -232,12 +233,68 @@ function init(config) {
       setInterval(() => {
         client.setRandomActivity();
       }, 3600 * 1000);
+
+      // Set up scheduled events for each guild
+      config.discord.guilds.forEach(async (guild) => {
+        let discordGuild = false;
+        try {
+          discordGuild = await client.guilds.fetch(guild.id);
+        } catch (err) {
+          console.error(err);
+        }
+
+        if (!discordGuild) return;
+
+        if (
+          guild.hasOwnProperty("scheduledEvents") &&
+          guild.scheduledEvents.length > 0
+        ) {
+          guild.scheduledEvents.forEach(async (event) => {
+            let channel = false;
+            if (
+              event.hasOwnProperty("channelId") &&
+              event.channelId.length > 0
+            ) {
+              channel = await discordGuild.channels.resolve(event.channelId);
+            }
+
+            if (!channel) {
+              console.log(
+                `Invalid channel configured for event ${event.id}, guild ${guild.name}`
+              );
+              return;
+            }
+
+            let pingRole = false;
+            if (
+              event.hasOwnProperty("pingRoleId") &&
+              event.pingRoleId.length > 0
+            ) {
+              pingRole = await discordGuild.roles.fetch(event.pingRoleId);
+            }
+
+            console.log(
+              `Scheduling event ${event.id} for ${discordGuild.name}...`
+            );
+            schedule.scheduleJob(event.schedule, () => {
+              let payload = [];
+              if (pingRole !== false) {
+                payload.push(pingRole);
+              }
+              if (event.hasOwnProperty("message") && event.message.length > 0) {
+                payload.push(event.message);
+              }
+              channel.send(payload);
+            });
+          });
+        }
+      });
     })
     // Listen for commands for the bot to respond to across all channels
     .on("message", (msg) => {
       // Ignore DMs and messages from unconfigured guilds
       if (msg.guild) {
-        if (!config.discord.guilds[msg.guild.id]) {
+        if (!config.discord.guilds.find((g) => g.id === msg.guild.id)) {
           return;
         }
       } else {
@@ -250,7 +307,9 @@ function init(config) {
       }
 
       // Find the guild config for this msg, use default if no guild (DM)
-      let guildConfig = config.discord.guilds[msg.guild.id];
+      let guildConfig = config.discord.guilds.find(
+        (g) => g.id === msg.guild.id
+      );
 
       // Parse message content
       msg.originalContent = msg.content;
@@ -302,7 +361,7 @@ function init(config) {
     .on("guildMemberAdd", (member) => {
       // Ignore events from unconfigured guilds
       if (member.guild) {
-        if (!config.discord.guilds[member.guild.id]) {
+        if (!config.discord.guilds.find((g) => g.id === msg.guild.id)) {
           return;
         }
       } else {
