@@ -184,8 +184,8 @@ function init(config) {
 
       let validRoles = guildConfig.allowedRolesForRequest.split("|");
 
-      if (msg.content === guildConfig.cmdPrefix + "role") {        
-          msg.channel.send(`Useage: ${guildConfig.cmdPrefix}role {add|remove} {${guildConfig.allowedRolesForRequest}}`);
+      if (msg.content === guildConfig.prefix + "role") {        
+        return msg.reply(`Useage: ${guildConfig.prefix}role {add|remove} {${guildConfig.allowedRolesForRequest}}`);
       }
 
       // parse+validate action+role (use original case from message because roles are case-sensitive)
@@ -193,7 +193,7 @@ function init(config) {
         /role\s(add|remove)\s([a-z0-9\-]+)/i
       );
       if (!roleName) {
-        msg.channel.send(`You must include a role name! *e.g. ${guildConfig.cmdPrefix}role ${roleName[1]} ${validRoles[0]}*`);
+        return msg.reply(`Useage: ${guildConfig.prefix}role {add|remove} {${guildConfig.allowedRolesForRequest}}`);
       } else {
         let tester = new RegExp(guildConfig.allowedRolesForRequest, "i");
         if (tester.test(roleName[2])) {
@@ -204,7 +204,7 @@ function init(config) {
           let role = msg.guild.roles.cache.find((x) => x.name === roleName[2]);
 
           if (!role) {
-            msg.channel.send(`${roleName[2]} is not a role on this server!`);
+            return msg.reply(`${roleName[2]} is not a role on this server!`);
           }
 
           // add/remove the role and react to the message with the results
@@ -227,10 +227,10 @@ function init(config) {
                 msg.react('⚠').then(() => {console.log('Reaction sent')}).catch(console.error);
               });
           } else {
-            msg.channel.send(`You must use add/remove after the role command! *e.g. ${guildConfig.cmdPrefix}role add ${validRoles[0]}*`);
+            msg.reply(`You must use add/remove after the role command! *e.g. ${guildConfig.prefix}role add ${validRoles[0]}*`);
           }
         } else {
-          msg.channel.send(
+          msg.reply(
             `${
               roleName[1]
             } is not a valid role name! The roles allowed for request are: ${validRoles.join(
