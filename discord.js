@@ -170,6 +170,76 @@ function init(config) {
         "*┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛ ┏(-_-)┓┏(-_-)┛┗(-_- )┓┗(-_-)┛┏(-_-)┛*"
       );
     },
+    // Allow members to request role additions/removals for allowed roles
+    role: (msg, guildConfig) => {
+      // make sure there are allowed roles defined
+      if (
+        typeof guildConfig.allowedRolesForRequest === undefined ||
+        guildConfig.allowedRolesForRequest.length === 0
+      ) {
+        return msg.reply(
+          "No roles are currently allowed to be added/removed by members."
+        );
+      }
+
+      let validRoles = guildConfig.allowedRolesForRequest.split("|");
+
+      if (msg.content === guildConfig.cmdPrefix + "role") {        
+          msg.channel.send(`Useage: ${guildConfig.cmdPrefix}role {add|remove} {${guildConfig.allowedRolesForRequest}}`);
+      }
+
+      // parse+validate action+role (use original case from message because roles are case-sensitive)
+      let roleName = msg.originalContent.match(
+        /role\s(add|remove)\s([a-z0-9\-]+)/i
+      );
+      if (!roleName) {
+        msg.channel.send(`You must include a role name! *e.g. ${guildConfig.cmdPrefix}role ${roleName[1]} ${validRoles[0]}*`);
+      } else {
+        let tester = new RegExp(guildConfig.allowedRolesForRequest, "i");
+        if (tester.test(roleName[2])) {
+          // make sure this message is in a guild channel they're a member of
+          if (!msg.guild) return;
+
+          // find the role in the member's guild
+          let role = msg.guild.roles.cache.find((x) => x.name === roleName[2]);
+
+          if (!role) {
+            msg.channel.send(`${roleName[2]} is not a role on this server!`);
+          }
+
+          // add/remove the role and react to the message with the results
+          if (roleName[1] === "add") {
+            msg.member.roles.add(role, "User requested")
+              .then((requestingMember) => {
+                msg.react('👍').then(() => {console.log('Reaction sent')}).catch(console.error);
+              })
+              .catch(err => {
+                console.error(`Error during role addition: ${err}`);
+                msg.react('⚠').then(() => {console.log('Reaction sent')}).catch(console.error);
+              });
+          } else if (roleName[1] === "remove") {
+            msg.member.roles.remove(role, "User requested")
+              .then((requestingMember) => {
+                msg.react('👍').then(() => {console.log('Reaction sent')}).catch(console.error);
+              })
+              .catch(err => {
+                console.error(`Error during role addition: ${err}`);
+                msg.react('⚠').then(() => {console.log('Reaction sent')}).catch(console.error);
+              });
+          } else {
+            msg.channel.send(`You must use add/remove after the role command! *e.g. ${guildConfig.cmdPrefix}role add ${validRoles[0]}*`);
+          }
+        } else {
+          msg.channel.send(
+            `${
+              roleName[1]
+            } is not a valid role name! The roles allowed for request are: ${validRoles.join(
+              ","
+            )}`
+          );
+        }
+      }
+    },
     join: (msg, guildConfig) => {
       if (!msg.guild.voiceConnection) {
         joinVoiceChannel(msg)
