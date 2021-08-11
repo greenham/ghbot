@@ -184,8 +184,10 @@ function init(config) {
 
       let validRoles = guildConfig.allowedRolesForRequest.split("|");
 
-      if (msg.content === guildConfig.prefix + "role") {        
-        return msg.reply(`Useage: ${guildConfig.prefix}role {add|remove} {${guildConfig.allowedRolesForRequest}}`);
+      if (msg.content === guildConfig.prefix + "role") {
+        return msg.reply(
+          `Useage: ${guildConfig.prefix}role {add|remove} {${guildConfig.allowedRolesForRequest}}`
+        );
       }
 
       // parse+validate action+role (use original case from message because roles are case-sensitive)
@@ -193,7 +195,9 @@ function init(config) {
         /role\s(add|remove)\s([a-z0-9\-]+)/i
       );
       if (!roleName) {
-        return msg.reply(`Useage: ${guildConfig.prefix}role {add|remove} {${guildConfig.allowedRolesForRequest}}`);
+        return msg.reply(
+          `Useage: ${guildConfig.prefix}role {add|remove} {${guildConfig.allowedRolesForRequest}}`
+        );
       } else {
         let tester = new RegExp(guildConfig.allowedRolesForRequest, "i");
         if (tester.test(roleName[2])) {
@@ -209,31 +213,55 @@ function init(config) {
 
           // add/remove the role and react to the message with the results
           if (roleName[1] === "add") {
-            msg.member.roles.add(role, "User requested")
+            msg.member.roles
+              .add(role, "User requested")
               .then((requestingMember) => {
-                msg.react('👍').then(() => {console.log('Reaction sent')}).catch(console.error);
+                msg
+                  .react("👍")
+                  .then(() => {
+                    console.log("Reaction sent");
+                  })
+                  .catch(console.error);
               })
-              .catch(err => {
+              .catch((err) => {
                 console.error(`Error during role addition: ${err}`);
-                msg.react('⚠').then(() => {console.log('Reaction sent')}).catch(console.error);
+                msg
+                  .react("⚠")
+                  .then(() => {
+                    console.log("Reaction sent");
+                  })
+                  .catch(console.error);
               });
           } else if (roleName[1] === "remove") {
-            msg.member.roles.remove(role, "User requested")
+            msg.member.roles
+              .remove(role, "User requested")
               .then((requestingMember) => {
-                msg.react('👍').then(() => {console.log('Reaction sent')}).catch(console.error);
+                msg
+                  .react("👍")
+                  .then(() => {
+                    console.log("Reaction sent");
+                  })
+                  .catch(console.error);
               })
-              .catch(err => {
+              .catch((err) => {
                 console.error(`Error during role addition: ${err}`);
-                msg.react('⚠').then(() => {console.log('Reaction sent')}).catch(console.error);
+                msg
+                  .react("⚠")
+                  .then(() => {
+                    console.log("Reaction sent");
+                  })
+                  .catch(console.error);
               });
           } else {
-            msg.reply(`You must use add/remove after the role command! *e.g. ${guildConfig.prefix}role add ${validRoles[0]}*`);
+            msg.reply(
+              `You must use add/remove after the role command! *e.g. ${guildConfig.prefix}role add ${validRoles[0]}*`
+            );
           }
         } else {
           msg.reply(
-            `${
-              roleName[1]
-            } is not a valid role name! The roles allowed for request are: ${validRoles.join(
+            `**${
+              roleName[2]
+            }** is not a valid role name! The roles allowed for request are: ${validRoles.join(
               ","
             )}`
           );
