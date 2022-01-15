@@ -4,7 +4,7 @@
   "description": "",
   "main": "discord.js",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "discord.js": "^12.5.3",
     "libsodium-wrappers": "^0.7.9",
     "node-schedule": "^2.0.0",
