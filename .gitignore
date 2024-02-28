@@ -47,8 +47,8 @@ Temporary Items
 .apdisk
 
 # Ignores
-node_modules/*
-logs/*
+node_modules
+logs
 
 start.bat
 tokens.json

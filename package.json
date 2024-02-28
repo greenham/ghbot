@@ -2,7 +2,7 @@
   "name": "ghbot",
   "version": "1.6.9",
   "description": "",
-  "main": "discord.js",
+  "main": "index.js",
   "dependencies": {
     "axios": "^0.21.2",
     "discord.js": "^12.5.3",
@@ -12,7 +12,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "pm2 start discord.js --name ghbot-discord"
+    "build": "docker build -t ghbot:latest .",
+    "start": "docker run -d --name ghbot ghbot:latest"
   },
   "author": "",
   "license": "MIT"
