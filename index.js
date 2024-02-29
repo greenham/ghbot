@@ -374,7 +374,7 @@ function init(config) {
             console.log(
               `Scheduling event ${event.id} for ${discordGuild.name}...`
             );
-            schedule.scheduleJob(event.schedule, () => {
+            const job = schedule.scheduleJob(event.schedule, () => {
               let payload = [];
               if (pingRole !== false) {
                 payload.push(pingRole);
@@ -384,6 +384,7 @@ function init(config) {
               }
               channel.send(payload);
             });
+            console.log(`Next invocation: ${job.nextInvocation()}`);
           });
         }
       });
