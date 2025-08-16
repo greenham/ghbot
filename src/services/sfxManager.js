@@ -5,6 +5,8 @@ class SFXManager {
   constructor() {
     this.sfxPath = path.join(__dirname, '..', '..', 'sfx');
     this.sfxList = [];
+    this.cachedNames = [];
+    this.searchCache = new Map(); // Cache for autocomplete searches
     
     // Load SFX list initially
     this.loadSFXList();
@@ -35,6 +37,14 @@ class SFXManager {
           };
         });
       
+      // Cache sorted names for autocomplete
+      this.cachedNames = this.sfxList
+        .map(sfx => sfx.name)
+        .sort((a, b) => a.localeCompare(b));
+      
+      // Clear search cache when SFX list changes
+      this.searchCache.clear();
+      
       console.log(`Loaded ${this.sfxList.length} sound effects`);
     } catch (error) {
       console.error('Error loading SFX list:', error);
@@ -62,11 +72,11 @@ class SFXManager {
   }
 
   /**
-   * Get SFX names for autocomplete
+   * Get SFX names for autocomplete (cached and sorted)
    * @returns {Array} List of SFX names
    */
   getSFXNames() {
-    return this.sfxList.map(sfx => sfx.name);
+    return this.cachedNames;
   }
 
   /**
@@ -98,15 +108,27 @@ class SFXManager {
   }
 
   /**
-   * Search SFX names (for autocomplete)
+   * Search SFX names (for autocomplete) with caching
    * @param {string} query 
    * @returns {Array} Matching SFX names
    */
   searchSFX(query) {
     const lowerQuery = query.toLowerCase();
-    return this.sfxList
-      .filter(sfx => sfx.name.toLowerCase().includes(lowerQuery))
-      .map(sfx => sfx.name);
+    
+    // Check cache first
+    if (this.searchCache.has(lowerQuery)) {
+      return this.searchCache.get(lowerQuery);
+    }
+    
+    // Perform search on cached names (already sorted)
+    const results = this.cachedNames
+      .filter(name => name.toLowerCase().includes(lowerQuery))
+      .slice(0, 25); // Discord autocomplete limit
+    
+    // Cache the result for future use
+    this.searchCache.set(lowerQuery, results);
+    
+    return results;
   }
 }
 
