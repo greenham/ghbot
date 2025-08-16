@@ -28,20 +28,32 @@ module.exports = {
     // If no SFX specified, show the list
     if (!sfxName) {
       try {
-        const response = await axios.get('https://rentry.co/ghbotsfx/raw');
+        const fs = require('fs');
+        const path = require('path');
+        const sfxReadmePath = path.join(__dirname, '..', '..', '..', 'sfx', 'README.md');
         
-        // Break into chunks if message is too long
-        let chunks = [response.data];
-        if (response.data.length > 2000) {
-          chunks = chunkSubstr(response.data, Math.ceil(response.data.length / 2));
-        }
-
-        for (const chunk of chunks) {
-          await message.channel.send(chunk);
+        if (fs.existsSync(sfxReadmePath)) {
+          const sfxListContent = fs.readFileSync(sfxReadmePath, 'utf-8');
+          
+          // Break into chunks if too long (Discord limit is 2000 characters)
+          if (sfxListContent.length <= 2000) {
+            await message.channel.send(sfxListContent);
+          } else {
+            const chunks = chunkSubstr(sfxListContent, 1900); // Leave some buffer
+            
+            for (const chunk of chunks) {
+              await message.channel.send(chunk);
+            }
+          }
+        } else {
+          // Fallback to generated list if README doesn't exist
+          const sfxNames = sfxManager.getSFXNames();
+          const sfxList = `**Available Sound Effects (${sfxNames.length}):**\n\`\`\`\n${sfxNames.join(', ')}\n\`\`\``;
+          await message.channel.send(sfxList);
         }
       } catch (error) {
-        console.error('Error fetching SFX list:', error);
-        await message.reply('Could not fetch the SFX list.');
+        console.error('Error reading SFX list:', error);
+        await message.reply('Could not load the SFX list.');
       }
       return;
     }
