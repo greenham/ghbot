@@ -50,13 +50,6 @@ module.exports = {
     }
 
     const sfxName = args[0];
-    
-    // Log the SFX command
-    if (sfxName) {
-      console.log(
-        `SFX '${sfxName}' requested in ${guildConfig.internalName || message.guild.name}#${message.channel.name} from @${message.author.username}`
-      );
-    }
 
     // If no SFX specified, show the list
     if (!sfxName) {
@@ -92,42 +85,12 @@ module.exports = {
       return;
     }
 
-    // Check if SFX exists
-    if (!sfxManager.hasSFX(sfxName)) {
-      return message.reply('This sound effect does not exist!');
-    }
-
     // Check if user is in a voice channel
     if (!message.member.voice.channel) {
       return message.reply('You need to be in a voice channel to use this command!');
     }
 
-    try {
-      // Join the voice channel
-      await voiceService.join(message.member.voice.channel);
-
-      // Get the SFX file path
-      const sfxPath = sfxManager.getSFXPath(sfxName);
-
-      // Play the sound effect
-      await voiceService.play(
-        message.guild.id, 
-        sfxPath, 
-        { 
-          volume: guildConfig.sfxVolume || 0.5 
-        }
-      );
-
-      // Leave the voice channel after playing
-      setTimeout(() => {
-        voiceService.leave(message.guild.id);
-      }, 500);
-      
-      console.log(`✅ Successfully played SFX '${sfxName}'`);
-
-    } catch (error) {
-      console.error(`❌ Error playing SFX '${sfxName}':`, error);
-      await message.reply("I couldn't play that sound effect. Make sure I have permission to join your voice channel!");
-    }
+    // Use the reusable SFX playing method for messages
+    await sfxManager.playSFXMessage(message, sfxName, guildConfig);
   }
 };

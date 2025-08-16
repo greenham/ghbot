@@ -26,64 +26,17 @@ module.exports = {
     }
 
     const sfxName = interaction.options.getString('sound');
-    
-    // Log the slash command SFX request
-    console.log(
-      `/sfx '${sfxName}' requested in ${guildConfig.internalName || interaction.guild.name}#${interaction.channel.name} from @${interaction.user.username}`
-    );
-
-    // Check if SFX exists
-    if (!sfxManager.hasSFX(sfxName)) {
-      return interaction.reply({ 
-        content: 'This sound effect does not exist!', 
-        flags: [MessageFlags.Ephemeral]
-      });
-    }
 
     // Check if user is in a voice channel
-    const member = interaction.member;
-    if (!member.voice.channel) {
+    if (!interaction.member.voice.channel) {
       return interaction.reply({ 
         content: 'You need to be in a voice channel to use this command!', 
         flags: [MessageFlags.Ephemeral]
       });
     }
 
-    // Defer the reply as joining voice might take a moment
-    await interaction.deferReply();
-
-    try {
-      // Join the voice channel
-      await voiceService.join(member.voice.channel);
-
-      // Get the SFX file path
-      const sfxPath = sfxManager.getSFXPath(sfxName);
-
-      // Play the sound effect
-      await voiceService.play(
-        interaction.guild.id, 
-        sfxPath, 
-        { 
-          volume: guildConfig.sfxVolume || 0.5 
-        }
-      );
-
-      // Update the reply
-      await interaction.editReply(`Playing sound effect: **${sfxName}**`);
-
-      // Leave the voice channel after playing
-      setTimeout(() => {
-        voiceService.leave(interaction.guild.id);
-      }, 500);
-      
-      console.log(`✅ Successfully played /sfx '${sfxName}'`);
-
-    } catch (error) {
-      console.error(`❌ Error playing /sfx '${sfxName}':`, error);
-      await interaction.editReply({
-        content: "I couldn't play that sound effect. Make sure I have permission to join your voice channel!"
-      });
-    }
+    // Use the reusable SFX playing method
+    await sfxManager.playSFXInteraction(interaction, sfxName, guildConfig, 'slash');
   },
 
   async autocomplete(interaction, guildConfig) {

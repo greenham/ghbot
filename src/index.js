@@ -176,9 +176,9 @@ client.on(Events.MessageCreate, async (message) => {
   }
 });
 
-// Interaction handler for slash commands
+// Interaction handler for slash commands and components
 client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isChatInputCommand() && !interaction.isAutocomplete())
+  if (!interaction.isChatInputCommand() && !interaction.isAutocomplete() && !interaction.isButton())
     return;
 
   // Get guild configuration from database/file
@@ -194,6 +194,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
         interaction,
         guildConfig
       );
+    } else if (interaction.isButton()) {
+      await slashCommands.handleButton(interaction, guildConfig);
     }
   } catch (error) {
     console.error("Error handling interaction:", error);
