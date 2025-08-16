@@ -8,12 +8,14 @@ class SchedulerService {
   /**
    * Initialize scheduled events for all guilds
    * @param {Client} client 
-   * @param {Object} config 
+   * @param {ConfigManager} configManager 
    */
-  async initialize(client, config) {
+  async initialize(client, configManager) {
     console.log('Initializing scheduled events...');
 
-    for (const guildConfig of config.discord.guilds) {
+    const guildConfigs = configManager.getAllGuildConfigs();
+    
+    for (const guildConfig of guildConfigs) {
       try {
         const guild = await client.guilds.fetch(guildConfig.id);
         if (!guild) {
@@ -21,11 +23,17 @@ class SchedulerService {
           continue;
         }
 
-        if (!guildConfig.scheduledEvents || guildConfig.scheduledEvents.length === 0) {
+        // Get scheduled events from database
+        const databaseService = configManager.databaseService;
+        if (!databaseService) continue;
+
+        const scheduledEvents = databaseService.getScheduledEvents(guildConfig.id);
+        
+        if (!scheduledEvents || scheduledEvents.length === 0) {
           continue;
         }
 
-        for (const event of guildConfig.scheduledEvents) {
+        for (const event of scheduledEvents) {
           await this.scheduleEvent(guild, event, guildConfig);
         }
       } catch (error) {

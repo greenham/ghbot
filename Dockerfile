@@ -1,30 +1,13 @@
-# Build stage
-FROM node:22-alpine AS builder
+# Use Node 20 LTS with full Debian for better compatibility
+FROM node:20
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json pnpm-lock.yaml* ./
+# Copy package files (npm will work better for native modules in Docker)
+COPY package*.json ./
 
-# Install latest pnpm and build dependencies (including ffmpeg for audio processing)
-RUN npm install -g pnpm@latest && \
-    apk add --no-cache python3 make g++ ffmpeg opus-dev
-
-# Install dependencies (including native modules that need compilation)
-RUN pnpm install --force
-
-# Production stage
-FROM node:22-alpine
-
-WORKDIR /app
-
-# Install latest pnpm and runtime dependencies
-RUN npm install -g pnpm@latest && \
-    apk add --no-cache ffmpeg opus
-
-# Copy package files and installed dependencies from builder
-COPY package*.json pnpm-lock.yaml* ./
-COPY --from=builder /app/node_modules ./node_modules
+# Install dependencies using npm (no security restrictions like pnpm)
+RUN npm install --production
 
 # Copy application code
 COPY . .

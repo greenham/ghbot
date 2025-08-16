@@ -100,6 +100,7 @@ pnpm build && pnpm up
 ```
 
 **Benefits of Docker Compose:**
+
 - Update `config.json`, `sfx/`, and `conf/` files without rebuilding the image
 - Automatic restart on failure
 - Easy log management
@@ -137,7 +138,7 @@ pnpm image:run
 ```
 !funfact             # Random fun fact
 !funfact 42          # Specific fun fact #42
-!hamfact             # Random ham radio fact
+!hamfact             # Random ham fact
 !dance               # ASCII dance animation
 ```
 

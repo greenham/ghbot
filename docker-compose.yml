@@ -15,6 +15,9 @@ services:
       # Sound effects directory (read-only)
       - ./sfx:/app/sfx:ro
       
+      # Database persistence
+      - ./data:/app/data
+      
       # Optional: Mount logs directory if you want persistent logs
       # - ./logs:/app/logs
     

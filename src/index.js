@@ -8,7 +8,7 @@ const {
 } = require("discord.js");
 const { generateDependencyReport } = require("@discordjs/voice");
 const intents = require("./config/intents");
-const config = require("./config/config");
+const configManager = require("./config/config");
 const { randElement } = require("./utils/helpers");
 
 // Log audio dependencies status
@@ -21,6 +21,13 @@ const client = new Client({ intents });
 // Services
 const commandLoader = require("./services/commandLoader");
 const schedulerService = require("./services/schedulerService");
+const databaseService = require("./services/databaseService");
+
+// Inject database service into config manager
+configManager.setDatabaseService(databaseService);
+
+// Get bot configuration
+const config = configManager.getBotConfig();
 
 // Command handlers
 const prefixCommands = require("./commands/prefix");
@@ -59,7 +66,8 @@ async function registerSlashCommands() {
     const commands = slashCommands.getSlashCommandDefinitions();
 
     // Register commands for each guild
-    for (const guild of config.discord.guilds) {
+    const guildConfigs = configManager.getAllGuildConfigs();
+    for (const guild of guildConfigs) {
       await rest.put(
         Routes.applicationGuildCommands(client.user.id, guild.id),
         { body: commands }
@@ -93,7 +101,7 @@ client.once(Events.ClientReady, async () => {
   await registerSlashCommands();
 
   // Initialize scheduled events
-  schedulerService.initialize(client, config);
+  schedulerService.initialize(client, configManager);
 });
 
 // Message handler for prefix commands
@@ -104,10 +112,8 @@ client.on(Events.MessageCreate, async (message) => {
   // Ignore DMs if not configured
   if (!message.guild) return;
 
-  // Check if guild is configured
-  const guildConfig = config.discord.guilds.find(
-    (g) => g.id === message.guild.id
-  );
+  // Get guild configuration from database/file
+  const guildConfig = configManager.getGuildConfig(message.guild.id);
   if (!guildConfig) return;
 
   // Check blacklist
@@ -174,10 +180,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand() && !interaction.isAutocomplete())
     return;
 
-  // Get guild config
-  const guildConfig = config.discord.guilds.find(
-    (g) => g.id === interaction.guild.id
-  );
+  // Get guild configuration from database/file
+  const guildConfig = configManager.getGuildConfig(interaction.guild.id);
   if (!guildConfig) return;
 
   try {
@@ -204,12 +208,129 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 });
 
+// Handle bot being added to a new guild
+client.on(Events.GuildCreate, async (guild) => {
+  console.log(`🎉 Bot added to new guild: ${guild.name} (${guild.id})`);
+
+  // Check if this guild previously existed but was removed
+  const existingGuild = databaseService.getGuildConfigIncludingInactive(guild.id);
+  
+  if (existingGuild && !existingGuild.isActive) {
+    // Reactivate existing guild with previous settings
+    const guildConfig = {
+      id: guild.id,
+      name: guild.name,
+      internalName: guild.name,
+    };
+    
+    databaseService.upsertGuildConfig(guildConfig, true); // true = reactivation
+    
+    // Send welcome back message
+    try {
+      const channel = guild.channels.cache.find(
+        (ch) =>
+          ch.type === 0 && // Text channel
+          ch.permissionsFor(guild.members.me).has(["SendMessages", "ViewChannel"])
+      );
+
+      if (channel) {
+        await channel.send({
+          embeds: [
+            {
+              title: "🎉 Welcome back to GHBot!",
+              description: `Great to see you again! Your previous configuration has been restored.
+
+**Your settings are preserved:**
+• Command prefix: \`${existingGuild.prefix}\`
+• Sound effects: ${existingGuild.enableSfx ? '✅ Enabled' : '❌ Disabled'}
+• Volume: ${Math.round(existingGuild.sfxVolume * 100)}%
+
+Use \`/config show\` to view all settings or \`/config\` commands to modify them.`,
+              color: 0x00ff00,
+              footer: { text: "All your previous settings have been restored!" },
+            },
+          ],
+        });
+      }
+    } catch (error) {
+      console.error("Error sending welcome back message:", error);
+    }
+    
+    return;
+  }
+
+  // Auto-register new guild with default settings
+  const guildConfig = {
+    id: guild.id,
+    name: guild.name,
+    internalName: guild.name,
+    prefix: "!",
+    enableSfx: true,
+    allowedSfxChannels: null, // Allow in all channels by default
+    sfxVolume: 0.5,
+    enableFunFacts: true,
+    enableHamFacts: true,
+    allowedRolesForRequest: null,
+  };
+
+  databaseService.upsertGuildConfig(guildConfig);
+
+  // Send welcome message to first available text channel
+  try {
+    const channel = guild.channels.cache.find(
+      (ch) =>
+        ch.type === 0 && // Text channel
+        ch.permissionsFor(guild.members.me).has(["SendMessages", "ViewChannel"])
+    );
+
+    if (channel) {
+      await channel.send({
+        embeds: [
+          {
+            title: "🎵 GHBot has joined the server!",
+            description: `Thanks for adding me! I'm a sound effects bot with the following features:
+
+**Commands:**
+• \`!sfx <sound>\` - Play sound effects (prefix command)
+• \`/sfx\` - Play sound effects with autocomplete (slash command)
+• \`!funfact\` - Get random fun facts
+• \`!hamfact\` - Get ham facts
+• \`!dance\` - ASCII dance animation
+• \`!join\` / \`!leave\` - Voice channel controls
+
+**Setup:**
+1. Add sound files (.mp3/.wav) to your server
+2. Use \`!config\` to customize settings
+3. Set up allowed channels for sound effects
+
+Get started with \`!sfx\` to see available sounds!`,
+            color: 0x21c629,
+            footer: { text: "Use !help for more information" },
+          },
+        ],
+      });
+    }
+  } catch (error) {
+    console.error("Error sending welcome message:", error);
+  }
+});
+
+// Handle bot being removed from a guild
+client.on(Events.GuildDelete, (guild) => {
+  console.log(`👋 Bot removed from guild: ${guild.name} (${guild.id})`);
+
+  // Soft delete guild configuration (can be restored if they re-add the bot)
+  const deleted = databaseService.softDeleteGuildConfig(guild.id);
+  
+  if (deleted) {
+    console.log(`Guild ${guild.name} configuration preserved for potential re-invite`);
+  }
+});
+
 // Handle new guild members
 client.on(Events.GuildMemberAdd, (member) => {
-  // Check if guild is configured
-  const guildConfig = config.discord.guilds.find(
-    (g) => g.id === member.guild.id
-  );
+  // Get guild configuration
+  const guildConfig = configManager.getGuildConfig(member.guild.id);
   if (!guildConfig) return;
 
   console.log(

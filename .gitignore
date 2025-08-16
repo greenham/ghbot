@@ -49,6 +49,7 @@ Temporary Items
 # Ignores
 node_modules
 logs
+data/
 
 start.bat
 tokens.json
