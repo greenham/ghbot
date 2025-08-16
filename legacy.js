@@ -319,7 +319,7 @@ function init(config) {
       }
     },
     reboot: (msg, guildConfig) => {
-      if (msg.author.id == config.discord.adminID) process.exit(); // Requires a node module like Forever to work.
+      if (msg.author.id == config.discord.adminUserId) process.exit(); // Requires a node module like Forever to work.
     },
   };
 
@@ -533,8 +533,6 @@ process.on("unhandledRejection", console.error);
 init(config);
 
 Discord.Client.prototype.setRandomActivity = function () {
-  if (!config.discord.master) return;
-
   let activity =
     config.discord.activities.length > 0
       ? randElement(config.discord.activities)

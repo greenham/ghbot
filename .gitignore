@@ -53,6 +53,8 @@ logs
 start.bat
 tokens.json
 
-config.json
+config.*json
+!config.example.json
+.env
 
 *.todo

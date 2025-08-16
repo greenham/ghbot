@@ -1,0 +1,50 @@
+{
+  "botName": "greenhambot",
+  "discord": {
+    "clientId": "YOUR DISCORD APP ID",
+    "token": "YOUR DISCORD APP TOKEN",
+    "adminUserId": "YOUR DISCORD USER ID",
+    "guilds": [
+      {
+        "internalName": "GUILD NAME",
+        "id": "GUILD ID",
+        "prefix": "!",
+        "enableSfx": true,
+        "allowedSfxChannels": "piped|list|of-valid-channels",
+        "sfxVolume": 0.5,
+        "passes": 2,
+        "enableFunFacts": true,
+        "enableHamFacts": true,
+        "scheduledEvents": [
+          {
+            "id": "rise-up-and-kick-a-little-ass",
+            "schedule": {
+              "hour": 7,
+              "minute": 30,
+              "tz": "America/Los_Angeles"
+            },
+            "channelId": "DISCORD CHANNEL ID",
+            "pingRoleId": "DISCORD ROLE ID",
+            "message": "I'm gonna rise up, I'm gonna kick a little ass, Gonna kick some ass in the USA, Gonna climb a mountain, Gonna sew a flag, Gonna fly on an Eagle, I'm gonna kick some butt, I'm gonna drive a big truck, I'm gonna rule this world, Gonna kick some ass, Gonna rise up, Kick a little ass"
+          }
+        ]
+      },
+      {
+        "internalName": "SECOND GUILD NAME",
+        "id": "SECOND GUILD ID",
+        "prefix": "!",
+        "enableSfx": true,
+        "allowedSfxChannels": "piped|list|of-valid-channels",
+        "sfxVolume": 0.5,
+        "passes": 2,
+        "enableFunFacts": true,
+        "enableHamFacts": true
+      }
+    ],
+    "activities": [
+      "that gum you like"
+    ],
+    "blacklistedUsers": ["IGNORE COMMANDS FROM THESE DISCORD USER IDS"]
+  },
+  "debug": false
+}

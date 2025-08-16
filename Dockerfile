@@ -1,17 +1,33 @@
-# Use the official Node.js image as the base image
-FROM node:14
+# Build stage
+FROM node:22-alpine AS builder
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy package files
+COPY package*.json pnpm-lock.yaml* ./
 
-# Install the dependencies
-RUN npm install
+# Install latest pnpm and build dependencies (including ffmpeg for audio processing)
+RUN npm install -g pnpm@latest && \
+    apk add --no-cache python3 make g++ ffmpeg opus-dev
 
-# Copy the rest of the application code to the working directory
+# Install dependencies (including native modules that need compilation)
+RUN pnpm install --force
+
+# Production stage
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Install latest pnpm and runtime dependencies
+RUN npm install -g pnpm@latest && \
+    apk add --no-cache ffmpeg opus
+
+# Copy package files and installed dependencies from builder
+COPY package*.json pnpm-lock.yaml* ./
+COPY --from=builder /app/node_modules ./node_modules
+
+# Copy application code
 COPY . .
 
 # Start the bot
-CMD [ "node", "index.js" ]
+CMD [ "node", "src/index.js" ]
