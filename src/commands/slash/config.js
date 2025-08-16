@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const configManager = require('../../config/config');
 
 module.exports = {
@@ -92,7 +92,7 @@ module.exports = {
     if (!databaseService) {
       return interaction.reply({ 
         content: '❌ Database service not available.', 
-        ephemeral: true 
+        flags: [MessageFlags.Ephemeral]
       });
     }
 

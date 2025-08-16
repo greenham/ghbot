@@ -5,6 +5,7 @@ const {
   REST,
   Routes,
   ActivityType,
+  MessageFlags,
 } = require("discord.js");
 const { generateDependencyReport } = require("@discordjs/voice");
 const intents = require("./config/intents");
@@ -201,7 +202,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
       await interaction
         .reply({
           content: "There was an error executing this command!",
-          ephemeral: true,
+          flags: [MessageFlags.Ephemeral],
         })
         .catch(console.error);
     }

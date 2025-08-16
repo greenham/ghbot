@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const sfxManager = require('../../services/sfxManager');
 const voiceService = require('../../services/voiceService');
 
@@ -20,7 +20,7 @@ module.exports = {
       if (!allowedChannels.test(interaction.channel.name)) {
         return interaction.reply({ 
           content: 'Sound effects are not allowed in this channel!', 
-          ephemeral: true 
+          flags: [MessageFlags.Ephemeral]
         });
       }
     }
@@ -36,7 +36,7 @@ module.exports = {
     if (!sfxManager.hasSFX(sfxName)) {
       return interaction.reply({ 
         content: 'This sound effect does not exist!', 
-        ephemeral: true 
+        flags: [MessageFlags.Ephemeral]
       });
     }
 
@@ -45,7 +45,7 @@ module.exports = {
     if (!member.voice.channel) {
       return interaction.reply({ 
         content: 'You need to be in a voice channel to use this command!', 
-        ephemeral: true 
+        flags: [MessageFlags.Ephemeral]
       });
     }
 
