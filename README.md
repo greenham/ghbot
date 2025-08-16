@@ -14,7 +14,7 @@ A modern Discord bot built with Discord.js v14 that provides sound effects, text
 ### 💬 Text Commands
 
 - **Fun Facts**: Random or specific fact retrieval (`!funfact [number]`)
-- **Ham Facts**: Ham radio related facts (`!hamfact [number]`)
+- **Ham Facts**: Ham-related facts (`!hamfact [number]`)
 - **Static Commands**: Custom text responses loaded from configuration files
 - **Ankhbot Import**: Support for imported Ankhbot command databases
 
@@ -80,28 +80,39 @@ A modern Discord bot built with Discord.js v14 that provides sound effects, text
 
 ## 🐳 Docker Deployment
 
-### Build and Run
+### Recommended: Docker Compose
+
+```bash
+# Start the bot with Docker Compose
+pnpm up
+
+# View logs
+pnpm logs
+
+# Restart the bot (useful after config changes)
+pnpm restart
+
+# Stop the bot
+pnpm down
+
+# Rebuild and restart (after code changes)
+pnpm build && pnpm up
+```
+
+**Benefits of Docker Compose:**
+- Update `config.json`, `sfx/`, and `conf/` files without rebuilding the image
+- Automatic restart on failure
+- Easy log management
+- Resource limits and health checks
+
+### Alternative: Direct Docker
 
 ```bash
 # Build the Docker image
-pnpm docker:build
+pnpm image:build
 
 # Run the container
-pnpm docker:run
-```
-
-### Using Docker Compose
-
-```yaml
-version: "3.8"
-services:
-  ghbot:
-    build: .
-    restart: unless-stopped
-    volumes:
-      - ./config.json:/app/config.json:ro
-      - ./sfx:/app/sfx:ro
-      - ./conf:/app/conf:ro
+pnpm image:run
 ```
 
 ## 📖 Usage
@@ -149,21 +160,25 @@ services:
 ### Creating a Discord Bot
 
 1. **Go to Discord Developer Portal**
+
    - Visit https://discord.com/developers/applications
    - Click "New Application" and give it a name
 
 2. **Create Bot User**
+
    - Go to the "Bot" section
    - Click "Add Bot"
    - Copy the bot token for your config.json
 
 3. **Enable Required Intents**
    Under "Privileged Gateway Intents", enable:
+
    - **SERVER MEMBERS INTENT** (Required for role management)
    - **MESSAGE CONTENT INTENT** (Required for prefix commands)
 
 4. **Bot Permissions**
    When inviting the bot, ensure it has these permissions:
+
    - Send Messages
    - Embed Links
    - Read Message History

@@ -18,22 +18,30 @@ pnpm install
 pnpm start  # Production mode
 pnpm dev    # Development mode with auto-reload
 
-# Docker commands
-pnpm docker:build  # Build Docker image
-pnpm docker:run    # Run Docker container with auto-restart
+# Docker Compose (recommended)
+pnpm up     # Start bot with Docker Compose
+pnpm down   # Stop bot
+pnpm restart # Restart bot (useful after config changes)
+pnpm logs   # View logs
+pnpm build  # Rebuild image
+
+# Direct Docker (alternative)
+pnpm image:build  # Build Docker image
+pnpm image:run    # Run Docker container with auto-restart
 ```
 
 ### Docker Management
 
 ```bash
-# Stop and remove container
-docker stop ghbot && docker rm ghbot
+# Docker Compose approach (recommended)
+pnpm up && pnpm logs     # Start and follow logs
+pnpm restart             # Restart after config changes
+pnpm build && pnpm up    # Rebuild after code changes
 
-# View logs
-docker logs ghbot -f
-
-# Rebuild and restart
-docker stop ghbot && docker rm ghbot && pnpm docker:build && pnpm docker:run
+# Direct Docker approach
+docker stop discord-bot && docker rm discord-bot
+docker logs discord-bot -f
+pnpm image:build && pnpm image:run
 ```
 
 ## Architecture & Key Components

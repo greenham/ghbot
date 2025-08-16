@@ -20,8 +20,13 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "docker:build": "docker build -t ghbot:${VERSION:-latest} .",
-    "docker:run": "docker run -d --name ghbot --restart always ghbot:${VERSION:-latest}"
+    "up": "docker compose up -d",
+    "down": "docker compose down",
+    "build": "docker compose build",
+    "restart": "docker compose restart",
+    "logs": "docker compose logs -f",
+    "image:build": "docker build -t ghbot:${VERSION:-latest} .",
+    "image:run": "docker run -d --name ghbot --restart always ghbot:${VERSION:-latest}"
   },
   "author": "https://github.com/greenham",
   "license": "MIT"
