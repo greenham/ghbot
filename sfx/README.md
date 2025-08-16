@@ -95,13 +95,25 @@ bigshit, clever, digup, dinodna, dodson, hatethatman, hrwah, hunt, please, pushp
 ```
 
 **THE GOOD PLACE**
+
+```
 banana, human, puzzles, shirtballs, unhelpful
+```
 
 **SILICON VALLEY**
+
+```
 algore, crush, cumin, dd, goldcaps
+```
 
 **KING OF THE HILL**
+
+```
 bill
+```
 
 **MISC**
+
+```
 cd, cooler, slowmo-in, slowmo-out
+```
