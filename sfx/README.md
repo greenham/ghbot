@@ -1,119 +1,17 @@
-**GENERAL**
+**🔉 GENERAL**
 
 ```
-2+2, ahhh, alert, aspen, auw, aww, bonk, bustin, chafe, chipotle, chomp, choochoo, cooler, correct, date, dong, duck, enjoy, ez, fakehands, fbrage, fine, flippers, funnyhow, gatekeepah, gcn, groovy, gyst, help, herewego, heyheyhey, heymf, highscore, hop, how, hype, idgaf, imawot, interesting, jacked, knob, lab, laugh, lisa, long, mad, massage, mayo, meme, mmmm, mouthfeel, mybody, neat, nevergiveup, obaeb, ohno, okusa, onejoint, onfire, ow, poopy, popup, porkchop, pour, ppump, qty, raffle, rawr, rentfree, respect, robotears, rpgfarm, sdgtw, sendit, sofast, sogood, stick, store, suh, swag, tasty, tea, thatthing, theline, tmm, tojesus, tootski, trash, triple, urf, wahwah, wanker, waow, wdied, wow, yahoo, yippee, yoshi, youguys
+2+2, ahhh, alert, aspen, auw, aww, bonk, bustin, cd, chafe, chipotle, chomp, choochoo, cooler,correct, date, dong, duck, enjoy, ez, fakehands, fbrage, fine, flippers, funnyhow, gatekeepah, gcn, groovy, gyst, help, herewego, heyheyhey, heymf, highscore, hop, how, hype, idgaf, imawot, interesting, jacked, knob, lab, laugh, lisa, long, mad, massage, mayo, meme, mmmm, mouthfeel, mybody, neat, nevergiveup, obaeb, ohno, okusa, onejoint, onfire, ow, poopy, popup, porkchop, pour, ppump, qty, raffle, rawr, rentfree, respect, robotears, rpgfarm, sdgtw, sendit, slowmo-in, slowmo-out, sofast, sogood, stick, store, suh, swag, tasty, tea, thatthing, theline, tmm, tojesus, tootski, trash, triple, urf, wahwah, wanker, waow, wdied, wow, yahoo, yippee, yoshi, youguys
 ```
 
-**NERDS**
+**🤓 NERDS**
 
 ```
-anders, blazeit, booty, butt, bwaa, disagree, doomtaonline, duckscream, emmapos, fdup, fk, fuckduck,hellway, jebaited, lol, mcgasm, milk, myman, nfc, oh, pprage, ppscream, rando, rip, run, runsover, sgqf, smd, speednoises, stfu, tbhamfact, teats, whathaveidone
+1v2, airplane, anders, anteater, archery, blazeit, blblbl, booty, bossmusic, butt, bwaa, bye, byeb, craft, dbio, deebsfart, deebslaugh, diaper, disagree, dominos, doomtaonline, duckscream, eggs, emetarage, emetarage2, emetarage3, emmapos, english, f, fdup, fencedash, fk, fu, fuckduck, fuzzy, goofy, h2o, hamhelp, hamlaugh, hamlaugh2, hamscream, hellway, jebaited, joshbitch, joshgoat, joshlaugh, joshlaugh2, joshlaugh3, joshlaugh4, joshscream, joshwhinny, joshx, lanmo, lanx, lanx2, lol, mcgasm, milk, mothhole, muttfart, muttfart2, muttlaugh, muttscream, muttwalksin, myman, ncd, nfc, oh, pprage, ppscream, pyle, rando, rip, run, runsover, sgqf, shj, smd, spam, speednoises, speedrunner, split, stank, stfu, tbhamfact, teats, timmon, trinexx, vitty, wait, whathaveidone, why, wiki, wobbuffet, xelboss, xelkiss
 ```
 
-**HAM**
+**🎥 TV & MOVIES**
 
 ```
-archery, hamhelp, hamlaugh, hamlaugh2, hamscream, pyle, spam, speedrunner, stank, wait, why
-```
-
-**JOSH**
-
-```
-blblbl, goofy, joshbitch, joshgoat, joshlaugh, joshlaugh2, joshlaugh3, joshlaugh4, joshscream, joshwhinny, joshx
-```
-
-**LANX**
-
-```
-dominos, lanx, lanx2
-```
-
-**MUTT**
-
-```
-muttfart, muttfart2, muttlaugh, muttscream, muttwalksin, wobbuffet
-```
-
-**EMMA**
-
-```
-airplane, bye, byeb, emetarage, emetarage2, emetarage3, fu, split
-```
-
-**DEEBS**
-
-```
-1v2, bossmusic, dbio, deebsfart, deebslaugh, english, fencedash, lanmo, timmon, trinexx, vitty
-```
-
-**STEPHEN**
-
-```
-craft, diaper, f, mothhole
-```
-
-**FRICKER**
-
-```
-anteater, eggs, fuzzy, h2o, ncd, shj
-```
-
-**XELNA**
-
-```
-wiki, xelboss, xelkiss
-```
-
-**TWIN PEAKS**
-
-```
-albert, andhot, coffee, dead, drinkfull, fish, gordon, gordon2, gordon3, gordon4, gotalight, gum, letsrock, mapleham, mrjackpots, myarms, newshoes, present, veranda, vision
-```
-
-**ATHF**
-
-```
-arise, bananas, bjqueen, carlcandy, dontmatter, gross, hahaa, hightonight, idc, kudos, lang, party, rockin, threat, tonight, watchyourback
-```
-
-**IT CROWD**
-
-```
-20gp, door, esp, hammertime, oldman, seaparks, seeitnow
-```
-
-**SIMPSONS**
-
-```
-learnding, mash, nerd, rake, stahp, toofat, towel
-```
-
-**JURASSIC PARK**
-
-```
-bigshit, clever, digup, dinodna, dodson, hatethatman, hrwah, hunt, please, pushpush, trex, tour
-```
-
-**THE GOOD PLACE**
-
-```
-banana, human, puzzles, shirtballs, unhelpful
-```
-
-**SILICON VALLEY**
-
-```
-algore, crush, cumin, dd, goldcaps
-```
-
-**KING OF THE HILL**
-
-```
-bill
-```
-
-**UTILITY**
-
-```
-cd, slowmo-in, slowmo-out
+20gp, albert, algore, andhot, arise, banana, bananas, bigshit, bill, bjqueen, carlcandy, clever, coffee, crush, cumin, dd, dead, digup, dinodna, dodson, dontmatter, door, drinkfull, esp, fish, goldcaps, gordon, gordon2, gordon3, gordon4, gotalight, gross, gum, hahaa, hammertime, hatethatman, hightonight, hrwah, human, hunt, idc, kudos, lang, learnding, letsrock, mapleham, mash, mrjackpots, myarms, nerd, newshoes, oldman, party, please, present, puzzles, pushpush, rake, rockin, seaparks, seeitnow, shirtballs, stahp, threat, tonight, toofat, tour, towel, trex, unhelpful, veranda, vision, watchyourback
 ```

@@ -91,28 +91,28 @@ module.exports = {
       });
     }
 
-    // Create category selection buttons (max 5 buttons per row, 5 rows max = 25 buttons total)
+    // Create category selection buttons (4 per row for better layout)
     const categoryNames = Object.keys(categories);
     const rows = [];
-    let buttonCount = 0;
 
-    for (let i = 0; i < categoryNames.length && rows.length < 5; i += 5) {
+    for (let i = 0; i < categoryNames.length; i += 4) {
       const row = new ActionRowBuilder();
-      const categoriesInRow = categoryNames.slice(i, i + 5);
+      const categoriesInRow = categoryNames.slice(i, i + 4);
 
       for (const category of categoriesInRow) {
-        if (buttonCount >= 25) break; // Discord limit is 25 components total
-        
         const button = new ButtonBuilder()
           .setCustomId(
-            `soundboard_category_${category.toLowerCase().replace(/\s+/g, "_")}`
+            `soundboard_category_${category
+              .toLowerCase()
+              .replace(/\s+/g, "_")
+              .replace(/&/g, "and")}`
           )
-          .setLabel(category.length > 80 ? category.substring(0, 77) + '...' : category)
-          .setStyle(ButtonStyle.Primary)
-          .setEmoji("🎵");
+          .setLabel(
+            category.length > 80 ? category.substring(0, 77) + "..." : category
+          )
+          .setStyle(ButtonStyle.Primary);
 
         row.addComponents(button);
-        buttonCount++;
       }
 
       if (row.components.length > 0) {
@@ -124,15 +124,6 @@ module.exports = {
       .setTitle("🎛️ Interactive Soundboard")
       .setDescription("Choose a category to browse sound effects:")
       .setColor(0x21c629)
-      .addFields([
-        {
-          name: "Available Categories",
-          value: categoryNames
-            .map((cat) => `🎵 **${cat}** (${categories[cat].length} sounds)`)
-            .join("\n"),
-          inline: false,
-        },
-      ])
       .setFooter({ text: "Click a category button to browse sounds" });
 
     await interaction.reply({
@@ -143,21 +134,28 @@ module.exports = {
 
   async handleCategorySelection(interaction, guildConfig) {
     const customId = interaction.customId;
-    let categoryKey, page = 0;
-    
-    if (customId.includes('_page_')) {
+    let categoryKey,
+      page = 0;
+
+    if (customId.includes("_page_")) {
       // Handle pagination: soundboard_category_general_page_1
-      const parts = customId.replace("soundboard_category_", "").split('_page_');
-      categoryKey = parts[0].replace(/_/g, " ").toUpperCase();
+      const parts = customId
+        .replace("soundboard_category_", "")
+        .split("_page_");
+      categoryKey = parts[0]
+        .replace(/_/g, " ")
+        .replace(/and/g, "&")
+        .toUpperCase();
       page = parseInt(parts[1]) || 0;
     } else {
       // Handle initial category selection
       categoryKey = customId
         .replace("soundboard_category_", "")
         .replace(/_/g, " ")
+        .replace(/and/g, "&")
         .toUpperCase();
     }
-    
+
     const categories = getSFXCategories();
 
     if (!categories || !categories[categoryKey]) {
@@ -167,12 +165,14 @@ module.exports = {
       });
     }
 
-    const allSounds = categories[categoryKey].filter(sound => sfxManager.hasSFX(sound));
+    const allSounds = categories[categoryKey].filter((sound) =>
+      sfxManager.hasSFX(sound)
+    );
     const soundsPerPage = 16; // 4 sounds per row × 4 rows = 16 sounds per page
     const totalPages = Math.ceil(allSounds.length / soundsPerPage);
     const startIndex = page * soundsPerPage;
     const sounds = allSounds.slice(startIndex, startIndex + soundsPerPage);
-    
+
     const rows = [];
     let buttonCount = 0;
 
@@ -183,12 +183,11 @@ module.exports = {
 
       for (const sound of soundsInRow) {
         if (buttonCount >= 16) break; // Leave room for navigation row
-        
+
         const button = new ButtonBuilder()
           .setCustomId(`soundboard_play_${sound}`)
-          .setLabel(sound.length > 80 ? sound.substring(0, 77) + '...' : sound)
-          .setStyle(ButtonStyle.Secondary)
-          .setEmoji("▶️");
+          .setLabel(sound.length > 80 ? sound.substring(0, 77) + "..." : sound)
+          .setStyle(ButtonStyle.Secondary);
 
         row.addComponents(button);
         buttonCount++;
@@ -201,11 +200,15 @@ module.exports = {
 
     // Add navigation row with back button and pagination if needed
     const navRow = new ActionRowBuilder();
-    
+
     // Add previous page button if not on first page
     if (page > 0) {
       const prevButton = new ButtonBuilder()
-        .setCustomId(`soundboard_category_${categoryKey.toLowerCase().replace(/\s+/g, "_")}_page_${page - 1}`)
+        .setCustomId(
+          `soundboard_category_${categoryKey
+            .toLowerCase()
+            .replace(/\s+/g, "_")}_page_${page - 1}`
+        )
         .setLabel("« Previous")
         .setStyle(ButtonStyle.Secondary)
         .setEmoji("◀️");
@@ -223,7 +226,11 @@ module.exports = {
     // Add next page button if there are more pages
     if (page < totalPages - 1) {
       const nextButton = new ButtonBuilder()
-        .setCustomId(`soundboard_category_${categoryKey.toLowerCase().replace(/\s+/g, "_")}_page_${page + 1}`)
+        .setCustomId(
+          `soundboard_category_${categoryKey
+            .toLowerCase()
+            .replace(/\s+/g, "_")}_page_${page + 1}`
+        )
         .setLabel("Next »")
         .setStyle(ButtonStyle.Secondary)
         .setEmoji("▶️");
@@ -233,13 +240,16 @@ module.exports = {
     rows.push(navRow);
 
     // Show pagination info
-    const paginationNote = totalPages > 1 ? `\n\n*Page ${page + 1} of ${totalPages} (${allSounds.length} total sounds)*` : '';
+    const paginationNote =
+      totalPages > 1
+        ? `\n\n*Page ${page + 1} of ${totalPages} (${
+            allSounds.length
+          } total sounds)*`
+        : "";
 
     const embed = new EmbedBuilder()
-      .setTitle(`🎵 ${categoryKey} Soundboard`)
-      .setDescription(
-        `Choose a sound effect to play:${paginationNote}`
-      )
+      .setTitle(`${categoryKey} Soundboard`)
+      .setDescription(`Choose a sound effect to play:${paginationNote}`)
       .setColor(0x21c629)
       .setFooter({ text: "Click a sound button to play it" });
 
@@ -253,6 +263,11 @@ module.exports = {
     const soundName = interaction.customId.replace("soundboard_play_", "");
 
     // Use the reusable SFX playing method
-    await sfxManager.playSFXInteraction(interaction, soundName, guildConfig, 'soundboard');
+    await sfxManager.playSFXInteraction(
+      interaction,
+      soundName,
+      guildConfig,
+      "soundboard"
+    );
   },
 };
