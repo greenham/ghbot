@@ -31,7 +31,10 @@ A modern Discord bot built with Discord.js v14 that provides sound effects, text
 
 ### 🛠️ Admin Features
 
-- **Multi-guild Support**: Configure different settings per Discord server
+- **Dynamic Configuration**: SQLite database for persistent, per-server settings
+- **Auto-Registration**: New guilds automatically configured when bot is added
+- **Live Configuration**: `/config` slash commands for real-time settings updates
+- **Soft Delete**: Guild settings preserved when bot is temporarily removed
 - **Hot Reload**: Configuration files update without restart
 - **Admin Commands**: Bot management and restart capabilities
 - **Blacklist System**: Block specific users from using commands
@@ -40,7 +43,7 @@ A modern Discord bot built with Discord.js v14 that provides sound effects, text
 
 ### Prerequisites
 
-- Node.js 22 LTS
+- Node.js 20 LTS (for Docker) or 22+ LTS (for local development)
 - pnpm package manager
 - Discord Bot Token (see Discord Setup section below)
 
@@ -63,19 +66,24 @@ A modern Discord bot built with Discord.js v14 that provides sound effects, text
 
    ```bash
    cp config.example.json config.json
-   # Edit config.json with your bot token and guild settings
+   # Edit config.json with your bot token and existing guild settings (optional)
    ```
+
+   **Note**: The bot uses a SQLite database for guild configurations. If you have existing guilds in `config.json`, they will be automatically imported to the database on first run. For new deployments, guilds are auto-registered when the bot is added to servers.
 
 4. **Set up Discord Bot** (see Discord Setup section below)
 
 5. **Run the bot**
 
    ```bash
-   # Development mode with auto-reload
+   # Development mode with auto-reload (local Node.js)
    pnpm dev
 
-   # Production mode
+   # Production mode with Docker Compose
    pnpm start
+   
+   # Production mode with local Node.js
+   pnpm start:prod
    ```
 
 ## 🐳 Docker Deployment
@@ -84,7 +92,7 @@ A modern Discord bot built with Discord.js v14 that provides sound effects, text
 
 ```bash
 # Start the bot with Docker Compose
-pnpm up
+pnpm start
 
 # View logs
 pnpm logs
@@ -93,15 +101,19 @@ pnpm logs
 pnpm restart
 
 # Stop the bot
-pnpm down
+pnpm stop
 
-# Rebuild and restart (after code changes)
-pnpm build && pnpm up
+# Quick rebuild and restart (after code changes)
+pnpm boom
+
+# Manual build and start
+pnpm build && pnpm start
 ```
 
 **Benefits of Docker Compose:**
 
 - Update `config.json`, `sfx/`, and `conf/` files without rebuilding the image
+- SQLite database persistence via mounted `./data` volume
 - Automatic restart on failure
 - Easy log management
 - Resource limits and health checks
@@ -156,6 +168,21 @@ pnpm image:run
 !leave               # Leave current voice channel
 ```
 
+### Configuration Management
+
+**Dynamic Configuration (Administrator only):**
+
+```
+/config show         # View current server settings
+/config prefix !     # Set command prefix
+/config sfx true     # Enable/disable sound effects
+/config volume 0.8   # Set SFX volume (0.1-1.0)
+/config funfacts true # Enable/disable fun facts
+/config hamfacts true # Enable/disable ham facts
+/config sfxchannels general|music # Set allowed SFX channels (regex)
+/config roles streamer|vip|member # Set self-assignable roles
+```
+
 ## 🔧 Discord Setup
 
 ### Creating a Discord Bot
@@ -196,9 +223,25 @@ pnpm image:run
 
 ## ⚙️ Configuration
 
-### Basic Configuration
+### Database-Driven Configuration
 
-Copy `config.example.json` to `config.json` and customize:
+The bot uses **SQLite database** for persistent guild configurations. Configuration can be managed in three ways:
+
+#### 1. Automatic Registration (Recommended for Public Bot)
+When the bot is added to a new server, it automatically:
+- Creates default configuration with sensible settings
+- Sends a welcome message explaining features
+- Registers slash commands for the server
+
+#### 2. Live Configuration via Slash Commands
+Administrators can use `/config` commands to modify settings in real-time:
+- `/config show` - View current server settings
+- `/config prefix <prefix>` - Change command prefix
+- `/config sfx <true/false>` - Enable/disable sound effects
+- And more (see Configuration Management section above)
+
+#### 3. Seed Data from config.json (Optional)
+For initial deployment or migrating existing servers, create `config.json`:
 
 ```json
 {
@@ -216,7 +259,20 @@ Copy `config.example.json` to `config.json` and customize:
         "allowedSfxChannels": "general|voice-chat",
         "sfxVolume": 0.5,
         "enableFunFacts": true,
-        "enableHamFacts": true
+        "enableHamFacts": true,
+        "scheduledEvents": [
+          {
+            "id": "daily-reminder",
+            "schedule": {
+              "hour": 7,
+              "minute": 30,
+              "tz": "America/Los_Angeles"
+            },
+            "channelId": "CHANNEL_ID",
+            "message": "Good morning!",
+            "pingRoleId": "ROLE_ID"
+          }
+        ]
       }
     ],
     "activities": ["Playing sounds", "Serving facts"],
@@ -224,6 +280,8 @@ Copy `config.example.json` to `config.json` and customize:
   }
 }
 ```
+
+**Migration Process**: On first startup with an empty database, the bot will automatically import all guilds and settings from `config.json` into the database. After migration, the database becomes the primary configuration source.
 
 ### Sound Effects Setup
 
@@ -241,21 +299,35 @@ wiki,wikipedia|https://wikipedia.org
 help,commands|Available commands: !sfx, !funfact, !hamfact
 ```
 
-### Scheduled Events
+### Scheduled Events (Advanced)
 
-Add to guild configuration:
+**For config.json seeding only** - Scheduled events are stored in the database:
 
 ```json
 "scheduledEvents": [
   {
     "id": "daily-greeting",
-    "schedule": "0 9 * * *",
+    "schedule": {
+      "hour": 9,
+      "minute": 0,
+      "tz": "America/New_York"
+    },
     "channelId": "CHANNEL_ID",
     "message": "Good morning everyone!",
     "pingRoleId": "ROLE_ID"
+  },
+  {
+    "id": "weekly-reminder", 
+    "schedule": "0 10 * * 1",
+    "channelId": "CHANNEL_ID",
+    "message": "Happy Monday!"
   }
 ]
 ```
+
+**Schedule Formats Supported:**
+- **Object format**: `{"hour": 9, "minute": 30, "tz": "America/Los_Angeles"}` (with timezone)
+- **Cron format**: `"0 9 * * *"` (standard cron expression)
 
 ## 🏗️ Architecture
 
@@ -263,18 +335,22 @@ Add to guild configuration:
 src/
 ├── index.js                 # Main bot entry point
 ├── config/
-│   ├── config.js            # Configuration loader
+│   ├── config.js            # Hybrid configuration manager (database + file)
 │   └── intents.js          # Discord gateway intents
 ├── commands/
-│   ├── prefix/             # Traditional prefix commands
-│   └── slash/              # Modern slash commands
+│   ├── prefix/             # Traditional prefix commands (!sfx, !funfact, etc.)
+│   └── slash/              # Modern slash commands (/sfx, /config)
 ├── services/
+│   ├── databaseService.js  # SQLite database operations
 │   ├── voiceService.js     # Voice connection management
 │   ├── commandLoader.js    # Static/Ankhbot command loader
 │   ├── sfxManager.js       # Sound effect file management
 │   └── schedulerService.js # Scheduled events handler
 └── utils/
     └── helpers.js          # Utility functions
+
+data/
+└── ghbot.db                # SQLite database (auto-created)
 ```
 
 ## 🧪 Development
@@ -320,10 +396,11 @@ module.exports = {
 
 ## 📊 System Requirements
 
-- **Node.js**: 22 LTS or higher
+- **Node.js**: 20 LTS (Docker) or 22+ LTS (local development)
 - **Memory**: 256MB+ RAM
-- **Storage**: 500MB+ (depending on sound effects)
+- **Storage**: 500MB+ (depending on sound effects and database)
 - **Network**: Stable internet connection for Discord API
+- **Database**: SQLite (auto-created, no external database required)
 
 ## 🔧 Troubleshooting
 
