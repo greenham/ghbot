@@ -6,6 +6,39 @@ const voiceService = require('../../services/voiceService');
 module.exports = {
   name: 'sfx',
   description: 'Play a sound effect',
+
+  /**
+   * Smart chunking that respects markdown block boundaries
+   * @param {string} content 
+   * @param {number} maxLength 
+   * @returns {Array<string>}
+   */
+  smartChunkMarkdown(content, maxLength) {
+    const chunks = [];
+    const sections = content.split(/(\*\*[^*]+\*\*)/); // Split on headers while keeping them
+    
+    let currentChunk = '';
+    
+    for (const section of sections) {
+      // If adding this section would exceed the limit
+      if (currentChunk.length + section.length > maxLength) {
+        // Save current chunk if it has content
+        if (currentChunk.trim()) {
+          chunks.push(currentChunk.trim());
+        }
+        currentChunk = section;
+      } else {
+        currentChunk += section;
+      }
+    }
+    
+    // Add the final chunk
+    if (currentChunk.trim()) {
+      chunks.push(currentChunk.trim());
+    }
+    
+    return chunks;
+  },
   
   async execute(message, args, guildConfig) {
     // Check if SFX is allowed in this channel
@@ -39,7 +72,8 @@ module.exports = {
           if (sfxListContent.length <= 2000) {
             await message.channel.send(sfxListContent);
           } else {
-            const chunks = chunkSubstr(sfxListContent, 1900); // Leave some buffer
+            // Smart chunking that respects markdown block boundaries
+            const chunks = this.smartChunkMarkdown(sfxListContent, 1900);
             
             for (const chunk of chunks) {
               await message.channel.send(chunk);

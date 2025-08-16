@@ -1,7 +1,7 @@
 **GENERAL**
 
 ```
-2+2, ahhh, alert, aspen, auw, aww, bonk, bustin, chafe, chipotle, chomp, choochoo, correct, date, dong, duck, enjoy, ez, fakehands, fbrage, fine, flippers, funnyhow, gatekeepah, gcn, groovy, gyst, help, herewego, heyheyhey, heymf, highscore, hop, how, hype, idgaf, imawot, interesting, jacked, knob, lab, laugh, lisa, long, mad, massage, mayo, meme, mmmm, mouthfeel, mybody, neat, nevergiveup, obaeb, ohno, okusa, onejoint, onfire, ow, poopy, popup, porkchop, pour, ppump, qty, raffle, rawr, rentfree, respect, robotears, rpgfarm, sdgtw, sendit, sofast, sogood, stick, store, suh, swag, tasty, tea, thatthing, theline, tmm, tojesus, tootski, trash, triple, urf, wahwah, wanker, waow, wdied, wow, yahoo, yippee, yoshi, youguys
+2+2, ahhh, alert, aspen, auw, aww, bonk, bustin, chafe, chipotle, chomp, choochoo, cooler, correct, date, dong, duck, enjoy, ez, fakehands, fbrage, fine, flippers, funnyhow, gatekeepah, gcn, groovy, gyst, help, herewego, heyheyhey, heymf, highscore, hop, how, hype, idgaf, imawot, interesting, jacked, knob, lab, laugh, lisa, long, mad, massage, mayo, meme, mmmm, mouthfeel, mybody, neat, nevergiveup, obaeb, ohno, okusa, onejoint, onfire, ow, poopy, popup, porkchop, pour, ppump, qty, raffle, rawr, rentfree, respect, robotears, rpgfarm, sdgtw, sendit, sofast, sogood, stick, store, suh, swag, tasty, tea, thatthing, theline, tmm, tojesus, tootski, trash, triple, urf, wahwah, wanker, waow, wdied, wow, yahoo, yippee, yoshi, youguys
 ```
 
 **NERDS**
@@ -112,8 +112,8 @@ algore, crush, cumin, dd, goldcaps
 bill
 ```
 
-**MISC**
+**UTILITY**
 
 ```
-cd, cooler, slowmo-in, slowmo-out
+cd, slowmo-in, slowmo-out
 ```
