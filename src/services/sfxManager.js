@@ -1,66 +1,66 @@
-const fs = require('fs');
-const path = require('path');
-const { MessageFlags } = require('discord.js');
-const voiceService = require('./voiceService');
+const fs = require("fs");
+const path = require("path");
+const { MessageFlags } = require("discord.js");
+const voiceService = require("./voiceService");
 
-class SFXManager {
+class SfxManager {
   constructor() {
-    this.sfxPath = path.join(__dirname, '..', '..', 'sfx');
+    this.sfxPath = path.join(__dirname, "..", "..", "sfx");
     this.sfxList = [];
     this.cachedNames = [];
     this.searchCache = new Map(); // Cache for autocomplete searches
-    
+
     // Load SFX list initially
-    this.loadSFXList();
-    
+    this.loadSfxList();
+
     // Watch for changes
-    this.watchSFXDirectory();
+    this.watchSfxDirectory();
   }
 
   /**
    * Load the list of available SFX files
    */
-  loadSFXList() {
+  loadSfxList() {
     try {
       if (!fs.existsSync(this.sfxPath)) {
-        console.log('SFX directory not found, creating...');
+        console.log("SFX directory not found, creating...");
         fs.mkdirSync(this.sfxPath, { recursive: true });
       }
 
       const files = fs.readdirSync(this.sfxPath);
       this.sfxList = files
-        .filter(file => file.endsWith('.mp3') || file.endsWith('.wav'))
-        .map(file => {
+        .filter((file) => file.endsWith(".mp3") || file.endsWith(".wav"))
+        .map((file) => {
           const ext = path.extname(file);
           return {
-            name: file.replace(ext, ''),
+            name: file.replace(ext, ""),
             filename: file,
-            path: path.join(this.sfxPath, file)
+            path: path.join(this.sfxPath, file),
           };
         });
-      
+
       // Cache sorted names for autocomplete
       this.cachedNames = this.sfxList
-        .map(sfx => sfx.name)
+        .map((sfx) => sfx.name)
         .sort((a, b) => a.localeCompare(b));
-      
+
       // Clear search cache when SFX list changes
       this.searchCache.clear();
-      
+
       console.log(`Loaded ${this.sfxList.length} sound effects`);
     } catch (error) {
-      console.error('Error loading SFX list:', error);
+      console.error("Error loading SFX list:", error);
     }
   }
 
   /**
    * Watch the SFX directory for changes
    */
-  watchSFXDirectory() {
+  watchSfxDirectory() {
     fs.watch(this.sfxPath, (eventType, filename) => {
-      if (eventType === 'rename') {
-        console.log('SFX directory changed, reloading...');
-        this.loadSFXList();
+      if (eventType === "rename") {
+        console.log("SFX directory changed, reloading...");
+        this.loadSfxList();
       }
     });
   }
@@ -69,7 +69,7 @@ class SFXManager {
    * Get all available SFX
    * @returns {Array} List of SFX objects
    */
-  getAllSFX() {
+  getAllSfx() {
     return this.sfxList;
   }
 
@@ -77,59 +77,61 @@ class SFXManager {
    * Get SFX names for autocomplete (cached and sorted)
    * @returns {Array} List of SFX names
    */
-  getSFXNames() {
+  getSfxNames() {
     return this.cachedNames;
   }
 
   /**
    * Find an SFX by name
-   * @param {string} name 
+   * @param {string} name
    * @returns {Object|undefined} SFX object or undefined
    */
-  findSFX(name) {
-    return this.sfxList.find(sfx => sfx.name.toLowerCase() === name.toLowerCase());
+  findSfx(name) {
+    return this.sfxList.find(
+      (sfx) => sfx.name.toLowerCase() === name.toLowerCase()
+    );
   }
 
   /**
    * Check if an SFX exists
-   * @param {string} name 
+   * @param {string} name
    * @returns {boolean}
    */
-  hasSFX(name) {
-    return this.findSFX(name) !== undefined;
+  hasSfx(name) {
+    return this.findSfx(name) !== undefined;
   }
 
   /**
    * Get the file path for an SFX
-   * @param {string} name 
+   * @param {string} name
    * @returns {string|null}
    */
-  getSFXPath(name) {
-    const sfx = this.findSFX(name);
+  getSfxPath(name) {
+    const sfx = this.findSfx(name);
     return sfx ? sfx.path : null;
   }
 
   /**
    * Search SFX names (for autocomplete) with caching
-   * @param {string} query 
+   * @param {string} query
    * @returns {Array} Matching SFX names
    */
-  searchSFX(query) {
+  searchSfx(query) {
     const lowerQuery = query.toLowerCase();
-    
+
     // Check cache first
     if (this.searchCache.has(lowerQuery)) {
       return this.searchCache.get(lowerQuery);
     }
-    
+
     // Perform search on cached names (already sorted)
     const results = this.cachedNames
-      .filter(name => name.toLowerCase().includes(lowerQuery))
+      .filter((name) => name.toLowerCase().includes(lowerQuery))
       .slice(0, 25); // Discord autocomplete limit
-    
+
     // Cache the result for future use
     this.searchCache.set(lowerQuery, results);
-    
+
     return results;
   }
 
@@ -141,18 +143,25 @@ class SFXManager {
    * @param {string} commandType - Type of command ('slash' or 'soundboard')
    * @returns {Promise<void>}
    */
-  async playSFXInteraction(interaction, sfxName, guildConfig, commandType = 'slash') {
+  async playSfxInteraction(
+    interaction,
+    sfxName,
+    guildConfig,
+    commandType = "slash"
+  ) {
     // Log the request
-    const logPrefix = commandType === 'soundboard' ? 'Soundboard' : '/sfx';
+    const logPrefix = commandType === "soundboard" ? "Soundboard" : "/sfx";
     console.log(
-      `${logPrefix} '${sfxName}' requested in ${guildConfig.internalName || interaction.guild.name}#${interaction.channel.name} from @${interaction.user.username}`
+      `${logPrefix} '${sfxName}' requested in ${
+        guildConfig.internalName || interaction.guild.name
+      }#${interaction.channel.name} from @${interaction.user.username}`
     );
 
     // Check if SFX exists
-    if (!this.hasSFX(sfxName)) {
+    if (!this.hasSfx(sfxName)) {
       await interaction.reply({
         content: `❌ This sound effect does not exist!`,
-        flags: [MessageFlags.Ephemeral]
+        flags: [MessageFlags.Ephemeral],
       });
       return;
     }
@@ -161,14 +170,14 @@ class SFXManager {
       // Immediately reply with playing status
       await interaction.reply({
         content: `🔊 Playing: **${sfxName}**`,
-        flags: [MessageFlags.Ephemeral]
+        //flags: [MessageFlags.Ephemeral],
       });
 
       // Join the voice channel
       await voiceService.join(interaction.member.voice.channel);
 
       // Get the SFX file path and play
-      const sfxPath = this.getSFXPath(sfxName);
+      const sfxPath = this.getSfxPath(sfxName);
       await voiceService.play(interaction.guild.id, sfxPath, {
         volume: guildConfig.sfxVolume || 0.5,
       });
@@ -176,10 +185,13 @@ class SFXManager {
       // Update the interaction to show completion
       try {
         await interaction.editReply({
-          content: `✅ Finished playing: **${sfxName}**`
+          content: `✅ Finished playing: **${sfxName}**`,
         });
       } catch (editError) {
-        console.error('Error updating interaction with completion message:', editError);
+        console.error(
+          "Error updating interaction with completion message:",
+          editError
+        );
       }
 
       // Leave the voice channel after playing
@@ -187,18 +199,26 @@ class SFXManager {
         voiceService.leave(interaction.guild.id);
       }, 500);
 
-      console.log(`✅ Successfully played ${logPrefix.toLowerCase()} '${sfxName}'`);
-
+      console.log(
+        `✅ Successfully played ${logPrefix.toLowerCase()} '${sfxName}'`
+      );
     } catch (error) {
-      console.error(`❌ Error playing ${logPrefix.toLowerCase()} '${sfxName}':`, error);
-      
+      console.error(
+        `❌ Error playing ${logPrefix.toLowerCase()} '${sfxName}':`,
+        error
+      );
+
       // Update the reply with error message
       try {
         await interaction.editReply({
-          content: "❌ Couldn't play that sound effect. Make sure I have permission to join your voice channel!"
+          content:
+            "❌ Couldn't play that sound effect. Make sure I have permission to join your voice channel!",
         });
       } catch (editError) {
-        console.error('Error updating interaction with error message:', editError);
+        console.error(
+          "Error updating interaction with error message:",
+          editError
+        );
       }
     }
   }
@@ -210,33 +230,35 @@ class SFXManager {
    * @param {Object} guildConfig - Guild configuration
    * @returns {Promise<void>}
    */
-  async playSFXMessage(message, sfxName, guildConfig) {
+  async playSfxMessage(message, sfxName, guildConfig) {
     // Log the request
     console.log(
-      `SFX '${sfxName}' requested in ${guildConfig.internalName || message.guild.name}#${message.channel.name} from @${message.author.username}`
+      `SFX '${sfxName}' requested in ${
+        guildConfig.internalName || message.guild.name
+      }#${message.channel.name} from @${message.author.username}`
     );
 
     // Check if SFX exists
-    if (!this.hasSFX(sfxName)) {
-      await message.reply('❌ This sound effect does not exist!');
+    if (!this.hasSfx(sfxName)) {
+      await message.reply("❌ This sound effect does not exist!");
       return;
     }
 
     try {
       // React with speaker icon to show playing status
-      await message.react('🔊');
+      await message.react("🔊");
 
       // Join the voice channel
       await voiceService.join(message.member.voice.channel);
 
       // Get the SFX file path and play
-      const sfxPath = this.getSFXPath(sfxName);
+      const sfxPath = this.getSfxPath(sfxName);
       await voiceService.play(message.guild.id, sfxPath, {
         volume: guildConfig.sfxVolume || 0.5,
       });
 
       // Add completion reaction (keep both speaker and checkmark)
-      await message.react('✅');
+      await message.react("✅");
 
       // Leave the voice channel after playing
       setTimeout(() => {
@@ -244,19 +266,20 @@ class SFXManager {
       }, 500);
 
       console.log(`✅ Successfully played SFX '${sfxName}'`);
-
     } catch (error) {
       console.error(`❌ Error playing SFX '${sfxName}':`, error);
-      
+
       // Add error reaction
       try {
-        await message.react('❌');
+        await message.react("❌");
       } catch (reactionError) {
         // If reactions fail, fall back to reply
-        await message.reply("❌ Couldn't play that sound effect. Make sure I have permission to join your voice channel!");
+        await message.reply(
+          "❌ Couldn't play that sound effect. Make sure I have permission to join your voice channel!"
+        );
       }
     }
   }
 }
 
-module.exports = new SFXManager();
+module.exports = new SfxManager();

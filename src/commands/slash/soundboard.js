@@ -9,10 +9,9 @@ const {
 const fs = require("fs");
 const path = require("path");
 const sfxManager = require("../../services/sfxManager");
-const voiceService = require("../../services/voiceService");
 
 // Parse categories from README.md
-function getSFXCategories() {
+function getSfxCategories() {
   try {
     const sfxReadmePath = path.join(
       __dirname,
@@ -70,7 +69,7 @@ module.exports = {
       });
     }
 
-    const categories = getSFXCategories();
+    const categories = getSfxCategories();
 
     if (!categories) {
       return interaction.reply({
@@ -112,8 +111,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("🎛️ Interactive Soundboard")
       .setDescription("Choose a category to browse sound effects:")
-      .setColor(0x21c629)
-      .setFooter({ text: "Click a category button to browse sounds" });
+      .setColor(0x21c629);
 
     await interaction.reply({
       embeds: [embed],
@@ -145,7 +143,7 @@ module.exports = {
         .toUpperCase();
     }
 
-    const categories = getSFXCategories();
+    const categories = getSfxCategories();
 
     if (!categories || !categories[categoryKey]) {
       return interaction.reply({
@@ -155,7 +153,7 @@ module.exports = {
     }
 
     const allSounds = categories[categoryKey].filter((sound) =>
-      sfxManager.hasSFX(sound)
+      sfxManager.hasSfx(sound)
     );
     const soundsPerPage = 16; // 4 sounds per row × 4 rows = 16 sounds per page
     const totalPages = Math.ceil(allSounds.length / soundsPerPage);
@@ -252,7 +250,7 @@ module.exports = {
     const soundName = interaction.customId.replace("soundboard_play_", "");
 
     // Use the reusable SFX playing method
-    await sfxManager.playSFXInteraction(
+    await sfxManager.playSfxInteraction(
       interaction,
       soundName,
       guildConfig,
