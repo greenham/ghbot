@@ -223,6 +223,9 @@ class SFXManager {
     }
 
     try {
+      // React with speaker icon to show playing status
+      await message.react('🔊');
+
       // Join the voice channel
       await voiceService.join(message.member.voice.channel);
 
@@ -231,6 +234,9 @@ class SFXManager {
       await voiceService.play(message.guild.id, sfxPath, {
         volume: guildConfig.sfxVolume || 0.5,
       });
+
+      // Add completion reaction (keep both speaker and checkmark)
+      await message.react('✅');
 
       // Leave the voice channel after playing
       setTimeout(() => {
@@ -241,7 +247,14 @@ class SFXManager {
 
     } catch (error) {
       console.error(`❌ Error playing SFX '${sfxName}':`, error);
-      await message.reply("❌ Couldn't play that sound effect. Make sure I have permission to join your voice channel!");
+      
+      // Add error reaction
+      try {
+        await message.react('❌');
+      } catch (reactionError) {
+        // If reactions fail, fall back to reply
+        await message.reply("❌ Couldn't play that sound effect. Make sure I have permission to join your voice channel!");
+      }
     }
   }
 }
