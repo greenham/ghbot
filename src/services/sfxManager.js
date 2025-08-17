@@ -170,7 +170,7 @@ class SfxManager {
       // Immediately reply with playing status
       await interaction.reply({
         content: `🔊 Playing: **${sfxName}**`,
-        //flags: [MessageFlags.Ephemeral],
+        flags: [MessageFlags.Ephemeral],
       });
 
       // Join the voice channel
