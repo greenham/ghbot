@@ -54,8 +54,8 @@ data/
 start.bat
 tokens.json
 
-config.*json
-!config.example.json
+seed.json
+!seed.example.json
 .env
 
 *.todo

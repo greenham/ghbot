@@ -67,6 +67,7 @@ class DatabaseService {
       INSERT OR IGNORE INTO bot_config (key, value) VALUES 
       ('bot_name', 'GHBot'),
       ('debug', 'false'),
+      ('token', ''),
       ('admin_user_id', ''),
       ('activities', '["Chardee MacDennis", "The Nightman Cometh", "Charlie Work"]'),
       ('blacklisted_users', '[]')
@@ -106,17 +107,17 @@ class DatabaseService {
       const fs = require("fs");
       const path = require("path");
 
-      const configPath = path.join(__dirname, "..", "..", "config.json");
+      const seedPath = path.join(__dirname, "..", "..", "seed.json");
 
-      if (!fs.existsSync(configPath)) {
-        console.log("No config.json file found, skipping seed");
+      if (!fs.existsSync(seedPath)) {
+        console.log("No seed.json file found, skipping seed");
         return;
       }
 
-      const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+      const config = JSON.parse(fs.readFileSync(seedPath, "utf-8"));
 
       if (!config.discord?.guilds) {
-        console.log("No guilds found in config.json, skipping seed");
+        console.log("No guilds found in seed.json, skipping seed");
         return;
       }
 
@@ -180,7 +181,7 @@ class DatabaseService {
       }
 
       console.log(
-        `✅ Successfully seeded database with ${seededCount} guild(s) from config.json`
+        `✅ Successfully seeded database with ${seededCount} guild(s) from seed.json`
       );
 
       // Update bot configuration in database from file config
@@ -189,6 +190,9 @@ class DatabaseService {
       }
       if (config.debug !== undefined) {
         this.setBotConfig("debug", config.debug.toString());
+      }
+      if (config.discord?.token) {
+        this.setBotConfig("token", config.discord.token);
       }
       if (config.discord?.adminUserId) {
         this.setBotConfig("admin_user_id", config.discord.adminUserId);
@@ -212,7 +216,7 @@ class DatabaseService {
         );
       }
 
-      console.log("✅ Bot configuration updated from config.json");
+      console.log("✅ Bot configuration updated from seed.json");
     } catch (error) {
       console.error("Error seeding database from config file:", error);
     }
@@ -510,6 +514,7 @@ class DatabaseService {
   getBotConfiguration() {
     const botName = this.getBotConfig("bot_name") || "GHBot";
     const debug = this.getBotConfig("debug") === "true";
+    const token = this.getBotConfig("token") || "";
     const adminUserId = this.getBotConfig("admin_user_id") || "";
     const activities = JSON.parse(this.getBotConfig("activities") || "[]");
     const blacklistedUsers = JSON.parse(
@@ -519,6 +524,7 @@ class DatabaseService {
     return {
       botName,
       debug,
+      token,
       adminUserId,
       activities,
       blacklistedUsers,

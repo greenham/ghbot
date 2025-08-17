@@ -1,39 +1,7 @@
-const fs = require("fs");
-const path = require("path");
-
-// Dynamic config that combines file-based config with database
+// Database-first configuration manager
 class ConfigManager {
   constructor() {
-    this.fileConfig = this.loadFileConfig();
     this.databaseService = null; // Will be injected
-  }
-
-  /**
-   * Load static configuration from file
-   */
-  loadFileConfig() {
-    const configPath = path.join(__dirname, "..", "..", "config.json");
-
-    if (!fs.existsSync(configPath)) {
-      console.warn("config.json not found, using environment variables only");
-      return {
-        discord: {
-          token: process.env.DISCORD_TOKEN,
-          adminUserId: process.env.ADMIN_USER_ID,
-        },
-      };
-    }
-
-    const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
-
-    // Validate required fields
-    if (!config.discord?.token && !process.env.DISCORD_TOKEN) {
-      throw new Error(
-        "Discord token is required in config.json or DISCORD_TOKEN environment variable"
-      );
-    }
-
-    return config;
   }
 
   /**
@@ -44,89 +12,68 @@ class ConfigManager {
   }
 
   /**
-   * Get bot configuration (combines file and database)
+   * Get bot configuration from database (with environment variable fallbacks)
    */
   getBotConfig() {
-    const fileConfig = this.fileConfig;
-    const dbConfig = this.databaseService
-      ? this.databaseService.getBotConfiguration()
-      : {};
+    if (!this.databaseService) {
+      // Fallback to environment variables if database not available
+      return {
+        botName: "GHBot",
+        debug: false,
+        discord: {
+          token: process.env.DISCORD_TOKEN,
+          adminUserId: process.env.ADMIN_USER_ID,
+          activities: ["Playing sounds", "Serving facts"],
+          blacklistedUsers: [],
+        },
+      };
+    }
+
+    const dbConfig = this.databaseService.getBotConfiguration();
 
     return {
-      // Use file config as fallback, database as primary
-      botName: dbConfig.botName || fileConfig.botName || "GHBot",
-      debug:
-        dbConfig.debug !== undefined
-          ? dbConfig.debug
-          : fileConfig.debug || false,
+      botName: dbConfig.botName || "GHBot",
+      debug: dbConfig.debug || false,
       discord: {
-        token: fileConfig.discord?.token || process.env.DISCORD_TOKEN,
-        adminUserId:
-          dbConfig.adminUserId ||
-          fileConfig.discord?.adminUserId ||
-          process.env.ADMIN_USER_ID,
-        activities: dbConfig.activities ||
-          fileConfig.discord?.activities || ["Playing sounds", "Serving facts"],
-        blacklistedUsers:
-          dbConfig.blacklistedUsers ||
-          fileConfig.discord?.blacklistedUsers ||
-          [],
+        token: dbConfig.token || process.env.DISCORD_TOKEN,
+        adminUserId: dbConfig.adminUserId || process.env.ADMIN_USER_ID,
+        activities: dbConfig.activities || ["Playing sounds", "Serving facts"],
+        blacklistedUsers: dbConfig.blacklistedUsers || [],
       },
     };
   }
 
   /**
-   * Get guild configuration (from database primarily, file as fallback)
+   * Get guild configuration (database only)
    */
   getGuildConfig(guildId) {
-    if (this.databaseService) {
-      const dbConfig = this.databaseService.getGuildConfig(guildId);
-      if (dbConfig) {
-        return dbConfig;
-      }
+    if (!this.databaseService) {
+      // Return minimal default config if database not available
+      return {
+        id: guildId,
+        name: "Unknown Guild",
+        internalName: "Unknown Guild",
+        prefix: "!",
+        enableSfx: true,
+        sfxVolume: 0.5,
+        enableFunFacts: true,
+        enableHamFacts: true,
+        allowedRolesForRequest: [],
+      };
     }
 
-    // Fallback to file config for backward compatibility
-    if (this.fileConfig.discord?.guilds) {
-      const guilds = Array.isArray(this.fileConfig.discord.guilds)
-        ? this.fileConfig.discord.guilds
-        : Object.values(this.fileConfig.discord.guilds);
-
-      return guilds.find((g) => g.id === guildId);
-    }
-
-    // Return default config for new guilds
-    return {
-      id: guildId,
-      name: "Unknown Guild",
-      internalName: "Unknown Guild",
-      prefix: "!",
-      enableSfx: true,
-      sfxVolume: 0.5,
-      enableFunFacts: true,
-      enableHamFacts: true,
-      allowedRolesForRequest: null,
-    };
+    return this.databaseService.getGuildConfig(guildId);
   }
 
   /**
-   * Get all guild configurations
+   * Get all guild configurations (database only)
    */
   getAllGuildConfigs() {
-    if (this.databaseService) {
-      return this.databaseService.getAllGuildConfigs();
+    if (!this.databaseService) {
+      return [];
     }
 
-    // Fallback to file config
-    if (this.fileConfig.discord?.guilds) {
-      const guilds = Array.isArray(this.fileConfig.discord.guilds)
-        ? this.fileConfig.discord.guilds
-        : Object.values(this.fileConfig.discord.guilds);
-
-      return guilds;
-    }
-
-    return [];
+    return this.databaseService.getAllGuildConfigs();
   }
 }
 
