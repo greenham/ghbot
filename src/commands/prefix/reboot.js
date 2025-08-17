@@ -1,12 +1,15 @@
-const config = require("../../config/config");
+const configManager = require("../../config/config");
 
 module.exports = {
   name: "reboot",
   description: "Reboot the bot (admin only)",
 
   async execute(message, args, guildConfig) {
+    // Get bot configuration
+    const botConfig = configManager.getBotConfig();
+    
     // Check if user is the bot admin
-    if (message.author.id !== config.discord.adminUserId) {
+    if (message.author.id !== botConfig.discord.adminUserId) {
       return;
     }
 
