@@ -1,4 +1,4 @@
-const schedule = require('node-schedule');
+const schedule = require("node-schedule");
 
 class SchedulerService {
   constructor() {
@@ -7,14 +7,14 @@ class SchedulerService {
 
   /**
    * Initialize scheduled events for all guilds
-   * @param {Client} client 
-   * @param {ConfigManager} configManager 
+   * @param {Client} client
+   * @param {ConfigManager} configManager
    */
   async initialize(client, configManager) {
-    console.log('Initializing scheduled events...');
+    console.log("Initializing scheduled events...");
 
     const guildConfigs = configManager.getAllGuildConfigs();
-    
+
     for (const guildConfig of guildConfigs) {
       try {
         const guild = await client.guilds.fetch(guildConfig.id);
@@ -27,45 +27,53 @@ class SchedulerService {
         const databaseService = configManager.databaseService;
         if (!databaseService) continue;
 
-        const scheduledEvents = databaseService.getScheduledEvents(guildConfig.id);
-        
+        const scheduledEvents = databaseService.getScheduledEvents(
+          guildConfig.id
+        );
+
         if (!scheduledEvents || scheduledEvents.length === 0) {
           continue;
         }
 
         for (const event of scheduledEvents) {
-          await this.scheduleEvent(guild, event, guildConfig);
+          await this.scheduleEvent(guild, event);
         }
       } catch (error) {
-        console.error(`Error setting up scheduled events for guild ${guildConfig.id}:`, error);
+        console.error(
+          `Error setting up scheduled events for guild ${guildConfig.id}:`,
+          error
+        );
       }
     }
   }
 
   /**
    * Schedule a single event
-   * @param {Guild} guild 
-   * @param {Object} event 
-   * @param {Object} guildConfig 
+   * @param {Guild} guild
+   * @param {Object} event
    */
-  async scheduleEvent(guild, event, guildConfig) {
+  async scheduleEvent(guild, event) {
     try {
       // Validate channel
       let channel = null;
-      if (event.channelId) {
-        channel = await guild.channels.fetch(event.channelId);
+      if (event.channel_id) {
+        channel = await guild.channels.fetch(event.channel_id);
         if (!channel) {
-          console.error(`Invalid channel ${event.channelId} for event ${event.id} in guild ${guild.name}`);
+          console.error(
+            `Invalid channel ${event.channel_id} for event ${event.id} in guild ${guild.name}`
+          );
           return;
         }
       }
 
       // Validate role
       let pingRole = null;
-      if (event.pingRoleId) {
-        pingRole = await guild.roles.fetch(event.pingRoleId);
+      if (event.ping_role_id) {
+        pingRole = await guild.roles.fetch(event.ping_role_id);
         if (!pingRole) {
-          console.warn(`Invalid role ${event.pingRoleId} for event ${event.id} in guild ${guild.name}`);
+          console.warn(
+            `Invalid role ${event.ping_role_id} for event ${event.id} in guild ${guild.name}`
+          );
         }
       }
 
@@ -80,10 +88,16 @@ class SchedulerService {
         // Store job reference
         const jobKey = `${guild.id}-${event.id}`;
         this.jobs.set(jobKey, job);
-        
-        console.log(`Event ${event.id} scheduled. Next invocation: ${job.nextInvocation()}`);
+
+        console.log(
+          `Event ${
+            event.id
+          } scheduled. Next invocation: ${job.nextInvocation()}`
+        );
       } else {
-        console.error(`Failed to schedule event ${event.id} - invalid cron expression: ${event.schedule}`);
+        console.error(
+          `Failed to schedule event ${event.id} with schedule: ${event.schedule}`
+        );
       }
     } catch (error) {
       console.error(`Error scheduling event ${event.id}:`, error);
@@ -92,9 +106,9 @@ class SchedulerService {
 
   /**
    * Execute a scheduled event
-   * @param {TextChannel} channel 
-   * @param {Object} event 
-   * @param {Role} pingRole 
+   * @param {TextChannel} channel
+   * @param {Object} event
+   * @param {Role} pingRole
    */
   async executeEvent(channel, event, pingRole) {
     try {
@@ -112,7 +126,7 @@ class SchedulerService {
 
       // Send the message
       if (content.length > 0 && channel) {
-        await channel.send(content.join(' '));
+        await channel.send(content.join(" "));
         console.log(`Executed scheduled event ${event.id}`);
       }
     } catch (error) {
@@ -122,13 +136,13 @@ class SchedulerService {
 
   /**
    * Cancel a scheduled job
-   * @param {string} guildId 
-   * @param {string} eventId 
+   * @param {string} guildId
+   * @param {string} eventId
    */
   cancelJob(guildId, eventId) {
     const jobKey = `${guildId}-${eventId}`;
     const job = this.jobs.get(jobKey);
-    
+
     if (job) {
       job.cancel();
       this.jobs.delete(jobKey);
@@ -138,7 +152,7 @@ class SchedulerService {
 
   /**
    * Cancel all jobs for a guild
-   * @param {string} guildId 
+   * @param {string} guildId
    */
   cancelGuildJobs(guildId) {
     for (const [key, job] of this.jobs) {
@@ -158,7 +172,7 @@ class SchedulerService {
       job.cancel();
     }
     this.jobs.clear();
-    console.log('Cancelled all scheduled events');
+    console.log("Cancelled all scheduled events");
   }
 }
 

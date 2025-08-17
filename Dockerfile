@@ -1,6 +1,8 @@
 # Use Node 20 LTS with full Debian for better compatibility
 FROM node:20
 
+RUN apt update && apt install -y sqlite3
+
 WORKDIR /app
 
 # Copy package files (npm will work better for native modules in Docker)
