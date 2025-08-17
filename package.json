@@ -32,6 +32,7 @@
     "restart": "docker compose restart",
     "logs": "docker compose logs -f",
     "boom": "pnpm stop && pnpm build && pnpm start",
+    "reset-db": "pnpm stop && rm -f data/ghbot.db data/ghbot.db-shm data/ghbot.db-wal && echo 'Database reset complete. Run pnpm start to re-seed from config.json'",
     "image:build": "docker build -t ghbot:${VERSION:-latest} .",
     "image:run": "docker run -d --name ghbot --restart always ghbot:${VERSION:-latest}"
   },

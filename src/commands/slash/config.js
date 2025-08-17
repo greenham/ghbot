@@ -2,6 +2,29 @@ const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, MessageFlags } =
 const configManager = require('../../config/config');
 
 module.exports = {
+  async formatAllowedRoles(guild, guildConfig) {
+    const databaseService = configManager.databaseService;
+    if (!databaseService) return 'Database unavailable';
+
+    const allowedRoleIds = databaseService.getAllowedRoleIds(guild.id);
+    
+    if (allowedRoleIds.length === 0) {
+      return 'None configured';
+    }
+
+    const roles = [];
+    for (const roleId of allowedRoleIds) {
+      try {
+        const role = await guild.roles.fetch(roleId);
+        if (role) roles.push(role.name);
+      } catch (error) {
+        roles.push(`<deleted role: ${roleId}>`);
+      }
+    }
+
+    return roles.length > 0 ? roles.join(', ') : 'None configured';
+  },
+
   data: new SlashCommandBuilder()
     .setName('config')
     .setDescription('Manage server configuration')
@@ -77,10 +100,21 @@ module.exports = {
     .addSubcommand(subcommand =>
       subcommand
         .setName('roles')
-        .setDescription('Set roles that users can self-assign')
+        .setDescription('Manage self-assignable roles')
         .addStringOption(option =>
-          option.setName('pattern')
-            .setDescription('Role pattern (pipe-separated, e.g., "streamer|vip|member")')
+          option.setName('action')
+            .setDescription('Action to perform')
+            .setRequired(true)
+            .addChoices(
+              { name: 'Add role to list', value: 'add' },
+              { name: 'Remove role from list', value: 'remove' },
+              { name: 'Clear all roles', value: 'clear' },
+              { name: 'Show current roles', value: 'list' }
+            )
+        )
+        .addRoleOption(option =>
+          option.setName('role')
+            .setDescription('The role to add or remove (not needed for list/clear)')
             .setRequired(false)
         )
     ),
@@ -107,7 +141,7 @@ module.exports = {
           { name: 'Fun Facts', value: guildConfig.enableFunFacts ? '✅ Enabled' : '❌ Disabled', inline: true },
           { name: 'Ham Facts', value: guildConfig.enableHamFacts ? '✅ Enabled' : '❌ Disabled', inline: true },
           { name: 'Allowed SFX Channels', value: guildConfig.allowedSfxChannels || 'All channels', inline: false },
-          { name: 'Allowed Roles', value: guildConfig.allowedRolesForRequest || 'None configured', inline: false },
+          { name: 'Self-Assignable Roles', value: await this.formatAllowedRoles(interaction.guild, guildConfig), inline: false },
         ])
         .setFooter({ text: 'Use /config commands to modify settings' });
 
@@ -158,11 +192,79 @@ module.exports = {
         break;
 
       case 'roles':
-        const rolePattern = interaction.options.getString('pattern');
-        newConfig.allowedRolesForRequest = rolePattern || null;
-        updateMessage = rolePattern 
-          ? `Self-assignable roles set to: \`${rolePattern}\``
-          : 'Self-assignable roles cleared';
+        const action = interaction.options.getString('action');
+        const role = interaction.options.getRole('role');
+        
+        if (action === 'list') {
+          const allowedRoleIds = databaseService.getAllowedRoleIds(interaction.guild.id);
+          
+          if (allowedRoleIds.length === 0) {
+            return interaction.reply({
+              content: '❌ No self-assignable roles are currently configured.',
+              flags: [MessageFlags.Ephemeral]
+            });
+          }
+
+          // Get role objects from IDs
+          const roles = [];
+          for (const roleId of allowedRoleIds) {
+            try {
+              const roleObj = await interaction.guild.roles.fetch(roleId);
+              if (roleObj) roles.push(roleObj);
+            } catch (error) {
+              console.warn(`Role ${roleId} not found in guild ${interaction.guild.id}`);
+            }
+          }
+
+          const embed = new EmbedBuilder()
+            .setTitle('📋 Self-Assignable Roles Configuration')
+            .setDescription(roles.length > 0 ? 'Currently configured roles:' : 'No valid roles found.')
+            .setColor(0x21c629)
+            .addFields(roles.length > 0 ? {
+              name: 'Allowed Roles',
+              value: roles.map(r => `• ${r}`).join('\n'),
+              inline: false
+            } : {
+              name: 'Status',
+              value: 'No roles configured or all configured roles have been deleted.',
+              inline: false
+            });
+
+          return interaction.reply({ embeds: [embed] });
+        }
+
+        if (action === 'clear') {
+          databaseService.updateAllowedRoleIds(interaction.guild.id, []);
+          updateMessage = 'Self-assignable roles list cleared';
+          updated = true;
+          break;
+        }
+
+        if (!role) {
+          return interaction.reply({
+            content: '❌ You must specify a role for add/remove actions.',
+            flags: [MessageFlags.Ephemeral]
+          });
+        }
+
+        // Check if bot can manage this role
+        if (!interaction.guild.members.me.permissions.has('ManageRoles') || 
+            role.position >= interaction.guild.members.me.roles.highest.position) {
+          return interaction.reply({
+            content: `❌ I cannot manage the **${role.name}** role due to permission hierarchy.`,
+            flags: [MessageFlags.Ephemeral]
+          });
+        }
+
+        if (action === 'add') {
+          databaseService.addAllowedRole(interaction.guild.id, role.id);
+          updateMessage = `Added **${role.name}** to self-assignable roles`;
+        } else if (action === 'remove') {
+          databaseService.removeAllowedRole(interaction.guild.id, role.id);
+          updateMessage = `Removed **${role.name}** from self-assignable roles`;
+        }
+
+        updated = true;
         break;
     }
 
