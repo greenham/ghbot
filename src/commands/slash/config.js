@@ -112,10 +112,11 @@ module.exports = {
               { name: 'Show current roles', value: 'list' }
             )
         )
-        .addRoleOption(option =>
+        .addStringOption(option =>
           option.setName('role')
             .setDescription('The role to add or remove (not needed for list/clear)')
             .setRequired(false)
+            .setAutocomplete(true)
         )
     ),
 
@@ -193,7 +194,7 @@ module.exports = {
 
       case 'roles':
         const action = interaction.options.getString('action');
-        const role = interaction.options.getRole('role');
+        const roleName = interaction.options.getString('role');
         
         if (action === 'list') {
           const allowedRoleIds = databaseService.getAllowedRoleIds(interaction.guild.id);
@@ -240,9 +241,21 @@ module.exports = {
           break;
         }
 
-        if (!role) {
+        if (!roleName) {
           return interaction.reply({
             content: '❌ You must specify a role for add/remove actions.',
+            flags: [MessageFlags.Ephemeral]
+          });
+        }
+
+        // Find the role by name
+        const role = interaction.guild.roles.cache.find(r => 
+          r.name.toLowerCase() === roleName.toLowerCase()
+        );
+        
+        if (!role) {
+          return interaction.reply({
+            content: `❌ Role **${roleName}** not found on this server.`,
             flags: [MessageFlags.Ephemeral]
           });
         }
@@ -290,5 +303,63 @@ module.exports = {
     await interaction.reply({ embeds: [embed] });
     
     console.log(`Configuration updated for ${interaction.guild.name}: ${subcommand} by @${interaction.user.username}`);
+  },
+
+  async autocomplete(interaction, guildConfig) {
+    const subcommand = interaction.options.getSubcommand();
+    
+    // Only handle autocomplete for roles subcommand
+    if (subcommand !== 'roles') {
+      return interaction.respond([]);
+    }
+
+    const action = interaction.options.getString('action');
+    const focusedValue = interaction.options.getFocused().toLowerCase();
+    const databaseService = configManager.databaseService;
+    
+    if (!databaseService) {
+      return interaction.respond([]);
+    }
+
+    // Get currently allowed role IDs
+    const allowedRoleIds = databaseService.getAllowedRoleIds(interaction.guild.id);
+    let availableRoles = [];
+
+    if (action === 'add') {
+      // For add: show roles NOT currently in the allowed list
+      const allRoles = interaction.guild.roles.cache
+        .filter(role => 
+          !role.managed && // Exclude bot/integration roles
+          role.id !== interaction.guild.id && // Exclude @everyone
+          !allowedRoleIds.includes(role.id) && // Exclude already allowed roles
+          role.position < interaction.guild.members.me.roles.highest.position // Only manageable roles
+        );
+      
+      availableRoles = Array.from(allRoles.values());
+      
+    } else if (action === 'remove') {
+      // For remove: show roles currently in the allowed list
+      for (const roleId of allowedRoleIds) {
+        try {
+          const role = await interaction.guild.roles.fetch(roleId);
+          if (role) {
+            availableRoles.push(role);
+          }
+        } catch (error) {
+          // Role doesn't exist anymore, skip
+        }
+      }
+    }
+
+    // Filter based on what user has typed and limit to 25
+    const filtered = availableRoles
+      .filter(role => role.name.toLowerCase().includes(focusedValue))
+      .slice(0, 25)
+      .map(role => ({
+        name: role.name,
+        value: role.name
+      }));
+
+    await interaction.respond(filtered);
   }
 };
