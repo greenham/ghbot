@@ -264,8 +264,18 @@ module.exports = {
           updateMessage = `Removed **${role.name}** from self-assignable roles`;
         }
 
-        updated = true;
-        break;
+        // Don't set updated = true here since we're calling database methods directly
+        // Skip the upsertGuildConfig call at the end
+        const embed = new EmbedBuilder()
+          .setTitle('✅ Configuration Updated')
+          .setColor(0x00ff00)
+          .setDescription(updateMessage)
+          .setFooter({ text: 'Use /config show to see all settings' });
+
+        await interaction.reply({ embeds: [embed] });
+        
+        console.log(`Role configuration updated for ${interaction.guild.name}: ${action} ${role.name}`);
+        return;
     }
 
     // Update configuration in database
