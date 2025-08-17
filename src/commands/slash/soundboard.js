@@ -57,7 +57,7 @@ function getSfxCategories() {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("soundboard")
+    .setName("sfxboard")
     .setDescription("Interactive soundboard with categorized buttons"),
 
   async execute(interaction, guildConfig) {

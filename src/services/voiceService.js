@@ -6,13 +6,12 @@ const {
   AudioPlayerStatus,
   entersState,
   getVoiceConnection,
-  generateDependencyReport
-} = require('@discordjs/voice');
-const { ChannelType } = require('discord.js');
+} = require("@discordjs/voice");
+const { ChannelType } = require("discord.js");
 
 // Try to use ffmpeg-static as fallback if system ffmpeg is not available
 try {
-  const ffmpegPath = require('ffmpeg-static');
+  const ffmpegPath = require("ffmpeg-static");
   if (ffmpegPath && !process.env.FFMPEG_PATH) {
     process.env.FFMPEG_PATH = ffmpegPath;
   }
@@ -28,17 +27,17 @@ class VoiceService {
 
   /**
    * Join a voice channel
-   * @param {VoiceChannel} channel 
+   * @param {VoiceChannel} channel
    * @returns {VoiceConnection}
    */
   async join(channel) {
     if (!channel || channel.type !== ChannelType.GuildVoice) {
-      throw new Error('Invalid voice channel');
+      throw new Error("Invalid voice channel");
     }
 
     // Check if already connected
     let connection = getVoiceConnection(channel.guild.id);
-    
+
     if (!connection) {
       connection = joinVoiceChannel({
         channelId: channel.id,
@@ -79,7 +78,7 @@ class VoiceService {
 
   /**
    * Leave a voice channel
-   * @param {string} guildId 
+   * @param {string} guildId
    */
   leave(guildId) {
     const connection = this.connections.get(guildId);
@@ -92,15 +91,15 @@ class VoiceService {
 
   /**
    * Play an audio file
-   * @param {string} guildId 
-   * @param {string} filePath 
-   * @param {Object} options 
+   * @param {string} guildId
+   * @param {string} filePath
+   * @param {Object} options
    * @returns {AudioPlayer}
    */
   async play(guildId, filePath, options = {}) {
     const connection = this.connections.get(guildId);
     if (!connection) {
-      throw new Error('Not connected to voice channel');
+      throw new Error("Not connected to voice channel");
     }
 
     // Create or get player for this guild
@@ -131,8 +130,8 @@ class VoiceService {
         resolve();
       });
 
-      player.once('error', (error) => {
-        console.error('Player error:', error);
+      player.once("error", (error) => {
+        console.error("Player error:", error);
         reject(error);
       });
     });
@@ -140,7 +139,7 @@ class VoiceService {
 
   /**
    * Stop playing audio
-   * @param {string} guildId 
+   * @param {string} guildId
    */
   stop(guildId) {
     const player = this.players.get(guildId);
@@ -151,7 +150,7 @@ class VoiceService {
 
   /**
    * Check if connected to a voice channel
-   * @param {string} guildId 
+   * @param {string} guildId
    * @returns {boolean}
    */
   isConnected(guildId) {
@@ -160,7 +159,7 @@ class VoiceService {
 
   /**
    * Get the current voice connection
-   * @param {string} guildId 
+   * @param {string} guildId
    * @returns {VoiceConnection|undefined}
    */
   getConnection(guildId) {
