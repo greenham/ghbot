@@ -9,20 +9,22 @@ module.exports = {
       subcommand
         .setName('add')
         .setDescription('Add a role to yourself')
-        .addRoleOption(option =>
+        .addStringOption(option =>
           option.setName('role')
             .setDescription('The role to add')
             .setRequired(true)
+            .setAutocomplete(true)
         )
     )
     .addSubcommand(subcommand =>
       subcommand
         .setName('remove')
         .setDescription('Remove a role from yourself')
-        .addRoleOption(option =>
+        .addStringOption(option =>
           option.setName('role')
             .setDescription('The role to remove')
             .setRequired(true)
+            .setAutocomplete(true)
         )
     )
     .addSubcommand(subcommand =>
@@ -91,7 +93,19 @@ module.exports = {
     }
 
     // Handle add/remove subcommands
-    const targetRole = interaction.options.getRole('role');
+    const roleName = interaction.options.getString('role');
+    
+    // Find the role by name
+    const targetRole = interaction.guild.roles.cache.find(r => 
+      r.name.toLowerCase() === roleName.toLowerCase()
+    );
+    
+    if (!targetRole) {
+      return interaction.reply({
+        content: `❌ Role **${roleName}** not found on this server.`,
+        flags: [MessageFlags.Ephemeral]
+      });
+    }
 
     // Check if the role is in the allowed list
     if (!allowedRoleIds.includes(targetRole.id)) {
@@ -178,5 +192,61 @@ module.exports = {
         flags: [MessageFlags.Ephemeral]
       });
     }
+  },
+
+  async autocomplete(interaction, guildConfig) {
+    const subcommand = interaction.options.getSubcommand();
+    const focusedValue = interaction.options.getFocused().toLowerCase();
+    const databaseService = configManager.databaseService;
+    
+    if (!databaseService) {
+      return interaction.respond([]);
+    }
+
+    // Get allowed role IDs for this guild
+    const allowedRoleIds = databaseService.getAllowedRoleIds(interaction.guild.id);
+    
+    if (allowedRoleIds.length === 0) {
+      return interaction.respond([]);
+    }
+
+    let availableRoles = [];
+
+    if (subcommand === 'add') {
+      // For add: show roles user doesn't have that are self-assignable
+      for (const roleId of allowedRoleIds) {
+        try {
+          const role = await interaction.guild.roles.fetch(roleId);
+          if (role && !interaction.member.roles.cache.has(roleId)) {
+            availableRoles.push(role);
+          }
+        } catch (error) {
+          // Role doesn't exist anymore, skip
+        }
+      }
+    } else if (subcommand === 'remove') {
+      // For remove: show roles user currently has that are self-assignable
+      for (const roleId of allowedRoleIds) {
+        try {
+          const role = await interaction.guild.roles.fetch(roleId);
+          if (role && interaction.member.roles.cache.has(roleId)) {
+            availableRoles.push(role);
+          }
+        } catch (error) {
+          // Role doesn't exist anymore, skip
+        }
+      }
+    }
+
+    // Filter based on what user has typed and limit to 25
+    const filtered = availableRoles
+      .filter(role => role.name.toLowerCase().includes(focusedValue))
+      .slice(0, 25)
+      .map(role => ({
+        name: role.name,
+        value: role.name
+      }));
+
+    await interaction.respond(filtered);
   }
 };
