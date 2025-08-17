@@ -41,14 +41,6 @@ module.exports = {
   },
   
   async execute(message, args, guildConfig) {
-    // Check if SFX is allowed in this channel
-    if (guildConfig.allowedSfxChannels) {
-      const allowedChannels = new RegExp(guildConfig.allowedSfxChannels);
-      if (!allowedChannels.test(message.channel.name)) {
-        return;
-      }
-    }
-
     const sfxName = args[0];
 
     // If no SFX specified, show the list

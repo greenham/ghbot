@@ -10,9 +10,9 @@
         "id": "GUILD ID",
         "prefix": "!",
         "enableSfx": true,
-        "allowedSfxChannels": "piped|list|of-valid-channels",
         "sfxVolume": 0.5,
         "passes": 2,
+        "allowedRolesForRequest": ["DISCORD ROLE ID"],
         "enableFunFacts": true,
         "enableHamFacts": true,
         "scheduledEvents": [
@@ -34,16 +34,13 @@
         "id": "SECOND GUILD ID",
         "prefix": "!",
         "enableSfx": true,
-        "allowedSfxChannels": "piped|list|of-valid-channels",
         "sfxVolume": 0.5,
         "passes": 2,
         "enableFunFacts": true,
         "enableHamFacts": true
       }
     ],
-    "activities": [
-      "that gum you like"
-    ],
+    "activities": ["Chardee MacDennis", "The Nightman Cometh", "Charlie Work"],
     "blacklistedUsers": ["IGNORE COMMANDS FROM THESE DISCORD USER IDS"]
   },
   "debug": false

@@ -81,7 +81,7 @@ A modern Discord bot built with Discord.js v14 that provides sound effects, text
 
    # Production mode with Docker Compose
    pnpm start
-   
+
    # Production mode with local Node.js
    pnpm start:prod
    ```
@@ -228,19 +228,24 @@ pnpm image:run
 The bot uses **SQLite database** for persistent guild configurations. Configuration can be managed in three ways:
 
 #### 1. Automatic Registration (Recommended for Public Bot)
+
 When the bot is added to a new server, it automatically:
+
 - Creates default configuration with sensible settings
 - Sends a welcome message explaining features
 - Registers slash commands for the server
 
 #### 2. Live Configuration via Slash Commands
+
 Administrators can use `/config` commands to modify settings in real-time:
+
 - `/config show` - View current server settings
 - `/config prefix <prefix>` - Change command prefix
 - `/config sfx <true/false>` - Enable/disable sound effects
 - And more (see Configuration Management section above)
 
 #### 3. Seed Data from config.json (Optional)
+
 For initial deployment or migrating existing servers, create `config.json`:
 
 ```json
@@ -256,7 +261,6 @@ For initial deployment or migrating existing servers, create `config.json`:
         "internalName": "My Server",
         "prefix": "!",
         "enableSfx": true,
-        "allowedSfxChannels": "general|voice-chat",
         "sfxVolume": 0.5,
         "enableFunFacts": true,
         "enableHamFacts": true,
@@ -317,7 +321,7 @@ help,commands|Available commands: !sfx, !funfact, !hamfact
     "pingRoleId": "ROLE_ID"
   },
   {
-    "id": "weekly-reminder", 
+    "id": "weekly-reminder",
     "schedule": "0 10 * * 1",
     "channelId": "CHANNEL_ID",
     "message": "Happy Monday!"
@@ -326,6 +330,7 @@ help,commands|Available commands: !sfx, !funfact, !hamfact
 ```
 
 **Schedule Formats Supported:**
+
 - **Object format**: `{"hour": 9, "minute": 30, "tz": "America/Los_Angeles"}` (with timezone)
 - **Cron format**: `"0 9 * * *"` (standard cron expression)
 

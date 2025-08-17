@@ -14,17 +14,6 @@ module.exports = {
     ),
 
   async execute(interaction, guildConfig) {
-    // Check if SFX is allowed in this channel
-    if (guildConfig.allowedSfxChannels) {
-      const allowedChannels = new RegExp(guildConfig.allowedSfxChannels);
-      if (!allowedChannels.test(interaction.channel.name)) {
-        return interaction.reply({ 
-          content: 'Sound effects are not allowed in this channel!', 
-          flags: [MessageFlags.Ephemeral]
-        });
-      }
-    }
-
     const sfxName = interaction.options.getString('sound');
 
     // Check if user is in a voice channel

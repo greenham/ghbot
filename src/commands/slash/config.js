@@ -1,15 +1,20 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
-const configManager = require('../../config/config');
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionFlagsBits,
+  MessageFlags,
+} = require("discord.js");
+const configManager = require("../../config/config");
 
 module.exports = {
   async formatAllowedRoles(guild, guildConfig) {
     const databaseService = configManager.databaseService;
-    if (!databaseService) return 'Database unavailable';
+    if (!databaseService) return "Database unavailable";
 
     const allowedRoleIds = databaseService.getAllowedRoleIds(guild.id);
-    
+
     if (allowedRoleIds.length === 0) {
-      return 'None configured';
+      return "None configured";
     }
 
     const roles = [];
@@ -22,99 +27,104 @@ module.exports = {
       }
     }
 
-    return roles.length > 0 ? roles.join(', ') : 'None configured';
+    return roles.length > 0 ? roles.join(", ") : "None configured";
   },
 
   data: new SlashCommandBuilder()
-    .setName('config')
-    .setDescription('Manage server configuration')
+    .setName("config")
+    .setDescription("Manage server configuration")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .addSubcommand(subcommand =>
+    .addSubcommand((subcommand) =>
       subcommand
-        .setName('show')
-        .setDescription('Show current server configuration')
+        .setName("show")
+        .setDescription("Show current server configuration")
     )
-    .addSubcommand(subcommand =>
+    .addSubcommand((subcommand) =>
       subcommand
-        .setName('prefix')
-        .setDescription('Set the command prefix')
-        .addStringOption(option =>
-          option.setName('new_prefix')
-            .setDescription('The new command prefix')
+        .setName("prefix")
+        .setDescription("Set the command prefix")
+        .addStringOption((option) =>
+          option
+            .setName("new_prefix")
+            .setDescription("The new command prefix")
             .setRequired(true)
-            .setMaxLength(5)
+            .addChoices(
+              { name: "!", value: "!" },
+              { name: "$", value: "$" },
+              { name: "%", value: "%" },
+              { name: "^", value: "^" },
+              { name: "&", value: "&" }
+            )
         )
     )
-    .addSubcommand(subcommand =>
+    .addSubcommand((subcommand) =>
       subcommand
-        .setName('sfx')
-        .setDescription('Enable or disable sound effects')
-        .addBooleanOption(option =>
-          option.setName('enabled')
-            .setDescription('Enable sound effects')
+        .setName("sfx")
+        .setDescription("Enable or disable sound effects")
+        .addBooleanOption((option) =>
+          option
+            .setName("enabled")
+            .setDescription("Enable sound effects")
             .setRequired(true)
         )
     )
-    .addSubcommand(subcommand =>
+    .addSubcommand((subcommand) =>
       subcommand
-        .setName('volume')
-        .setDescription('Set sound effects volume')
-        .addNumberOption(option =>
-          option.setName('level')
-            .setDescription('Volume level (0.1 to 1.0)')
+        .setName("volume")
+        .setDescription("Set sound effects volume")
+        .addNumberOption((option) =>
+          option
+            .setName("level")
+            .setDescription("Volume level (0.1 to 1.0)")
             .setRequired(true)
             .setMinValue(0.1)
             .setMaxValue(1.0)
         )
     )
-    .addSubcommand(subcommand =>
+    .addSubcommand((subcommand) =>
       subcommand
-        .setName('funfacts')
-        .setDescription('Enable or disable fun facts')
-        .addBooleanOption(option =>
-          option.setName('enabled')
-            .setDescription('Enable fun facts')
+        .setName("funfacts")
+        .setDescription("Enable or disable fun facts")
+        .addBooleanOption((option) =>
+          option
+            .setName("enabled")
+            .setDescription("Enable fun facts")
             .setRequired(true)
         )
     )
-    .addSubcommand(subcommand =>
+    .addSubcommand((subcommand) =>
       subcommand
-        .setName('hamfacts')
-        .setDescription('Enable or disable ham facts')
-        .addBooleanOption(option =>
-          option.setName('enabled')
-            .setDescription('Enable ham facts')
+        .setName("hamfacts")
+        .setDescription("Enable or disable ham facts")
+        .addBooleanOption((option) =>
+          option
+            .setName("enabled")
+            .setDescription("Enable ham facts")
             .setRequired(true)
         )
     )
-    .addSubcommand(subcommand =>
+    .addSubcommand((subcommand) =>
       subcommand
-        .setName('sfxchannels')
-        .setDescription('Set allowed channels for sound effects (regex pattern)')
-        .addStringOption(option =>
-          option.setName('pattern')
-            .setDescription('Channel name pattern (leave empty to allow all channels)')
-            .setRequired(false)
-        )
-    )
-    .addSubcommand(subcommand =>
-      subcommand
-        .setName('roles')
-        .setDescription('Manage self-assignable roles')
-        .addStringOption(option =>
-          option.setName('action')
-            .setDescription('Action to perform')
+        .setName("roles")
+        .setDescription("Manage self-assignable roles")
+        .addStringOption((option) =>
+          option
+            .setName("action")
+            .setDescription("Action to perform")
             .setRequired(true)
             .addChoices(
-              { name: 'Add role to list', value: 'add' },
-              { name: 'Remove role from list', value: 'remove' },
-              { name: 'Clear all roles', value: 'clear' },
-              { name: 'Show current roles', value: 'list' }
+              { name: "Add role to list", value: "add" },
+              { name: "Remove role from list", value: "remove" },
+              { name: "Clear all roles", value: "clear" },
+              { name: "Show current roles", value: "list" }
             )
         )
-        .addStringOption(option =>
-          option.setName('role')
-            .setDescription('The role to add or remove (not needed for list/clear)')
+        .addStringOption((option) =>
+          option
+            .setName("role")
+            .setDescription(
+              "The role to add or remove (not needed for list/clear)"
+            )
             .setRequired(false)
             .setAutocomplete(true)
         )
@@ -125,84 +135,100 @@ module.exports = {
     const databaseService = configManager.databaseService;
 
     if (!databaseService) {
-      return interaction.reply({ 
-        content: '❌ Database service not available.', 
-        flags: [MessageFlags.Ephemeral]
+      return interaction.reply({
+        content: "❌ Database service not available.",
+        flags: [MessageFlags.Ephemeral],
       });
     }
 
-    if (subcommand === 'show') {
+    if (subcommand === "show") {
       const embed = new EmbedBuilder()
         .setTitle(`⚙️ Configuration for ${interaction.guild.name}`)
         .setColor(0x21c629)
         .addFields([
-          { name: 'Prefix', value: `\`${guildConfig.prefix}\``, inline: true },
-          { name: 'SFX Enabled', value: guildConfig.enableSfx ? '✅ Yes' : '❌ No', inline: true },
-          { name: 'SFX Volume', value: `${Math.round(guildConfig.sfxVolume * 100)}%`, inline: true },
-          { name: 'Fun Facts', value: guildConfig.enableFunFacts ? '✅ Enabled' : '❌ Disabled', inline: true },
-          { name: 'Ham Facts', value: guildConfig.enableHamFacts ? '✅ Enabled' : '❌ Disabled', inline: true },
-          { name: 'Allowed SFX Channels', value: guildConfig.allowedSfxChannels || 'All channels', inline: false },
-          { name: 'Self-Assignable Roles', value: await this.formatAllowedRoles(interaction.guild, guildConfig), inline: false },
+          { name: "Prefix", value: `\`${guildConfig.prefix}\``, inline: true },
+          {
+            name: "SFX Enabled",
+            value: guildConfig.enableSfx ? "✅ Yes" : "❌ No",
+            inline: true,
+          },
+          {
+            name: "SFX Volume",
+            value: `${Math.round(guildConfig.sfxVolume * 100)}%`,
+            inline: true,
+          },
+          {
+            name: "Fun Facts",
+            value: guildConfig.enableFunFacts ? "✅ Enabled" : "❌ Disabled",
+            inline: true,
+          },
+          {
+            name: "Ham Facts",
+            value: guildConfig.enableHamFacts ? "✅ Enabled" : "❌ Disabled",
+            inline: true,
+          },
+          {
+            name: "Self-Assignable Roles",
+            value: await this.formatAllowedRoles(
+              interaction.guild,
+              guildConfig
+            ),
+            inline: false,
+          },
         ])
-        .setFooter({ text: 'Use /config commands to modify settings' });
+        .setFooter({ text: "Use /config commands to modify settings" });
 
       return interaction.reply({ embeds: [embed] });
     }
 
     // Handle configuration updates
     const newConfig = { ...guildConfig };
-    let updateMessage = '';
+    let updateMessage = "";
 
     switch (subcommand) {
-      case 'prefix':
-        const newPrefix = interaction.options.getString('new_prefix');
+      case "prefix":
+        const newPrefix = interaction.options.getString("new_prefix");
         newConfig.prefix = newPrefix;
         updateMessage = `Command prefix updated to \`${newPrefix}\``;
         break;
 
-      case 'sfx':
-        const sfxEnabled = interaction.options.getBoolean('enabled');
+      case "sfx":
+        const sfxEnabled = interaction.options.getBoolean("enabled");
         newConfig.enableSfx = sfxEnabled;
-        updateMessage = `Sound effects ${sfxEnabled ? 'enabled' : 'disabled'}`;
+        updateMessage = `Sound effects ${sfxEnabled ? "enabled" : "disabled"}`;
         break;
 
-      case 'volume':
-        const volume = interaction.options.getNumber('level');
+      case "volume":
+        const volume = interaction.options.getNumber("level");
         newConfig.sfxVolume = volume;
         updateMessage = `SFX volume set to ${Math.round(volume * 100)}%`;
         break;
 
-      case 'funfacts':
-        const funfactsEnabled = interaction.options.getBoolean('enabled');
+      case "funfacts":
+        const funfactsEnabled = interaction.options.getBoolean("enabled");
         newConfig.enableFunFacts = funfactsEnabled;
-        updateMessage = `Fun facts ${funfactsEnabled ? 'enabled' : 'disabled'}`;
+        updateMessage = `Fun facts ${funfactsEnabled ? "enabled" : "disabled"}`;
         break;
 
-      case 'hamfacts':
-        const hamfactsEnabled = interaction.options.getBoolean('enabled');
+      case "hamfacts":
+        const hamfactsEnabled = interaction.options.getBoolean("enabled");
         newConfig.enableHamFacts = hamfactsEnabled;
-        updateMessage = `Ham facts ${hamfactsEnabled ? 'enabled' : 'disabled'}`;
+        updateMessage = `Ham facts ${hamfactsEnabled ? "enabled" : "disabled"}`;
         break;
 
-      case 'sfxchannels':
-        const channelPattern = interaction.options.getString('pattern');
-        newConfig.allowedSfxChannels = channelPattern || null;
-        updateMessage = channelPattern 
-          ? `SFX channels restricted to pattern: \`${channelPattern}\``
-          : 'SFX allowed in all channels';
-        break;
+      case "roles":
+        const action = interaction.options.getString("action");
+        const roleName = interaction.options.getString("role");
 
-      case 'roles':
-        const action = interaction.options.getString('action');
-        const roleName = interaction.options.getString('role');
-        
-        if (action === 'list') {
-          const allowedRoleIds = databaseService.getAllowedRoleIds(interaction.guild.id);
-          
+        if (action === "list") {
+          const allowedRoleIds = databaseService.getAllowedRoleIds(
+            interaction.guild.id
+          );
+
           if (allowedRoleIds.length === 0) {
             return interaction.reply({
-              content: '❌ No self-assignable roles are currently configured.',
-              flags: [MessageFlags.Ephemeral]
+              content: "❌ No self-assignable roles are currently configured.",
+              flags: [MessageFlags.Ephemeral],
             });
           }
 
@@ -213,66 +239,79 @@ module.exports = {
               const roleObj = await interaction.guild.roles.fetch(roleId);
               if (roleObj) roles.push(roleObj);
             } catch (error) {
-              console.warn(`Role ${roleId} not found in guild ${interaction.guild.id}`);
+              console.warn(
+                `Role ${roleId} not found in guild ${interaction.guild.id}`
+              );
             }
           }
 
           const embed = new EmbedBuilder()
-            .setTitle('📋 Self-Assignable Roles Configuration')
-            .setDescription(roles.length > 0 ? 'Currently configured roles:' : 'No valid roles found.')
+            .setTitle("📋 Self-Assignable Roles Configuration")
+            .setDescription(
+              roles.length > 0
+                ? "Currently configured roles:"
+                : "No valid roles found."
+            )
             .setColor(0x21c629)
-            .addFields(roles.length > 0 ? {
-              name: 'Allowed Roles',
-              value: roles.map(r => `• ${r}`).join('\n'),
-              inline: false
-            } : {
-              name: 'Status',
-              value: 'No roles configured or all configured roles have been deleted.',
-              inline: false
-            });
+            .addFields(
+              roles.length > 0
+                ? {
+                    name: "Allowed Roles",
+                    value: roles.map((r) => `• ${r}`).join("\n"),
+                    inline: false,
+                  }
+                : {
+                    name: "Status",
+                    value:
+                      "No roles configured or all configured roles have been deleted.",
+                    inline: false,
+                  }
+            );
 
           return interaction.reply({ embeds: [embed] });
         }
 
-        if (action === 'clear') {
+        if (action === "clear") {
           databaseService.updateAllowedRoleIds(interaction.guild.id, []);
-          updateMessage = 'Self-assignable roles list cleared';
+          updateMessage = "Self-assignable roles list cleared";
           updated = true;
           break;
         }
 
         if (!roleName) {
           return interaction.reply({
-            content: '❌ You must specify a role for add/remove actions.',
-            flags: [MessageFlags.Ephemeral]
+            content: "❌ You must specify a role for add/remove actions.",
+            flags: [MessageFlags.Ephemeral],
           });
         }
 
         // Find the role by name
-        const role = interaction.guild.roles.cache.find(r => 
-          r.name.toLowerCase() === roleName.toLowerCase()
+        const role = interaction.guild.roles.cache.find(
+          (r) => r.name.toLowerCase() === roleName.toLowerCase()
         );
-        
+
         if (!role) {
           return interaction.reply({
             content: `❌ Role **${roleName}** not found on this server.`,
-            flags: [MessageFlags.Ephemeral]
+            flags: [MessageFlags.Ephemeral],
           });
         }
 
         // Check if bot can manage this role
-        if (!interaction.guild.members.me.permissions.has('ManageRoles') || 
-            role.position >= interaction.guild.members.me.roles.highest.position) {
+        if (
+          !interaction.guild.members.me.permissions.has("ManageRoles") ||
+          role.position >= interaction.guild.members.me.roles.highest.position
+        ) {
           return interaction.reply({
             content: `❌ I cannot manage the **${role.name}** role due to permission hierarchy.`,
-            flags: [MessageFlags.Ephemeral]
+            flags: [MessageFlags.Ephemeral],
           });
         }
 
-        if (action === 'add') {
+        if (action === "add") {
           databaseService.addAllowedRole(interaction.guild.id, role.id);
           updateMessage = `Added **${role.name}** to self-assignable roles`;
-        } else if (action === 'remove') {
+        } else if (action === "remove") {
           databaseService.removeAllowedRole(interaction.guild.id, role.id);
           updateMessage = `Removed **${role.name}** from self-assignable roles`;
         }
@@ -280,64 +319,69 @@ module.exports = {
         // Don't set updated = true here since we're calling database methods directly
         // Skip the upsertGuildConfig call at the end
         const embed = new EmbedBuilder()
-          .setTitle('✅ Configuration Updated')
+          .setTitle("✅ Configuration Updated")
           .setColor(0x00ff00)
           .setDescription(updateMessage)
-          .setFooter({ text: 'Use /config show to see all settings' });
+          .setFooter({ text: "Use /config show to see all settings" });
 
         await interaction.reply({ embeds: [embed] });
-        
-        console.log(`Role configuration updated for ${interaction.guild.name}: ${action} ${role.name}`);
+
+        console.log(
+          `Role configuration updated for ${interaction.guild.name}: ${action} ${role.name}`
+        );
         return;
     }
 
     // Update configuration in database
     databaseService.upsertGuildConfig(newConfig);
-    
+
     const embed = new EmbedBuilder()
-      .setTitle('✅ Configuration Updated')
+      .setTitle("✅ Configuration Updated")
       .setColor(0x00ff00)
       .setDescription(updateMessage)
-      .setFooter({ text: 'Use /config show to see all settings' });
+      .setFooter({ text: "Use /config show to see all settings" });
 
     await interaction.reply({ embeds: [embed] });
-    
-    console.log(`Configuration updated for ${interaction.guild.name}: ${subcommand} by @${interaction.user.username}`);
+
+    console.log(
+      `Configuration updated for ${interaction.guild.name}: ${subcommand} by @${interaction.user.username}`
+    );
   },
 
   async autocomplete(interaction, guildConfig) {
     const subcommand = interaction.options.getSubcommand();
-    
+
     // Only handle autocomplete for roles subcommand
-    if (subcommand !== 'roles') {
+    if (subcommand !== "roles") {
       return interaction.respond([]);
     }
 
-    const action = interaction.options.getString('action');
+    const action = interaction.options.getString("action");
     const focusedValue = interaction.options.getFocused().toLowerCase();
     const databaseService = configManager.databaseService;
-    
+
     if (!databaseService) {
       return interaction.respond([]);
     }
 
     // Get currently allowed role IDs
-    const allowedRoleIds = databaseService.getAllowedRoleIds(interaction.guild.id);
+    const allowedRoleIds = databaseService.getAllowedRoleIds(
+      interaction.guild.id
+    );
     let availableRoles = [];
 
-    if (action === 'add') {
+    if (action === "add") {
       // For add: show roles NOT currently in the allowed list
-      const allRoles = interaction.guild.roles.cache
-        .filter(role => 
+      const allRoles = interaction.guild.roles.cache.filter(
+        (role) =>
           !role.managed && // Exclude bot/integration roles
           role.id !== interaction.guild.id && // Exclude @everyone
           !allowedRoleIds.includes(role.id) && // Exclude already allowed roles
           role.position < interaction.guild.members.me.roles.highest.position // Only manageable roles
-        );
-      
+      );
+
       availableRoles = Array.from(allRoles.values());
-      
-    } else if (action === 'remove') {
+    } else if (action === "remove") {
       // For remove: show roles currently in the allowed list
       for (const roleId of allowedRoleIds) {
         try {
@@ -353,13 +397,13 @@ module.exports = {
 
     // Filter based on what user has typed and limit to 25
     const filtered = availableRoles
-      .filter(role => role.name.toLowerCase().includes(focusedValue))
+      .filter((role) => role.name.toLowerCase().includes(focusedValue))
       .slice(0, 25)
-      .map(role => ({
+      .map((role) => ({
         name: role.name,
-        value: role.name
+        value: role.name,
       }));
 
     await interaction.respond(filtered);
-  }
+  },
 };

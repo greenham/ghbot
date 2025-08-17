@@ -25,7 +25,6 @@ class DatabaseService {
         internal_name TEXT,
         prefix TEXT DEFAULT '!',
         enable_sfx BOOLEAN DEFAULT true,
-        allowed_sfx_channels TEXT,
         sfx_volume REAL DEFAULT 0.5,
         enable_fun_facts BOOLEAN DEFAULT true,
         enable_ham_facts BOOLEAN DEFAULT true,
@@ -69,7 +68,7 @@ class DatabaseService {
       ('bot_name', 'GHBot'),
       ('debug', 'false'),
       ('admin_user_id', ''),
-      ('activities', '["Playing sounds", "Serving facts"]'),
+      ('activities', '["Chardee MacDennis", "The Nightman Cometh", "Charlie Work"]'),
       ('blacklisted_users', '[]')
     `);
 
@@ -144,7 +143,6 @@ class DatabaseService {
           internalName: guild.internalName || guild.name || "Unknown Guild",
           prefix: guild.prefix || "!",
           enableSfx: guild.enableSfx !== false,
-          allowedSfxChannels: guild.allowedSfxChannels || null,
           sfxVolume: guild.sfxVolume || 0.5,
           enableFunFacts: guild.enableFunFacts !== false,
           enableHamFacts: guild.enableHamFacts !== false,
@@ -234,14 +232,14 @@ class DatabaseService {
       ),
       insertGuild: this.db.prepare(`
         INSERT OR REPLACE INTO guilds 
-        (id, name, internal_name, prefix, enable_sfx, allowed_sfx_channels, sfx_volume, 
+        (id, name, internal_name, prefix, enable_sfx, sfx_volume, 
          enable_fun_facts, enable_ham_facts, allowed_roles_for_request)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `),
       updateGuild: this.db.prepare(`
         UPDATE guilds SET 
           name = ?, internal_name = ?, prefix = ?, enable_sfx = ?, 
-          allowed_sfx_channels = ?, sfx_volume = ?, enable_fun_facts = ?, 
+          sfx_volume = ?, enable_fun_facts = ?, 
           enable_ham_facts = ?, allowed_roles_for_request = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ? AND is_active = true
       `),
@@ -294,7 +292,6 @@ class DatabaseService {
       internalName: guild.internal_name,
       prefix: guild.prefix,
       enableSfx: Boolean(guild.enable_sfx),
-      allowedSfxChannels: guild.allowed_sfx_channels,
       sfxVolume: guild.sfx_volume,
       enableFunFacts: Boolean(guild.enable_fun_facts),
       enableHamFacts: Boolean(guild.enable_ham_facts),
@@ -316,7 +313,6 @@ class DatabaseService {
       internalName: guild.internal_name,
       prefix: guild.prefix,
       enableSfx: Boolean(guild.enable_sfx),
-      allowedSfxChannels: guild.allowed_sfx_channels,
       sfxVolume: guild.sfx_volume,
       enableFunFacts: Boolean(guild.enable_fun_facts),
       enableHamFacts: Boolean(guild.enable_ham_facts),
@@ -365,7 +361,6 @@ class DatabaseService {
       guildConfig.internalName || guildConfig.name,
       guildConfig.prefix || "!",
       guildConfig.enableSfx !== false ? 1 : 0,
-      guildConfig.allowedSfxChannels || null,
       guildConfig.sfxVolume || 0.5,
       guildConfig.enableFunFacts !== false ? 1 : 0,
       guildConfig.enableHamFacts !== false ? 1 : 0,
@@ -418,7 +413,6 @@ class DatabaseService {
       internalName: guild.internal_name,
       prefix: guild.prefix,
       enableSfx: Boolean(guild.enable_sfx),
-      allowedSfxChannels: guild.allowed_sfx_channels,
       sfxVolume: guild.sfx_volume,
       enableFunFacts: Boolean(guild.enable_fun_facts),
       enableHamFacts: Boolean(guild.enable_ham_facts),

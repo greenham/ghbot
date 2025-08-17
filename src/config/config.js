@@ -102,7 +102,6 @@ class ConfigManager {
       internalName: "Unknown Guild",
       prefix: "!",
       enableSfx: true,
-      allowedSfxChannels: null,
       sfxVolume: 0.5,
       enableFunFacts: true,
       enableHamFacts: true,

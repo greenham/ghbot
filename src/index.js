@@ -269,7 +269,6 @@ Use \`/config show\` to view all settings or \`/config\` commands to modify them
     internalName: guild.name,
     prefix: "!",
     enableSfx: true,
-    allowedSfxChannels: null, // Allow in all channels by default
     sfxVolume: 0.5,
     enableFunFacts: true,
     enableHamFacts: true,
