@@ -1,7 +1,4 @@
-const axios = require("axios");
-const { chunkSubstr } = require("../../utils/helpers");
 const sfxManager = require("../../services/sfxManager");
-const voiceService = require("../../services/voiceService");
 
 module.exports = {
   name: "sfx",
